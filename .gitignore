@@ -5,12 +5,16 @@ __pycache__/
 
 # C extensions
 *.so
+media
+.vscode
+migrations/000*.py
+
 
 venv/
 venv
 .env
 .idea
-
+.DS_Store
 # Distribution / packaging
 .Python
 build/
@@ -127,10 +131,8 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
-venv/
 ENV/
 env.bak/
 venv.bak/
