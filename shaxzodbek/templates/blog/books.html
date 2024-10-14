@@ -1,0 +1,53 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block extra_meta %}
+    <link rel="stylesheet" href="{% static 'blog/css/books.css' %}">
+{% endblock %}
+{% block title %}Books{% endblock %}
+{% block header %}
+    <div class="form-container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search" placeholder="Search books with name, author names and programming language"
+                        {% if current_value %} value="{{ current_value }}" {% endif %}>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}
+{% block content %}
+    {% if books %}
+        {% for book in books %}
+            <div class="blog-card">
+                <div class="meta">
+                    <div class="photo" style="background-image: url({{ book.picture.url }})"></div>
+                    <ul class="details">
+                        {% for author in book.author.all %}
+                            <li class="author">{{ author.first_name }} {{ author.last_name }}</li>
+                        {% endfor %}
+                        <li class="date">{{ book.programming_language.name }}</li>
+                        <li class="tags">
+                            <ul>
+                                {% for category in book.category.all %}
+                                    <li>{{ category.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="description">
+                    <h2>{{ book.title }}</h2>
+                    <p>{{ book.purpose }}</p>
+                    <p class="read-more">
+                        <a href="{{ book.book.url }}" download>Download</a>
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No books found.</p>
+    {% endif %}
+{% endblock %}

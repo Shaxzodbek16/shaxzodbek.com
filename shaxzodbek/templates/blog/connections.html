@@ -1,0 +1,51 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block extra_meta %}
+    <link rel="stylesheet" href="{% static 'blog/css/books.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/connections.css' %}">
+{% endblock %}
+{% block title %}Connections{% endblock %}
+{% block header %}
+    <div class="form-container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="search">Search:</label>
+                <input type="text" id="search" name="search" placeholder="Search peoples with name, job, and address..."
+                        {% if current_value %} value="{{ current_value }}" {% endif %}>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="people-list">
+    {% if people %}
+        {% for person in people %}
+                {% if user.is_superuser or person.listed %}
+        <div class="person-card">
+            <div class="person-info">
+                <img src="{{ person.picture.url }}" alt="{{ person.first_name }} {{ person.last_name }}" class="person-image">
+                <h2 class="person-name">{{ person.first_name }} {{ person.last_name }}</h2>
+                <p class="person-details"><strong>Birth Date:</strong> {{ person.birth_date }}</p>
+                <p class="person-details"><strong>Job Title:</strong> {{ person.job_title }}</p>
+                <p class="person-details"><strong>Met Address:</strong> {{ person.met_address }}</p>
+                <p class="person-details"><strong>Home Address:</strong> {{ person.home_address }}</p>
+                <p class="person-details"><strong>Met At:</strong> {{ person.met_at }}</p>
+                <div class="person-roles">
+                    {% for wfn in person.who_for_me.all %}
+                    <span class="role-tag">{{ wfn.who_is_it }}</span>
+                    {%  endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+            {% endfor %}
+    {% else %}
+            <h1 style="margin-top: 50px; color: #7f8c8d">No People found{% if current_value %} by {{ current_value }}{% endif %}.</h1>
+    {% endif %}
+
+    </div>
+{% endblock %}

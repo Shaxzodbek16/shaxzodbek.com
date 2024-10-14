@@ -1,0 +1,33 @@
+{%  extends 'parts/base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+        <div class="home-container">
+        <div class="contents">
+            <div class="image">
+                <img src="{% static 'images/shaxzodbek.jpeg' %}" alt="Shaxzodbek's profile picture">
+            </div>
+            <div class="texts">
+                <h1>Muxtorov Shaxzodbek</h1>
+                <p>Software Engineer</p>
+                <div class="social">
+                    <a href="https://www.github.com/Shaxzodbek16/" target="_blank"><i class='bx bxl-github'></i></a>
+                    <a href="https://www.youtube.com/@Shaxzodbek16/" target="_blank"><i class='bx bxl-youtube'></i></a>
+                    <a href="https://www.linkedin.com/in/shaxzodbek-muxtorov-59144a294/" target="_blank"><i class='bx bxl-linkedin-square'></i></a>
+                    <a href="https://t.me/tmshaxzodbek/" target="_blank"><i class='bx bxl-telegram'></i></a>
+                    <a href="https://www.instagram.com/@imshaxzodbek/" target="_blank"><i class='bx bxl-instagram'></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <p>No matter how hard it is, I didn't do it please</p>
+            <div class="button">
+                <a href="{% url 'articles' %}">Read Blog</a>
+                <a href="#">About Me</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
