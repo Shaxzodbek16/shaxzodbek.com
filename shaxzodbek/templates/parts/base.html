@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <meta name="author" content="Muxtorov Shaxzodbek">
+    <meta property="og:title" content="Shaxzodbek's Blog" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block extra_meta %}{% endblock %}
+    <link rel="stylesheet" href="../../static/blog/css/style.css">
+    <link rel="stylesheet" href="../../static/blog/css/home.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+    <body>
+        {% include 'parts/nav.html'  %}
+
+        {% block header %} {% endblock %}
+        {% block content %} {% endblock %}
+        {% block extra_info %} {% endblock %}
+
+        {% include 'parts/footer.html'  %}
+    </body>
+    <script src="{% static 'js/button.js' %}"></script>
+    <script src="{% static 'js/search-filter.js' %}"></script>
+</html>

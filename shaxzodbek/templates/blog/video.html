@@ -2,6 +2,13 @@
 {% load static %}
 
 {% block title %}Video{% endblock %}
+{% load static %}
+{%  block extra_meta %}
+    <link rel="stylesheet" href="{% static 'parts/search.css' %}">
+{% endblock %}
+{% block header %}
+    {% include 'parts/search.html' %}
+{% endblock %}
 {% block content %}
 {% for video in videos %}
     <div class="blog-posts">

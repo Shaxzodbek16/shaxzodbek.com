@@ -116,12 +116,10 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.ManyToManyField(Author, related_name='books_author')
     purpose = models.CharField(max_length=255)
-    picture = models.ImageField(upload_to='blog/book/%Y/%m/%d')    # will remove
+    picture = models.ImageField(upload_to='blog/book/%Y/%m/%d')
     book = models.FileField(upload_to='blog/files/book/%Y/%m/%d')
     programming_language = models.ForeignKey(ProgrammingLanguage, on_delete=models.DO_NOTHING)
     category = models.ManyToManyField(Category, related_name='books_categories')
-
-
 
     def __str__(self):
         return self.title

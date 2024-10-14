@@ -1,22 +1,11 @@
 {% extends 'parts/base.html' %}
 {% load static %}
 {% block extra_meta %}
-    <link rel="stylesheet" href="{% static 'blog/css/books.css' %}">
+    <link rel="stylesheet" href="{% static 'parts/search.css' %}">
 {% endblock %}
 {% block title %}Books{% endblock %}
 {% block header %}
-    <div class="form-container">
-        <form action="" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="search">Search:</label>
-                <input type="text" id="search" name="search" placeholder="Search books with name, author names and programming language"
-                        {% if current_value %} value="{{ current_value }}" {% endif %}>
-            </div>
-
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    {% include 'parts/search.html' %}
 {% endblock %}
 {% block content %}
     {% if books %}
@@ -48,6 +37,6 @@
             </div>
         {% endfor %}
     {% else %}
-        <p>No books found.</p>
+        <h1 style="margin-top: 50px; color: #7f8c8d">No Books found{% if current_value %} by {{ current_value }}{% endif %}.</h1>
     {% endif %}
 {% endblock %}

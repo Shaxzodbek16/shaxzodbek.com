@@ -1,6 +1,5 @@
 from django.urls import path
 
-from . import views
 from .views import root, article, articles, video, books, connections, upload, admin
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.admin.views.decorators import staff_member_required

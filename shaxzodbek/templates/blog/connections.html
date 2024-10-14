@@ -1,23 +1,12 @@
 {% extends 'parts/base.html' %}
 {% load static %}
 {% block extra_meta %}
-    <link rel="stylesheet" href="{% static 'blog/css/books.css' %}">
+    <link rel="stylesheet" href="{% static 'parts/search.css' %}">
     <link rel="stylesheet" href="{% static 'blog/css/connections.css' %}">
 {% endblock %}
 {% block title %}Connections{% endblock %}
 {% block header %}
-    <div class="form-container">
-        <form action="" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="search">Search:</label>
-                <input type="text" id="search" name="search" placeholder="Search peoples with name, job, and address..."
-                        {% if current_value %} value="{{ current_value }}" {% endif %}>
-            </div>
-
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    {% include 'parts/search.html' %}
 {% endblock %}
 
 {% block content %}

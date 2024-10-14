@@ -1,0 +1,9 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block extra_meta %}
+    <link rel="stylesheet" href="{% static 'cv/css/about_me.css' %}">
+    <link rel="stylesheet" href="{% static 'parts/search.css' %}">
+{% endblock %}
+{% block header %}
+    {% include 'parts/search.html' %}
+{% endblock %}
