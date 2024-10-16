@@ -9,6 +9,7 @@ class Article(models.Model):
     created = models.DateTimeField()
     updated = models.DateTimeField(auto_now=True, null=True, blank=True)
     slug = models.SlugField(max_length=255, unique=True, default='', blank=True, null=True)
+    telegram = models.BooleanField(default=False)
 
     @property
     def prev(self):

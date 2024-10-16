@@ -1,13 +1,17 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-9&ajy%0xt21rmbvao9i06or-2_5g4_i+7eb0ib2#&p+(4+fm&#'
+load_dotenv(BASE_DIR / '.env')
 
-DEBUG = True
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = []
+DEBUG = os.getenv('DEBUG')
+host = os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS = [host, 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,7 +57,7 @@ WSGI_APPLICATION = 'shaxzodbek.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / f'{os.getenv("DATABASE")}',
     }
 }
 
@@ -89,7 +93,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
-
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "staticfiles/")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Telegram configration
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
