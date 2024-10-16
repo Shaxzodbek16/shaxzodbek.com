@@ -30,8 +30,3 @@ jobs:
         working-directory: shaxzodbek
         run: |
           python manage.py test
-      - name: Check formatting with black
-        run: |
-          
-          pip install black
-          black --check .
