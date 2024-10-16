@@ -37,9 +37,11 @@ class CV(models.Model):
     file = models.FileField(upload_to='cv/cvFiles/%Y/%m/%d/', blank=True, null=True)
     technologies = models.ManyToManyField(Technology, related_name='cv_pictures')
     path = models.URLField(null=True, blank=True)
-    slug = models.SlugField(max_length=255, unique=True)
+    project_name = models.CharField(max_length=255, null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
     created_at = models.DateTimeField()
     is_working = models.BooleanField(default=False)
+
 
     def __str__(self):
         return f"{self.title}"
@@ -60,7 +62,7 @@ class CV(models.Model):
 
 class AboutMe(models.Model):
     title = models.CharField(max_length=255)
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField()
     image = models.ImageField(upload_to='cv/aboutMe/%Y/%m/%d/', null=True, blank=True)
     extra_data = models.TextField(null=True, blank=True)
     location = models.TextField(null=True, blank=True)

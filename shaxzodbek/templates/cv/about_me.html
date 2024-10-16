@@ -7,3 +7,21 @@
 {% block header %}
     {% include 'parts/search.html' %}
 {% endblock %}
+{% block extra_info %}
+    <div class="about_me">
+        {% for info in information %}
+            <p>{{ info.title }}</p>
+            <p>{{ info.description }}</p>
+            {% if info.image %}
+                <img src="{{ info.image.url }}" alt="{{ info.title }}">
+            {% endif %}
+            {% if info.extra_data %}
+                <p>{{ info.extra_data }}</p>
+            {% endif %}
+            {% if info.location %}
+                <p>{{ info.location }}</p>
+            {% endif %}
+            <p>{{ info.created }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
