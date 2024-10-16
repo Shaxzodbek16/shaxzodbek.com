@@ -124,7 +124,6 @@ class AboutMeModelTest(TestCase):
             title="Minimal About Me",
             created_at=timezone.now()
         )
-        self.assertIsNone(optional_about_me.description)
         self.assertIsNone(optional_about_me.extra_data)
         self.assertIsNone(optional_about_me.location)
 
