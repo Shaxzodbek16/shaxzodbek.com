@@ -1,0 +1,68 @@
+name: Django CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [ 3.7, 3.8, 3.9 ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        working-directory: ./your_project_directory  # Set your project directory here
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run migrations
+        working-directory: ./your_project_directory  # Set your project directory here
+        run: python manage.py migrate
+      - name: Run Tests
+        working-directory: ./your_project_directory  # Set your project directory here
+        run: |
+          python manage.py test
+      - name: Lint with flake8
+        working-directory: ./your_project_directory  # Set your project directory here
+        run: |
+          pip install flake8
+          flake8 .
+      - name: Check formatting with black
+        working-directory: ./your_project_directory  # Set your project directory here
+        run: |
+          pip install black
+          black --check .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /path/to/your/project/on/server
+            git pull origin main
+            source /path/to/your/virtualenv/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+            python manage.py collectstatic --noinput
+            sudo systemctl restart your-gunicorn-service  # Adjust this to your setup
