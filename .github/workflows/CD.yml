@@ -41,7 +41,7 @@ jobs:
           username: ubuntu
           key: ${{secrets.KEY}}
           script: |
-            cd blog/shaxzodbek.com/
+            cd shaxzodbek.com/
             git pull
             git add .
             git commit -m "from VM"
