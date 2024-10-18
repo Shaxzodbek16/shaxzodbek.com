@@ -4,5 +4,4 @@ echo "Connecting to AWS..."
 
 sleep 2
 
-ssh ubuntu@51.20.35.75
-
+ssh ubuntu@13.49.223.180
