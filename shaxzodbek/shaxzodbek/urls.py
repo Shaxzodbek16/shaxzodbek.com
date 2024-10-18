@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('_shaxzodbek/', admin.site.urls),
+    path(f'{settings.ADMIN_URL}/', admin.site.urls),
     path('', include('blog.urls')),
     path('cv/', include('cv.urls')),
 ]

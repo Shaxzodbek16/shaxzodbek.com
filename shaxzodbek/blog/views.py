@@ -1,5 +1,4 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import datetime
 
 from .models import Article, Connection, Category, ProgrammingLanguage, Book, Video
@@ -79,12 +78,3 @@ def connections(request):
     else:
         people = Connection.objects.filter(listed=True)
     return render(request, 'blog/connections.html', context={"people": people})
-
-
-def admin(request):
-    return HttpResponse(
-        "Hello, I thought you did not learn IT to destroy, now I know why you learnt, thank to your teacher.")
-
-
-def upload(request):
-    return redirect('admin')
