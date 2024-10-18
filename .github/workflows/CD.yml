@@ -1,4 +1,4 @@
-name: Django CI/CD
+name: Django CD
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -30,26 +30,19 @@ jobs:
         working-directory: shaxzodbek
         run: |
           python manage.py test
-#  deploy:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: Deploy to server
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.SERVER_HOST }}
-#          username: ${{ secrets.SERVER_USERNAME }}
-#          key: ${{ secrets.SERVER_SSH_KEY }}
-#          script: |
-#            cd /path/to/your/project/on/server
-#            git pull origin main
-#            source /path/to/your/virtualenv/bin/activate
-#            pip install -r requirements.txt
-#            python manage.py migrate
-#            python manage.py collectstatic --noinput
-#            sudo systemctl restart your-gunicorn-service  # Adjust this to your setup
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Connect VM via ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.HOST}}
+          username: ubuntu
+          key: ${{secrets.KEY}}
+          script: |
+            cd blog/shaxzodbek.com/
+            git pull
+            git add .
+            git commit -m "from VM"
+            git push -u origin main
