@@ -1,4 +1,5 @@
 import os
+from os import getenv
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -94,7 +95,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "shaxzodbek/staticfiles/")
+STATIC_ROOT = getenv('STATIC_ROOT')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
