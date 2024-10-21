@@ -47,3 +47,4 @@ jobs:
             git commit -m "from VM"
             git push -u origin main
             sudo systemctl restart gunicorn
+            sudo systemctl daemon-reload
