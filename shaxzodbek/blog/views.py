@@ -22,8 +22,11 @@ def articles(request):
 
 
 def article(request, slug):
-    result = Article.objects.get(slug=slug)
-    return render(request, 'blog/article.html', context={"article": result})
+    try:
+        result = Article.objects.get(slug=slug)
+        return render(request, 'blog/article.html', context={"article": result})
+    except Article.DoesNotExist:
+        return render(request, 'blog/article.html', context={"article": []})
 
 
 def video(request):
@@ -71,7 +74,8 @@ def connections(request):
                     Q(home_address__icontains=query) |
                     Q(who_for_me__who_is_it__icontains=query)
                 )
-            return render(request, 'blog/connections.html', context={"people": list(set(result)), "current_value": query})
+            return render(request, 'blog/connections.html',
+                          context={"people": list(set(result)), "current_value": query})
 
     if request.user.is_superuser:
         people = Connection.objects.all()

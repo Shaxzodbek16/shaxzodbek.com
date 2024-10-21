@@ -10,7 +10,7 @@ load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = os.getenv('DEBUG', False)
+DEBUG = False
 host = os.getenv('ALLOWED_HOSTS')
 ALLOWED_HOSTS = [host, 'localhost']
 ADMIN_URL = os.getenv('ADMIN')
