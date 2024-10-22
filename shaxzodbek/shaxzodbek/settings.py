@@ -10,7 +10,7 @@ load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = False
+DEBUG = bool(os.getenv('DEBUG'))
 host = os.getenv('ALLOWED_HOSTS')
 ALLOWED_HOSTS = [host, 'localhost']
 ADMIN_URL = os.getenv('ADMIN')
@@ -92,10 +92,10 @@ MEDIA_URL = os.path.join(BASE_DIR, 'mediafiles/')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    BASE_DIR / 'static',
 ]
 
-STATIC_ROOT = getenv('STATIC_ROOT')
+STATIC_ROOT = os.getenv('STATIC_ROOT', default=BASE_DIR / 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
