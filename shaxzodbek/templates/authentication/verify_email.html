@@ -1,0 +1,24 @@
+{% extends 'parts/base.html' %}
+{% block title %}Verify Email{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-5">Verify Your Email</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <p class="mb-4">A verification code has been sent to your email. Please enter it below:</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-6">
+            <label for="passcode" class="block text-gray-700">Verification Code:</label>
+            <input type="text" name="passcode" id="passcode" class="w-full border rounded px-3 py-2" required>
+        </div>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Verify</button>
+    </form>
+</div>
+{% endblock %}

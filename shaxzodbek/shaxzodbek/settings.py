@@ -1,4 +1,5 @@
 import os
+from dbm.sqlite3 import DELETE_KEY
 from os import getenv
 from pathlib import Path
 
@@ -24,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'cv',
+    'authentication'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +50,8 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -97,7 +101,12 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.getenv('STATIC_ROOT', default=BASE_DIR / 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'authentication.User'
 
 # Telegram configration
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')

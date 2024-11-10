@@ -1,0 +1,10 @@
+{% extends 'parts/base.html' %}
+{% block title %}Profile - {{ user_profile.name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-5">Profile: {{ user_profile.name }}</h1>
+    <p><strong>Email:</strong> {{ user_profile.email }}</p>
+    <!-- Add more user details as needed -->
+</div>
+{% endblock %}

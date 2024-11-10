@@ -1,6 +1,9 @@
+{% load static %}
 <nav>
     <div class="nav-container">
-        <h1><a href="/" style="text-decoration: none; color: black">Shaxzodbek's Blog</a></h1>
+        <h1>
+            <a href="/" style="text-decoration: none; color: black">Shaxzodbek's Blog</a>
+        </h1>
         <div class="hamburger">
             <span></span>
             <span></span>
@@ -11,9 +14,15 @@
             <li><a href="{% url 'video' %}">Videos</a></li>
             <li><a href="https://t.me/muxtorovshaxzodbek" target="_blank">Channel</a></li>
             <li><a href="{% url 'books' %}">Books</a></li>
-{#            <li><a href="{% url 'problem_list' %}">Problems</a></li>#}
             <li><a href="{% url 'connections' %}">Connections</a></li>
             <li><a href="{% url 'cvs' %}">CV</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'user_profile' slug=user.slug %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
         </ul>
     </div>
 </nav>
