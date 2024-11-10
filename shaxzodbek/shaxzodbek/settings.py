@@ -1,5 +1,4 @@
 import os
-from dbm.sqlite3 import DELETE_KEY
 from os import getenv
 from pathlib import Path
 
