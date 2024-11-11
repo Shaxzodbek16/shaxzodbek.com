@@ -1,5 +1,4 @@
 import os
-from os import getenv
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -22,9 +21,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third-party apps
+    'drf_yasg',
+    'rest_framework',
+    # custom apps
     'blog',
     'cv',
-    'authentication'
+    'authentication',
+    'problems',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -107,5 +112,10 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_USER=DEFAULT_FROM_EMAIL
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
