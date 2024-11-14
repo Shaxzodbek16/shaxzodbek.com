@@ -42,10 +42,18 @@ jobs:
           key: ${{secrets.KEY}} # servers private ssh key, public will add in known host itself (make new ssh)
           script: |
             cd /var/www/shaxzodbek.com/
+            sleep 1
             git pull
+            sleep 60
             git add .
+            sleep 5
             git commit -m "from Digital-ocean"
+            sleep 60
             git push -u origin main
+            sleep 60
             sudo systemctl restart gunicorn
+            sleep 5
             sudo systemctl daemon-reload
+            sleep 5
             sudo systemctl reload
+            sleep 3
