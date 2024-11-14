@@ -1,0 +1,46 @@
+.about_me {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.about_me p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.about_me p:first-child {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.about_me img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.about_me p:last-child {
+    font-size: 14px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+@media screen and (max-width: 768px) {
+    .about_me {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .about_me p:first-child {
+        font-size: 20px;
+    }
+}
