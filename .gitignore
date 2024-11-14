@@ -5,6 +5,8 @@ __pycache__/
 staticfiles/
 staticfiles
 
+shaxzodbek/staticfiles
+shaxzodbek/staticfiles/
 
 # C extensions
 *.so
