@@ -34,17 +34,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - name: Connect VM via ssh
+      - name: Connecting to Digital ocean via ssh
         uses: appleboy/ssh-action@v1.1.0
         with:
-          host: ${{secrets.HOST}}
-          username: ubuntu
-          key: ${{secrets.KEY}}
+          host: shaxzodbek.com
+          username: root
+          key: ${{secrets.KEY}} # servers private ssh key, public will add in known host itself (make new ssh)
           script: |
-            cd shaxzodbek.com/
+            cd var/www/shaxzodbek.com/
             git pull
             git add .
-            git commit -m "from VM"
+            git commit -m "from Digital-ocean"
             git push -u origin main
             sudo systemctl restart gunicorn
             sudo systemctl daemon-reload
+            sudo systemctl reload
