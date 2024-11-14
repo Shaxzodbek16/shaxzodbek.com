@@ -41,7 +41,7 @@ jobs:
           username: root
           key: ${{secrets.KEY}} # servers private ssh key, public will add in known host itself (make new ssh)
           script: |
-            cd var/www/shaxzodbek.com/
+            cd /var/www/shaxzodbek.com/
             git pull
             git add .
             git commit -m "from Digital-ocean"
