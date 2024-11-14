@@ -38,7 +38,7 @@ class Example(models.Model):
 
     class Meta:
         db_table = 'Example'
-        ordering = '-id'
+        ordering = ('-id',)
         verbose_name = 'Example'
         verbose_name_plural = 'Examples'
 
@@ -58,7 +58,7 @@ class Topic(models.Model):
 
     class Meta:
         db_table = 'Topic'
-        ordering = '-id'
+        ordering = ('-id',)
         verbose_name = 'Topic'
         verbose_name_plural = 'Topics'
 
@@ -77,7 +77,7 @@ class Hint(models.Model):
 
     class Meta:
         db_table = 'Hint'
-        ordering = '-id'
+        ordering = ('-id',)
         verbose_name = 'Hint'
         verbose_name_plural = 'Hints'
 
@@ -99,7 +99,7 @@ class Problem(models.Model):
     examples = models.ManyToManyField(Example, blank=True, null=True, related_name='problem_examples')
     topics = models.ManyToManyField(Topic, blank=True, null=True, related_name='problem_topics')
     hints = models.ManyToManyField(Hint, blank=True, null=True, related_name='problem_hints')
-    slug = models.SlugField(populate_from='title', unique=True)
+    slug = models.SlugField(max_length=255,unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -114,7 +114,7 @@ class Problem(models.Model):
 
     class Meta:
         db_table = 'Problem'
-        ordering = '-id'
+        ordering = ('-id',)
         verbose_name = 'Problem'
         verbose_name_plural = 'Problems'
 
