@@ -2,11 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-staticfiles/
+staticfiles/*
 staticfiles
 
-shaxzodbek/staticfiles
-shaxzodbek/staticfiles/
 
 # C extensions
 *.so
