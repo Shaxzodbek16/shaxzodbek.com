@@ -44,13 +44,13 @@ jobs:
             cd /var/www/shaxzodbek.com/
             sleep 1
             git pull
-            sleep 60
+            sleep 10
             git add .
             sleep 5
             git commit -m "from Digital-ocean"
-            sleep 60
+            sleep 10
             git push -u origin main
-            sleep 60
+            sleep 10
             sudo systemctl restart gunicorn
             sleep 5
             sudo systemctl daemon-reload
