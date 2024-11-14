@@ -37,7 +37,7 @@ jobs:
       - name: Connecting to Digital ocean via ssh
         uses: appleboy/ssh-action@v1.1.0
         with:
-          host: shaxzodbek.com
+          host: ${{secrets.HOST}}
           username: root
           key: ${{secrets.KEY}} # servers private ssh key, public will add in known host itself (make new ssh)
           script: |
