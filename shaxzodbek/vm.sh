@@ -1,7 +1,10 @@
 #!/bin/bash
 
-echo "Connecting to AWS..."
+echo "Connecting to Digital Ocean..."
+sleep 2
+
+echo "Hello Shaxzodbek, Let's Hack together"
 
 sleep 2
 
-ssh ubuntu@13.49.223.180
+ssh root@139.59.145.2
