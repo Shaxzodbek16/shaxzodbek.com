@@ -1,5 +1,8 @@
 from django.db import models
-from slugify import slugify
+from django.utils.text import slugify
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Img(models.Model):
@@ -8,12 +11,6 @@ class Img(models.Model):
 
     def __str__(self):
         return self.title
-
-    def __eq__(self, other):
-        return self.title == other.title
-
-    def __repr__(self):
-        return f"{self.__str__()} {self.__class__.__name__}"
 
     class Meta:
         db_table = 'Img'
@@ -28,13 +25,7 @@ class Example(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return f"{self.input[:10]} {self.output[:10]}"
-
-    def __repr__(self):
-        return f"{self.__str__()} {self.__class__.__name__}"
-
-    def __eq__(self, other):
-        return self.input == other.input and self.output == other.output and self.description == other.description
+        return f"Example: {self.description[:50]}"
 
     class Meta:
         db_table = 'Example'
@@ -50,15 +41,9 @@ class Topic(models.Model):
     def __str__(self):
         return self.title
 
-    def __repr__(self):
-        return f"{self.__str__()} {self.__class__.__name__}"
-
-    def __eq__(self, other):
-        return self.title == other.title and self.description == other.description
-
     class Meta:
         db_table = 'Topic'
-        ordering = ('-id',)
+        ordering = ('title',)
         verbose_name = 'Topic'
         verbose_name_plural = 'Topics'
 
@@ -67,13 +52,7 @@ class Hint(models.Model):
     hint = models.TextField()
 
     def __str__(self):
-        return self.hint[:10]
-
-    def __repr__(self):
-        return f"{self.__str__()} {self.__class__.__name__}"
-
-    def __eq__(self, other):
-        return self.hint == other.hint and self.hint == other.hint
+        return f"Hint: {self.hint[:50]}"
 
     class Meta:
         db_table = 'Hint'
@@ -82,8 +61,36 @@ class Hint(models.Model):
         verbose_name_plural = 'Hints'
 
 
+class Files(models.Model):
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to='problems/files/%Y/%m/%d/')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        db_table = 'Files'
+        ordering = ('title',)
+        verbose_name = 'Files'
+        verbose_name_plural = 'Files'
+
+
+class Theme(models.Model):
+    title = models.CharField(max_length=255)
+    url = models.URLField()
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        db_table = 'Theme'
+        ordering = ('title',)
+        verbose_name = 'Theme'
+        verbose_name_plural = 'Themes'
+
+
 class Problem(models.Model):
-    difficulties = (
+    DIFFICULTY_CHOICES = (
         ('easy', 'Easy'),
         ('medium', 'Medium'),
         ('hard', 'Hard'),
@@ -91,30 +98,27 @@ class Problem(models.Model):
 
     title = models.CharField(max_length=255)
     description = models.TextField()
-    notes = models.TextField()
-    constraints = models.TextField()  # limits
+    notes = models.TextField(blank=True)
+    constraints = models.TextField(blank=True)
     solution = models.TextField()
-    difficulty = models.CharField(max_length=20, choices=difficulties)
-    images = models.ManyToManyField(Img, blank=True, null=True, related_name='problem_images')
-    examples = models.ManyToManyField(Example, blank=True, null=True, related_name='problem_examples')
-    topics = models.ManyToManyField(Topic, blank=True, null=True, related_name='problem_topics')
-    hints = models.ManyToManyField(Hint, blank=True, null=True, related_name='problem_hints')
-    slug = models.SlugField(max_length=255,unique=True)
+    difficulty = models.CharField(max_length=20, choices=DIFFICULTY_CHOICES)
+    images = models.ManyToManyField(Img, blank=True, related_name='problems')
+    examples = models.ManyToManyField(Example, blank=True, related_name='problems')
+    topics = models.ManyToManyField(Topic, blank=True, related_name='problems')
+    hints = models.ManyToManyField(Hint, blank=True, related_name='problems')
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    solved_users = models.ManyToManyField(User, blank=True, related_name='solved_problems')
+    files = models.ManyToManyField(Files, blank=True, related_name='problems_files')
+    theme = models.ManyToManyField(Theme, blank=True, related_name='theme_problems')
 
     def __str__(self):
-        return self.title[:10]
-
-    def __repr__(self):
-        return f"{self.__str__()} {self.__class__.__name__}"
-
-    def __eq__(self, other):
-        return self.title == other.title and self.description == other.description and self.solution == other.solution
+        return self.title
 
     class Meta:
         db_table = 'Problem'
-        ordering = ('-id',)
+        ordering = ('-created',)
         verbose_name = 'Problem'
         verbose_name_plural = 'Problems'
 
@@ -123,7 +127,7 @@ class Problem(models.Model):
             original_slug = slugify(self.title)
             slug = original_slug
             num = 1
-            while Problem.objects.filter(slug=slug).exists():
+            while Problem.objects.filter(slug=slug).exclude(id=self.id).exists():
                 slug = f"{original_slug}-{num}"
                 num += 1
             self.slug = slug

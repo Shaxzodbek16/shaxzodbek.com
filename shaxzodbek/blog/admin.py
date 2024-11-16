@@ -5,15 +5,45 @@ from aiogram import Bot
 from django.contrib import messages
 from django.conf import settings
 import asyncio
+from django.utils.html import format_html
 
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created', 'updated', 'telegram')
-    list_filter = ('created', 'updated')
-    search_fields = ('title', 'body')
-    date_hierarchy = 'created'
+    list_display = ('title', 'picture_tag', 'created', 'updated', 'telegram')
+    list_filter = ('created', 'updated', 'telegram')
+    search_fields = ('title', 'body', 'slug')
+    readonly_fields = ('slug', 'updated', 'picture_preview')
     ordering = ('-created',)
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'slug', 'body', 'telegram')
+        }),
+        ('Image', {
+            'fields': ('picture', 'picture_preview'),
+        }),
+        ('Timestamps', {
+            'fields': ('created', 'updated'),
+        }),
+    )
+    date_hierarchy = 'created'
+    list_per_page = 25
+
+    def picture_tag(self, obj):
+        if obj.picture:
+            return format_html('<img src="{}" width="60" height="60" style="object-fit: cover;"/>', obj.picture.url)
+        else:
+            return 'No Image'
+
+    picture_tag.short_description = 'Picture'
+
+    def picture_preview(self, obj):
+        if obj.picture:
+            return format_html('<img src="{}" width="300" height="300" style="object-fit: contain;"/>', obj.picture.url)
+        else:
+            return 'No Image'
+
+    picture_preview.short_description = 'Picture Preview'
     actions = ['send_to_telegram_channel']
 
     async def send_to_telegram(self, bot, channel_id, article):
@@ -57,53 +87,149 @@ class MatchAdmin(admin.ModelAdmin):
     list_display = ('who_is_it', 'created', 'updated')
     list_filter = ('created', 'updated')
     search_fields = ('who_is_it',)
-    date_hierarchy = 'created'
+    readonly_fields = ('created', 'updated')
     ordering = ('-created',)
+    date_hierarchy = 'created'
+    list_per_page = 25
 
 
 @admin.register(Connection)
 class ConnectionAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'job_title', 'birth_date', "home_address")
-    list_filter = ('birth_date', 'job_title')
-    search_fields = ('first_name', 'last_name', 'job_title', 'met_at')
-    date_hierarchy = 'birth_date'
-    filter_horizontal = ('who_for_me',)
+    list_display = ('full_name', 'picture_tag', 'birth_date', 'job_title', 'listed')
+    list_filter = ('listed', 'birth_date', 'met_at')
+    search_fields = ('first_name', 'last_name', 'job_title', 'who_for_me__who_is_it')
+    readonly_fields = ('picture_preview',)
     ordering = ('-birth_date',)
+    fieldsets = (
+        (None, {
+            'fields': ('first_name', 'last_name', 'job_title', 'birth_date', 'listed')
+        }),
+        ('Contact Info', {
+            'fields': ('met_address', 'home_address', 'met_at', 'who_for_me'),
+        }),
+        ('Image', {
+            'fields': ('picture', 'picture_preview'),
+        }),
+    )
+    date_hierarchy = 'birth_date'
+    list_per_page = 25
+    filter_horizontal = ('who_for_me',)
+
+    def full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+
+    full_name.short_description = 'Full Name'
+
+    def picture_tag(self, obj):
+        if obj.picture:
+            return format_html('<img src="{}" width="60" height="60" style="object-fit: cover;"/>', obj.picture.url)
+        else:
+            return 'No Image'
+
+    picture_tag.short_description = 'Picture'
+
+    def picture_preview(self, obj):
+        if obj.picture:
+            return format_html('<img src="{}" width="300" height="300" style="object-fit: contain;"/>', obj.picture.url)
+        else:
+            return 'No Image'
+
+    picture_preview.short_description = 'Picture Preview'
 
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
     search_fields = ('first_name', 'last_name')
-    ordering = ('-first_name',)
+    ordering = ('first_name',)
+    list_per_page = 25
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-    ordering = ('-name',)
+    ordering = ('name',)
+    list_per_page = 25
 
 
 @admin.register(ProgrammingLanguage)
 class ProgrammingLanguageAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-    ordering = ('-name',)
+    ordering = ('name',)
+    list_per_page = 25
 
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'purpose', 'programming_language')
+    list_display = ('title', 'programming_language', 'picture_tag')
     list_filter = ('programming_language', 'category')
     search_fields = ('title', 'purpose', 'author__first_name', 'author__last_name')
+    ordering = ('title',)
     filter_horizontal = ('author', 'category')
-    ordering = ('-title',)
+    readonly_fields = ('picture_preview',)
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'purpose', 'programming_language', 'author', 'category')
+        }),
+        ('Files', {
+            'fields': ('book',),
+        }),
+        ('Image', {
+            'fields': ('picture', 'picture_preview'),
+        }),
+    )
+    list_per_page = 25
+
+    def picture_tag(self, obj):
+        if obj.picture:
+            return format_html('<img src="{}" width="60" height="60" style="object-fit: cover;"/>', obj.picture.url)
+        else:
+            return 'No Image'
+
+    picture_tag.short_description = 'Picture'
+
+    def picture_preview(self, obj):
+        if obj.picture:
+            return format_html('<img src="{}" width="300" height="300" style="object-fit: contain;"/>', obj.picture.url)
+        else:
+            return 'No Image'
+
+    picture_preview.short_description = 'Picture Preview'
 
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'url', 'created')
-    list_filter = ('title', 'created')
-    search_fields = ('title',)
+    list_display = ('title', 'created', 'thumbnail_tag')
+    list_filter = ('created',)
+    search_fields = ('title', 'url')
     ordering = ('-created',)
+    readonly_fields = ('thumbnail_preview',)
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'url', 'created')
+        }),
+        ('Image', {
+            'fields': ('thumbnail', 'thumbnail_preview'),
+        }),
+    )
+    date_hierarchy = 'created'
+    list_per_page = 25
+
+    def thumbnail_tag(self, obj):
+        if obj.thumbnail:
+            return format_html('<img src="{}" width="60" height="60" style="object-fit: cover;"/>', obj.thumbnail.url)
+        else:
+            return 'No Image'
+
+    thumbnail_tag.short_description = 'Thumbnail'
+
+    def thumbnail_preview(self, obj):
+        if obj.thumbnail:
+            return format_html('<img src="{}" width="300" height="300" style="object-fit: contain;"/>',
+                               obj.thumbnail.url)
+        else:
+            return 'No Image'
+
+    thumbnail_preview.short_description = 'Thumbnail Preview'

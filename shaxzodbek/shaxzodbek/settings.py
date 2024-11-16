@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', False)
 host = os.getenv('ALLOWED_HOSTS')
 ALLOWED_HOSTS = [host, 'localhost']
-ADMIN_URL = os.getenv('ADMIN')
+ADMIN_URL = os.getenv('ADMIN_URL')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     # third-party apps
     'drf_yasg',
     'rest_framework',
+    'django_filters',
     # custom apps
     'blog',
     'cv',
@@ -31,6 +32,14 @@ INSTALLED_APPS = [
     'problems',
     'api'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -117,5 +126,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
-EMAIL_HOST_USER=DEFAULT_FROM_EMAIL
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
