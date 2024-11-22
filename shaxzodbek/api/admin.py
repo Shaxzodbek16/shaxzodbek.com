@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Math
+from .models import Questions
 
-@admin.register(Math)
-class MathAdmin(admin.ModelAdmin):
+
+@admin.register(Questions)
+class QuestionsAdmin(admin.ModelAdmin):
     list_display = (
         'question_short', 'image_tag', 'answer', 'option1', 'option2', 'option3',
         'taken_book', 'theme', 'created_at', 'updated_at'
@@ -37,6 +38,7 @@ class MathAdmin(admin.ModelAdmin):
 
     def question_short(self, obj):
         return obj.question[:50] + ('...' if len(obj.question) > 50 else '')
+
     question_short.short_description = 'Question'
 
     def image_tag(self, obj):
@@ -47,6 +49,7 @@ class MathAdmin(admin.ModelAdmin):
             )
         else:
             return 'No Image'
+
     image_tag.short_description = 'Image'
 
     def image_preview(self, obj):
@@ -57,4 +60,5 @@ class MathAdmin(admin.ModelAdmin):
             )
         else:
             return 'No Image'
+
     image_preview.short_description = 'Image Preview'

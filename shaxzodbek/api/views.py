@@ -4,10 +4,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.decorators import api_view
-from .pagination import MathPagination
+from .pagination import QuestionsPagination
 
-from .models import Math
-from .serializers import MathSerializer, MathListSerializer, CheckAnswerSerializer
+from .models import Questions
+from .serializers import QuestionsSerializer, QuestionsListSerializer, CheckAnswerSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from authentication.models import User
@@ -16,19 +16,19 @@ from django.db.models import Count
 from django.db.models.functions import TruncYear, TruncMonth
 
 
-class MathViewSet(viewsets.ModelViewSet):
-    queryset = Math.objects.all()
-    serializer_class = MathSerializer
+class QuestionsViewSet(viewsets.ModelViewSet):
+    queryset = Questions.objects.all()
+    serializer_class = QuestionsSerializer
     lookup_field = 'slug'
-    pagination_class = MathPagination
+    pagination_class = QuestionsPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['theme', 'taken_book']  # Fields you can filter on
     search_fields = ['question', 'theme', 'taken_book']  # Fields you can search
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return MathListSerializer
-        return MathSerializer
+            return QuestionsListSerializer
+        return QuestionsSerializer
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
@@ -39,12 +39,12 @@ class MathViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'], url_path='check')
     def check_answer(self, request, slug=None):
-        math_problem = self.get_object()
+        question_problem = self.get_object()
         serializer = CheckAnswerSerializer(data=request.data)
 
         if serializer.is_valid():
             user_answer = serializer.validated_data['answer']
-            is_correct = user_answer == math_problem.answer
+            is_correct = user_answer == question_problem.answer
 
             return Response({
                 'correct': is_correct,

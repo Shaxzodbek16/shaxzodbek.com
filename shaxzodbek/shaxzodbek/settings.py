@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'cv',
     'authentication',
     'problems',
-    'api'
+    'api',
+    'telegrambot'
 ]
 
 REST_FRAMEWORK = {

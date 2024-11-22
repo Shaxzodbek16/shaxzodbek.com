@@ -1,17 +1,17 @@
 from rest_framework import serializers
-from .models import Math
+from .models import Questions
 
 
-class MathSerializer(serializers.ModelSerializer):
+class QuestionsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Math
+        model = Questions
         exclude = ('id',)
         read_only_fields = ('slug', 'created_at', 'updated_at')
 
 
-class MathListSerializer(serializers.ModelSerializer):
+class QuestionsListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Math
+        model = Questions
         exclude = ('id',)
         read_only_fields = ('slug', 'created_at', 'updated_at')
 

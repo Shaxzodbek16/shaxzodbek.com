@@ -23,6 +23,7 @@ urlpatterns = [
     path('accaunts/', include('authentication.urls')),
     path('api/', include('api.urls')),
     path('problems/', include('problems.urls')),
+    path('bot/', include('telegrambot.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 

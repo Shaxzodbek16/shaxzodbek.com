@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Img, Example, Topic, Hint, Problem
-from authentication.models import User
 
 @admin.register(Img)
 class ImgAdmin(admin.ModelAdmin):

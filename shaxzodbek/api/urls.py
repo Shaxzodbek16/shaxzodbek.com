@@ -1,9 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import MathViewSet, docs, statistics
+from .views import QuestionsViewSet, docs, statistics
 
 router = DefaultRouter()
-router.register(r'math', MathViewSet, basename='math')
+router.register(r'math', QuestionsViewSet, basename='math')
 
 urlpatterns = [
     path('docs/', docs, name='docs'),
