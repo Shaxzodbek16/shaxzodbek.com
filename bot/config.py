@@ -9,11 +9,14 @@ load_dotenv('../shaxzodbek/.env')
 class BotConfig:
     token: str
     admins: list[int]
+    api_id: str
+    api_hash: str
 
 
 @dataclass
 class API:
     BASE_URL: str
+
 
 @dataclass
 class Instagram:
@@ -33,12 +36,14 @@ def load_config() -> AppConfig:
     return AppConfig(
         bot=BotConfig(
             token=os.getenv("BOT_TOKEN", ""),
-            admins=list(map(int, os.getenv("ADMINS", "123456").split(","))),
+            admins=list(map(int, os.getenv("ADMINS").split(","))),
+            api_hash=os.getenv("TELEGRAM_API_ID", ''),
+            api_id=os.getenv("TELEGRAM_API_HASH", ''),
         ),
         api=API(
             BASE_URL=os.getenv("BASE_URL", ""),
         ),
-        instagram = Instagram(
+        instagram=Instagram(
             email=os.getenv("INSTAGRAM_EMAIL", ""),
             password=os.getenv("INSTAGRAM_PASSWORD", ""),
             username=os.getenv("INSTAGRAM_USERNAME", ""),

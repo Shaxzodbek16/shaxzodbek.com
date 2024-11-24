@@ -10,7 +10,8 @@ staticfiles
 *.so
 .vscode
 migrations/000*.py
-
+telegram-bot-api
+telegram-bot-api/
 
 venv/
 venv
