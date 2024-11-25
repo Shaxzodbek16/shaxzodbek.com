@@ -7,4 +7,4 @@ echo "Hello Shaxzodbek, Let's Hack together"
 
 sleep 2
 
-ssh root@139.59.145.2
+ssh root@shaxzodbek.com
