@@ -1,14 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import get_user_model
 from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
-import random
-from .models import OneTimePassword
+from django.utils import timezone
+from django.urls import reverse
+import uuid
+from datetime import timedelta
 
-User = get_user_model()
+from .models import OneTimePassword, User
+from .helpers import send_email
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -25,29 +26,25 @@ def signup_view(request):
             messages.error(request, 'Email already registered.')
             return render(request, 'authentication/signup.html')
 
-        # Create inactive user
-        user = User.objects.create_user(email=email, name=name, password=password1, is_active=False)
+        user = User.objects.create(email=email, name=name, password=password1, is_active=False)
 
-        # Generate OTP code
-        passcode = '{:06d}'.format(random.randint(0, 999999))
+        passcode = user.generate_otp()
         OneTimePassword.objects.create(user=user, passcode=passcode)
 
-        # Send email with passcode
-        send_mail(
-            'Your verification code',
-            f'Your verification code is {passcode}',
-            settings.DEFAULT_FROM_EMAIL,
-            [email],
-            fail_silently=False,
+        send_email(
+            user.email,
+            {
+                'name': user.name,
+                'content': passcode,
+                'sign_up': True
+            },
         )
 
         messages.info(request, 'A verification code has been sent to your email.')
 
-        # Redirect to verification page
         return redirect('verify_email', slug=user.slug)
     else:
         return render(request, 'authentication/signup.html')
-
 
 
 def verify_email(request, slug):
@@ -94,7 +91,6 @@ def login_view(request):
         return render(request, 'authentication/login.html')
 
 
-
 @login_required
 def logout_view(request):
     logout(request)
@@ -108,36 +104,15 @@ def user_profile(request, slug):
     return render(request, 'authentication/user_profile.html', {'user_profile': profile})
 
 
-# authentication/views.py
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils import timezone
-from django.urls import reverse
-from django.template.loader import render_to_string
-from django.contrib.auth import get_user_model
-from django.views.decorators.csrf import csrf_exempt
-import uuid
-from datetime import timedelta
-
-from .models import OneTimePassword
-
-User = get_user_model()
-
 def password_reset_request(request):
     if request.method == 'POST':
         email = request.POST.get('email')
 
         try:
             user = User.objects.get(email=email)
-            # Generate a unique token
             reset_token = str(uuid.uuid4())
-            # Optionally, set an expiration time (e.g., 1 hour)
             expiry_time = timezone.now() + timedelta(hours=1)
 
-            # Create a OneTimePassword entry for password reset
             otp = OneTimePassword.objects.create(
                 user=user,
                 passcode=reset_token,
@@ -145,24 +120,17 @@ def password_reset_request(request):
                 expiry=expiry_time
             )
 
-            # Build password reset URL
             reset_url = request.build_absolute_uri(
                 reverse('password_reset_confirm', kwargs={'token': reset_token})
             )
 
-            # Send email with reset link
-            subject = 'Password Reset Request'
-            message = render_to_string('authentication/password_reset_email.html', {
-                'user': user,
-                'reset_url': reset_url,
-            })
-
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [email],
-                fail_silently=False,
+            send_email(
+                user.email,
+                {
+                    'name': user.name,
+                    'reset_url': reset_url,
+                    'password_reset': True
+                },
             )
 
             messages.info(request, 'A password reset link has been sent to your email.')
@@ -198,12 +166,10 @@ def password_reset_confirm(request, token):
             messages.error(request, 'Password must be at least 8 characters long.')
             return render(request, 'authentication/password_reset_confirm.html', {'token': token})
 
-        # Update user's password
         user = otp.user
         user.set_password(password1)
         user.save()
 
-        # Delete the OTP after successful reset
         otp.delete()
 
         messages.success(request, 'Your password has been reset successfully. You can now log in.')

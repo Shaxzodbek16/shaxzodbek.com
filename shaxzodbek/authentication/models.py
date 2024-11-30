@@ -1,8 +1,12 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse
+import random
+
 
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
@@ -21,6 +25,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
         return self.create_user(email, name, password, **extra_fields)
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = None  # Remove the username field
@@ -50,6 +55,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             num += 1
         return unique_slug
 
+    @staticmethod
+    def generate_otp():
+        return '{:06d}'.format(random.randint(0, 999999))
+
     def __str__(self):
         return self.email
 
@@ -61,6 +70,7 @@ class OneTimePassword(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='otp')
     passcode = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
+    expiry = models.DateTimeField(default=timezone.now() + timedelta(minutes=5))  # OTP expires after 5 minutes
 
     def __str__(self):
         return f"OTP for {self.user.email}: {self.passcode}"

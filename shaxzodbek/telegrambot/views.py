@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions
 from rest_framework.filters import SearchFilter
 
 from .models import TelegramUser
@@ -7,6 +8,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 
 
 class TelegramUserListCreateAPIView(ListCreateAPIView):
+    permission_classes = [permissions.IsAdminUser]
     queryset = TelegramUser.objects.all()
     serializer_class = TelegramUserSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter)
