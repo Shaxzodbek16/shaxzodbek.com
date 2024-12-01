@@ -56,6 +56,7 @@ class QuestionsModelTest(TestCase):
         self.assertEqual(question2.slug, "what-is-22-1")
 
     def test_meta_options(self):
-        self.assertEqual(Questions._meta.verbose_name, "Question")
+        self.assertEqual(Questions._meta.db_table, "Questions")
+        self.assertEqual(Questions._meta.verbose_name, "Questions")
         self.assertEqual(Questions._meta.verbose_name_plural, "Questions")
 
