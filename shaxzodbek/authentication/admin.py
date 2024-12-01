@@ -4,21 +4,21 @@ from .models import User, OneTimePassword
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ('email', 'name', 'is_staff', 'is_active', 'date_joined')
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
     list_filter = ('is_staff', 'is_active')
     ordering = ('email',)
-    search_fields = ('email', 'name', 'slug')
+    search_fields = ('email', 'first_name', 'last_name', 'slug')
     readonly_fields = ('slug',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('name', 'slug')}),
+        ('Personal Info', {'fields': ('first_name', 'last_name', 'slug')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions',)}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'name', 'password1', 'password2', 'is_staff', 'is_active'),
+            'fields': ('email', 'first_name' 'last_name', 'password1', 'password2', 'is_staff', 'is_active'),
         }),
     )
 

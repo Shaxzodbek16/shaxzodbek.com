@@ -30,9 +30,10 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = None  # Remove the username field
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150, blank=True, null=True)
     slug = models.SlugField(max_length=160, unique=True, blank=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
