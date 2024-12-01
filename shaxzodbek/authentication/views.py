@@ -83,7 +83,7 @@ def login_view(request):
                 return redirect('root')  # Redirect to your desired home page
             else:
                 messages.error(request, 'Account is inactive. Please verify your email.')
-                return redirect('login')
+                return redirect('activate_account')
         else:
             messages.error(request, 'Invalid email or password.')
             return redirect('login')
@@ -176,3 +176,30 @@ def password_reset_confirm(request, token):
         return redirect('login')
 
     return render(request, 'authentication/password_reset_confirm.html', {'token': token})
+
+
+def activate_account(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+        try:
+            user = User.objects.get(email=email)
+            passcode = user.generate_otp()
+            OneTimePassword.objects.create(user=user, passcode=passcode)
+
+            send_email(
+                user.email,
+                {
+                    'name': user.name,
+                    'content': passcode,
+                    'activate_account': True
+                },
+            )
+
+            messages.info(request, 'A verification code has been sent to your email.')
+            return redirect('verify_email', slug=user.slug)
+
+        except User.DoesNotExist:
+            messages.error(request, 'No account found with that email.')
+            return render(request, 'authentication/verify_email.html')
+    return render(request, 'authentication/verify_email.html')

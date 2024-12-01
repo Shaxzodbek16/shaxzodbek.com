@@ -145,7 +145,7 @@
 <body>
 <div class="container">
     <div class="header">
-         <img src="https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg" alt="Logo">
+        <img src="https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg" alt="Logo">
     </div>
     <div class="content">
         <p class="greeting">Hi {{ name }},</p>
@@ -163,6 +163,14 @@
             <a href="{{ content }}" class="button">Reset Password</a>
             <p class="warning">If you didn't request a password reset, please ignore this email or contact support if
                 you have concerns.</p>
+        {% elif activate_account %}
+            <p>Welcome! We're excited to have you join us. To get started, please verify your email address.</p>
+            <div class="otp">
+                <p>Your account activation code is:</p>
+                <div class="otp-code">{{ content }}</div>
+                <p>This code will expire in 10 minutes</p>
+            </div>
+            <p class="warning">If you didn't create an account with us, please ignore this email.</p>
         {% endif %}
     </div>
     <div class="footer">
