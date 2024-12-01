@@ -26,9 +26,9 @@ class Questions(models.Model):
         return f"{self.__class__.__name__} {self.__str__()}"
 
     class Meta:
-        db_table = "Math"
-        verbose_name_plural = "Maths"
-        verbose_name = "Math"
+        db_table = "Questions"
+        verbose_name_plural = "Questions"
+        verbose_name = "Questions"
         unique_together = ("option1", "option2", "option3", "answer")
 
     def save(self, *args, **kwargs):

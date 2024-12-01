@@ -34,51 +34,39 @@ def video(request):
 
 
 def books(request):
-    names: set = make_unique(ProgrammingLanguage.objects.all())
-    names |= make_unique(Category.objects.all())
-    categories = [category.name for category in Category.objects.all()]
-    languages = [language.name for language in ProgrammingLanguage.objects.all()]
+    categories = Category.objects.values_list('name', flat=True)
+    languages = ProgrammingLanguage.objects.values_list('name', flat=True)
+
     if request.method == 'POST':
-        query = request.POST['search']
+        query = request.POST.get('search', '')
         if query:
-            result = (Book.objects.filter(title__icontains=query) &
-                      Book.objects.filter(author__last_name__icontains=query) &
-                      Book.objects.filter(author__first_name__icontains=query) &
-                      Book.objects.filter(programming_language__name__icontains=query))
-            return render(request, 'blog/books.html',
-                          context={"books": result, "pg_lang": languages, "categories": categories,
-                                   "current_value": query})
-    return render(request, 'blog/books.html',
-                  context={"books": Book.objects.all(), "pg_lang": languages, "categories": categories})
+            result = Book.objects.filter(
+                Q(title__icontains=query) |
+                Q(author__last_name__icontains=query) |
+                Q(author__first_name__icontains=query) |
+                Q(programming_language__name__icontains=query)
+            ).distinct()
+            return render(request, 'blog/books.html', {
+                "books": result,
+                "pg_lang": languages,
+                "categories": categories,
+                "current_value": query
+            })
+
+    return render(request, 'blog/books.html', {
+        "books": Book.objects.all(),
+        "pg_lang": languages,
+        "categories": categories
+    })
 
 
 def connections(request):
-    if request.method == 'POST':
-        query = request.POST['search']
-        if query:
-            if request.user.is_superuser:
-                result = Connection.objects.filter(
-                    Q(first_name__icontains=query) |
-                    Q(last_name__icontains=query) |
-                    Q(job_title__icontains=query) |
-                    Q(met_address__icontains=query) |
-                    Q(home_address__icontains=query) |
-                    Q(who_for_me__who_is_it__icontains=query)
-                )
-            else:
-                result = Connection.objects.filter(listed=True).filter(
-                    Q(first_name__icontains=query) |
-                    Q(last_name__icontains=query) |
-                    Q(job_title__icontains=query) |
-                    Q(met_address__icontains=query) |
-                    Q(home_address__icontains=query) |
-                    Q(who_for_me__who_is_it__icontains=query)
-                )
-            return render(request, 'blog/connections.html',
-                          context={"people": list(set(result)), "current_value": query})
+    query = request.POST.get('search', '') if request.method == 'POST' else ''
+    filter_conditions = Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(job_title__icontains=query) | Q(met_address__icontains=query) | Q(home_address__icontains=query) | Q(who_for_me__who_is_it__icontains=query)
 
     if request.user.is_superuser:
-        people = Connection.objects.all()
+        result = Connection.objects.filter(filter_conditions) if query else Connection.objects.all()
     else:
-        people = Connection.objects.filter(listed=True)
-    return render(request, 'blog/connections.html', context={"people": people})
+        result = Connection.objects.filter(listed=True).filter(filter_conditions) if query else Connection.objects.filter(listed=True)
+
+    return render(request, 'blog/connections.html', context={"people": list(set(result)), "current_value": query})
