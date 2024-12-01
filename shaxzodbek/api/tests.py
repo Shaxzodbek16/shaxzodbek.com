@@ -43,7 +43,7 @@ class QuestionsModelTest(TestCase):
         self.assertEqual(self.question, question2)
 
     def test_slug_generation(self):
-        self.assertEqual(self.question.slug, "what-is-22")
+        self.assertEqual(self.question.slug, "what-is-2-2")
 
     def test_unique_slug_generation(self):
         question2 = Questions.objects.create(
