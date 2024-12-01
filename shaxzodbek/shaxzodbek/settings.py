@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'django_filters',
     # custom apps
     'blog',
-    'cv',
     'authentication',
     'problems',
     'api',
