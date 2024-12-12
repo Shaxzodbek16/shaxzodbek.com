@@ -1,0 +1,41 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block title %}Articles{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/about_me.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main class="about_me">
+        <div class="about_me__container">
+            <div class="about_me__image-container">
+                <img src="{% static 'blog/img/shaxzodbek.png' %}" alt="Profile" class="about_me__image" id="aboutMeImage">
+            </div>
+
+            <div class="about_me__content">
+                <h1 class="about_me__title" id="aboutMeTitle">Lorem IpsumLorem IpsumLorem Ipsum </h1>
+                <p class="about_me__description" id="aboutMeDescription">Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum</p>
+
+                <div class="about_me__location">
+                    <svg class="about_me__location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2">
+                        <path d="M12 21s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 7.2c0 7.3-8 11.8-8 11.8z"></path>
+                        <circle cx="12" cy="9" r="3"></circle>
+                    </svg>
+                    <span id="aboutMeLocation"></span>
+                    Samarkhand
+                </div>
+
+                <div class="about_me__extra" id="aboutMeExtra">Lorem Ipsum extra</div>
+                <div class="about_me__date" id="aboutMeDate">12-12-12</div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block extra_js %}
+    <script href="{% static 'blog/js/about_me.js' %}"></script>
+{% endblock %}
+
+

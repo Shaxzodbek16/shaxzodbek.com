@@ -20,6 +20,7 @@ class TelegramUser(models.Model):
         if isinstance(other, TelegramUser):
             return self.user_id == other.user_id
         return False
+
     def __hash__(self):
         return hash(self.user_id)
 
@@ -27,11 +28,13 @@ class TelegramUser(models.Model):
         db_table = "telegram_user"
         verbose_name_plural = "telegram_users"
         verbose_name = "telegram_user"
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
 
 class UserCommands(models.Model):
-    user_id = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, to_field='user_id', null=True)
+    user_id = models.ForeignKey(
+        TelegramUser, on_delete=models.SET_NULL, to_field="user_id", null=True
+    )
     command = models.CharField(max_length=100)
     response = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -46,7 +49,7 @@ class UserCommands(models.Model):
         db_table = "user_commands"
         verbose_name_plural = "user_commands"
         verbose_name = "user_command"
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
     def __eq__(self, other):
         return self.command == other.commend and self.user_id == other.user_id

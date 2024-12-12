@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{% static 'authentication/css/sign_up.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="background-circle circle-top-1"></div>
+<div class="background-circle circle-top-2"></div>
+<div class="background-circle circle-top-1-2"></div>
+<div class="background-circle circle-bottom"></div>
+
+<div class="container">
+    <main class="sign-up-main">
+        <div class="sign-up-main__logo">
+            <img src="{% static 'authentication/img/sign_up.png' %}" alt="Sign Up Illustration">
+        </div>
+
+        <div class="sign-up-main__form">
+            <h1>Welcome Sign Up!</h1>
+
+            <form class="sign-up-main__form__form" id="signupForm" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <i class='bx bx-user input-icon'></i>
+                    <input name="name" type="text" placeholder="Ismingizni kiriting..." required>
+                </div>
+
+                <div class="input-group">
+                    <i class='bx bx-envelope input-icon'></i>
+                    <input name="email" type="email" placeholder="Emailingizni kiriting..." required>
+                </div>
+
+                <div class="input-group">
+                    <i class='bx bx-lock-alt input-icon'></i>
+                    <input type="password" name="password1" placeholder="Parol o'ylan toping..." required>
+                    <button type="button" class="password-toggle">
+                        <i class='bx bx-show' style="font-size: 20px"></i>
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <i class='bx bx-lock-alt input-icon'></i>
+                    <input name="password2" type="password" placeholder="Parolni qaytadan kiriting..." required>
+                    <button type="button" class="password-toggle">
+                        <i class='bx bx-show' style="font-size: 20px"></i>
+                    </button>
+                </div>
+
+                <button class="sign-up-btn">Sign Up</button>
+
+                <div class="login-link">
+                    Already have an account? <a href="{% url 'login' %}">Login</a>
+                </div>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <div class="social-buttons">
+                    <a type="button" class="social-btn">
+                        <img src="{% static 'authentication/img/google.png' %}" alt="Google">
+                        Continue with Google
+                    </a>
+                    <a type="button" class="social-btn">
+                        <img src="{% static 'authentication/img/github.png' %}" alt="GitHub">
+                        Continue with GitHub
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.querySelectorAll('.background-circle').forEach(circle => {
+                circle.classList.add('active');
+            });
+        }, 100);
+
+        setTimeout(() => {
+            document.querySelector('.sign-up-main__logo').classList.add('active');
+            document.querySelector('.sign-up-main__form').classList.add('active');
+            document.querySelector('.sign-up-main__form h1').classList.add('active');
+
+            document.querySelectorAll('.input-group').forEach(input => {
+                input.classList.add('active');
+            });
+
+            document.querySelector('.sign-up-btn').classList.add('active');
+            document.querySelector('.login-link').classList.add('active');
+            document.querySelector('.divider').classList.add('active');
+            document.querySelector('.social-buttons').classList.add('active');
+        }, 300);
+
+        const toggleButtons = document.querySelectorAll('.password-toggle');
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const input = button.previousElementSibling;
+                const icon = button.querySelector('i');
+
+                button.classList.add('toggling');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('bx-show');
+                    icon.classList.add('bx-hide');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('bx-hide');
+                    icon.classList.add('bx-show');
+                }
+
+                setTimeout(() => {
+                    button.classList.remove('toggling');
+                }, 300);
+            });
+        });
+
+        const form = document.getElementById('signupForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Form submitted');
+        });
+    });
+</script>
+</body>
+</html>

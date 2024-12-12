@@ -1,0 +1,42 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block title %}Articles{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/videos.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main class="video_page">
+  <h1 class="page-title">VIDEOS</h1>
+
+  <div class="search-filter-container">
+    <div class="search-container">
+      <input type="text" placeholder="Search videos..." id="searchInput">
+      <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Latest</button>
+      <button class="filter-btn">Popular</button>
+      <button class="filter-btn">Trending</button>
+    </div>
+  </div>
+
+  <div class="featured-video">
+    <img src="/api/placeholder/1200/400" alt="Featured video thumbnail">
+    <div class="content">
+      <h2>LOREM IPSUM IS SIMPLY DUMMY TEXT</h2>
+      <p>LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY. LOREM IPSUM HAS BEEN THE INDUSTRY'S STANDARD DUMMY TEXT EVER SINCE THE 1500S.</p>
+      <a href="#" class="read-more">READ MORE</a>
+    </div>
+  </div>
+
+  <div class="video-grid" id="videoGrid">
+  </div>
+</main>
+{% endblock %}
+{% block extra_js %}
+    <script href="{% static 'blog/js/videos.js' %}"></script>
+{% endblock %}

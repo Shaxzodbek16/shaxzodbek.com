@@ -1,0 +1,64 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{%  block title %}Articles{% endblock %}
+
+{%  block extra_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/cv.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="cv-header">
+        <button class="back-button">← Back</button>
+        <div class="status-badge status-active">Currently Working</div>
+    </div>
+
+    <div class="cv-content">
+        <h1 class="cv-title">Senior Frontend Developer</h1>
+        <h2 class="cv-project">Project: E-commerce Platform</h2>
+
+        <div class="image-gallery">
+            <img src="/api/placeholder/400/320" alt="CV Image 1" class="gallery-image" style="animation-delay: 0.1s">
+            <img src="/api/placeholder/400/320" alt="CV Image 2" class="gallery-image" style="animation-delay: 0.2s">
+            <img src="/api/placeholder/400/320" alt="CV Image 3" class="gallery-image" style="animation-delay: 0.3s">
+        </div>
+
+        <p class="cv-description">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+
+        <div class="technologies">
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">MongoDB</span>
+            <span class="tech-tag">AWS</span>
+        </div>
+
+        <div class="cv-meta">
+            <div class="cv-date">Created: December 9, 2024</div>
+            <div class="action-buttons">
+                <button class="button button-primary">
+                    <span>⬇️</span>
+                    Download CV
+                </button>
+                <button class="button button-secondary">
+                    <span>🔗</span>
+                    Visit Project
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal">
+    <span class="close-modal">×</span>
+    <div class="modal-content">
+        <img src="" alt="Preview" class="modal-image">
+    </div>
+</div>
+
+{% endblock %}
+{% block extra_js %}
+    <script href="{% static 'blog/js/cv.js' %}"></script>
+{% endblock %}
+

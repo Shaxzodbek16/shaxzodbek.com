@@ -16,5 +16,3 @@ def group_articles(data) -> dict:
 
 def make_unique(data):
     return set(i.name for i in data)
-
-

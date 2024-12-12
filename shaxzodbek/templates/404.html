@@ -1,19 +1,55 @@
-{% extends 'parts/base.html' %}
 {% load static %}
-{% block extra_meta %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
     <link rel="stylesheet" href="{% static 'parts/404.css' %}">
-{% endblock %}
-{% block content %}
-    <div class="n404-page">
-    <h1>404 Error Page</h1>
-    <p class="zoom-area"><b>CSS</b> animations to make a cool 404 page. </p>
-    <section class="error-container">
-        <span class="four"><span class="screen-reader-text">4</span></span>
-        <span class="zero"><span class="screen-reader-text">0</span></span>
-        <span class="four"><span class="screen-reader-text">4</span></span>
-    </section>
-    <div class="link-container">
-        <a href="/" class="more-link">Go Home page</a>
+</head>
+<body>
+<div class="container">
+    <svg class="error-image" viewBox="0 0 500 472" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path id="mainPath"
+              d="M268.37 18.8941C243.55 18.659 93.208 16.3322 88.7893 58.2277C84.5586 98.3604 142.813 83.6588 143.377 101.475C143.976 120.184 132.871 125.59 101.857 124.403C88.425 123.886 46.0124 128.645 45.3308 155.416C44.6492 182.034 92.0093 178.673 89.6707 200.766C88.3075 225.868 52.3467 231.333 38.1739 237.973C22.7789 246.023 -5.55492 259.303 0.955627 287.801C9.52276 320.847 63.934 314.901 84.4293 318.979C98.1203 321.2 141.638 325.043 135.444 354.328C132.189 371.933 96.4633 372.955 103.291 395.531C110.201 416.637 172.498 420.809 185.12 421.502C237.51 424.334 352.537 428.965 403.775 407.353C422.614 399.491 439.243 390.019 437.315 361.767C436.375 336.536 422.766 332.846 445.694 313.35C460.184 300.799 487.919 301.809 486.274 265.19C485.392 245.435 434.847 237.233 435.976 216.549C437.738 184.055 499.777 211.649 500 154.182C500.141 118.315 387.276 138.376 388.427 102.897C386.911 88.5005 411.743 82.3896 410.685 66.4422C411.25 40.9289 382.011 22.0318 268.37 18.8941Z"
+              fill="#0B7077"></path>
+        <path class="cloud" d="M100,100 q20,-15 40,0 t40,0 t20,15" fill="white" opacity="0.8"
+              style="animation-delay: -2s"></path>
+        <path class="cloud" d="M320,150 q15,-12 30,0 t30,0 t15,12" fill="white" opacity="0.7"
+              style="animation-delay: -4s"></path>
+        <path class="cloud" d="M200,80 q10,-8 20,0 t20,0 t10,8" fill="white" opacity="0.6"
+              style="animation-delay: -6s"></path>
+
+        <g class="hot-air-balloon" style="animation-delay: -2s">
+            <path d="M150,150 C150,100 200,100 200,150 C200,200 150,200 150,150" fill="#A4D4D8"></path>
+            <g class="basket">
+                <rect x="170" y="190" width="10" height="15" fill="#8B4513"></rect>
+                <path d="M165,190 L185,190 L175,185 Z" fill="#8B4513"></path>
+            </g>
+        </g>
+
+        <g class="hot-air-balloon" style="animation-delay: -4s">
+            <path d="M350,200 C350,150 400,150 400,200 C400,250 350,250 350,200" fill="#A4D4D8"></path>
+            <g class="basket">
+                <rect x="370" y="240" width="10" height="15" fill="#8B4513"></rect>
+                <path d="M365,240 L385,240 L375,235 Z" fill="#8B4513"></path>
+            </g>
+        </g>
+
+        <text x="50%" y="35%" text-anchor="middle" fill="white" font-size="24" font-weight="bold">Oops!</text>
+
+        <text x="50%" y="45%" text-anchor="middle" fill="white" font-size="72" font-weight="bold" class="error-text">
+            404
+        </text>
+        <text x="50%" y="55%" text-anchor="middle" fill="white" font-size="24" font-weight="bold" class="error-text">
+            PAGE NOT FOUND
+        </text>
+    </svg>
+    <div class="text-content">
+        <h1 class="heading">Something went wrong.</h1>
+        <p class="description">Sorry, We can't find the page you're looking for.</p>
+        <button class="back-button" onclick="window.history.back()">Go Back</button>
     </div>
-    </div>
-{% endblock %}
+</div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/home.css' %}">
+{% endblock %}
+{% block content %}
+    <header>
+        <div class="content">
+            <div class="content-text">
+                <h1>Muxtorov Shaxzodbek<br>Software Engineer<br>Python</h1>
+                <div class="content-buttons">
+                    <a href="{% url 'articles' %}">Read Blog</a>
+                    <a href="{% url 'about_me' %}">About Me</a>
+                    {% if request.user.is_staff %}
+                        <a href="{% url '_csrf_exempt_' %}">About her</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="content-image">
+                <img src="{% static 'blog/img/shaxzodbek.png' %}" alt="Hero Image">
+            </div>
+        </div>
+    </header>
+{% endblock %}
+{% block extra_content %}
+    <main class="videos">
+        <div class="videos__title">
+            <h1 class="videos__heading">Videos</h1>
+            <div class="videos__underline">
+                <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+                    <path d="M0,40 Q500,0 1000,40"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="videos__container">
+            <!-- Card 1 -->
+            <div class="videos__card">
+                <div class="videos__card-image videos__card-image--analytics">
+                    <img src="/assets/sign_up.png" alt="Analytics visualization">
+                </div>
+                <div class="videos__card-content">
+                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
+                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    <div class="videos__card-footer">
+                        <span class="videos__card-date">1 - 28 July 2024</span>
+                        <button class="videos__card-button">Read More</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="videos__card">
+                <div class="videos__card-image videos__card-image--business">
+                    <img src="/assets/sign_up.png" alt="Business graphics">
+                </div>
+                <div class="videos__card-content">
+                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
+                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    <div class="videos__card-footer">
+                        <span class="videos__card-date">1 - 28 July 2024</span>
+                        <button class="videos__card-button">Read More</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="videos__card">
+                <div class="videos__card-image videos__card-image--smile">
+                    <img src="/assets/sign_up.png" alt="Smiley face">
+                </div>
+                <div class="videos__card-content">
+                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
+                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    <div class="videos__card-footer">
+                        <span class="videos__card-date">1 - 28 July 2024</span>
+                        <button class="videos__card-button">Read More</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="videos__card">
+                <div class="videos__card-image videos__card-image--python">
+                    <img src="/assets/sign_up.png" alt="Python logo">
+                </div>
+                <div class="videos__card-content">
+                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
+                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    <div class="videos__card-footer">
+                        <span class="videos__card-date">1 - 28 July 2024</span>
+                        <button class="videos__card-button">Read More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block extra_content_2 %}
+    <main class="book">
+        <div class="book__title">
+            <h1 class="book__heading">Books</h1>
+            <div class="videos__underline">
+                <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+                    <path d="M0,40 Q500,0 1000,40"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="book__description">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+        </p>
+
+        <div class="book__container">
+            <div class="book__dual-card">
+                <div class="book__cover-card">
+                    <img src="assets/sign_up.png" alt="Book Cover">
+                </div>
+                <div class="book__detail-card">
+                    <h2 class="book__card-title">Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry.</h2>
+                    <p class="book__card-description">Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                    <p class="book__card-authors">Authors: Lorem Ipsum</p>
+                    <p class="book__card-categories">Categories: Lorem Ipsum</p>
+                    <p class="book__card-programming_languages">Programming Languages: Lorem Ipsum</p>
+                    <a href="#" class="book__read-button">Now Read!</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block footer %}
+    {% include 'parts/footer.html' %}
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'blog/js/home.js' %}"></script>
+{% endblock %}

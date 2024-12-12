@@ -1,40 +1,54 @@
 {% extends 'parts/base.html' %}
 {% load static %}
-{% block extra_meta %}
-    <link rel="stylesheet" href="{% static 'parts/search.css' %}">
+{%  block title %}Articles{% endblock %}
+
+{%  block extra_css %}
     <link rel="stylesheet" href="{% static 'blog/css/connections.css' %}">
-{% endblock %}
-{% block title %}Connections{% endblock %}
-{% block header %}
-    {% include 'parts/search.html' %}
 {% endblock %}
 
 {% block content %}
-    <div class="people-list">
-    {% if people %}
-        {% for person in people %}
-                {% if user.is_superuser or person.listed %}
-        <div class="person-card">
-            <div class="person-info">
-                <img src="{{ person.picture.url }}" alt="{{ person.first_name }} {{ person.last_name }}" class="person-image">
-                <h2 class="person-name">{{ person.first_name }} {{ person.last_name }}</h2>
-                <p class="person-details"><strong>Birth Date:</strong> {{ person.birth_date }}</p>
-                <p class="person-details"><strong>Job Title:</strong> {{ person.job_title }}</p>
-                <p class="person-details"><strong>Met Address:</strong> {{ person.met_address }}</p>
-                <p class="person-details"><strong>Home Address:</strong> {{ person.home_address }}</p>
-                <p class="person-details"><strong>Met At:</strong> {{ person.met_at }}</p>
-                <div class="person-roles">
-                    {% for wfn in person.who_for_me.all %}
-                    <span class="role-tag">{{ wfn.who_is_it }}</span>
-                    {%  endfor %}
-                </div>
-            </div>
-        </div>
-    {% endif %}
-            {% endfor %}
-    {% else %}
-            <h1 style="margin-top: 50px; color: #7f8c8d">No People found{% if current_value %} by {{ current_value }}{% endif %}.</h1>
-    {% endif %}
-
+<main class="connections_page">
+  <div class="connections_header">
+    <h1>My Connections</h1>
+    <div class="connections_search-container">
+      <input type="text" placeholder="Search connections">
+      <i class="fas fa-search search-icon"></i>
     </div>
+  </div>
+
+  <div class="connections_grid">
+    <div class="connections_item">
+      <div class="connections_avatar">
+        <img src="/api/placeholder/80/80" alt="John Doe">
+      </div>
+      <div class="connections_content">
+        <h2 class="connections_name">John Doe</h2>
+        <div class="connections_job">Software Engineer</div>
+        <div class="connections_met-date">
+          <i class="far fa-calendar"></i>
+          Met on June 10, 2024
+        </div>
+        <div class="connections_location">
+          <i class="fas fa-map-marker-alt"></i>
+          San Francisco, CA
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connections_pagination">
+    <button><i class="fas fa-chevron-left"></i></button>
+    <button class="active">1</button>
+    <button>2</button>
+    <span class="dots">...</span>
+    <button>9</button>
+    <button>10</button>
+    <button><i class="fas fa-chevron-right"></i></button>
+  </div>
+</main>
 {% endblock %}
+
+{% block extra_js %}
+    <script href="{% static 'blog/js/connections.js' %}"></script>
+{% endblock %}
+

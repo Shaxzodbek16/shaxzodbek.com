@@ -2,7 +2,16 @@ from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
 from django.db import IntegrityError
-from .models import Article, Match, Connection, Author, Category, ProgrammingLanguage, Book, Video
+from .models import (
+    Article,
+    Match,
+    Connection,
+    Author,
+    Category,
+    ProgrammingLanguage,
+    Book,
+    Video,
+)
 from datetime import date, timedelta
 
 
@@ -12,7 +21,7 @@ class ArticleModelTest(TestCase):
             title="Test Article",
             body="This is a test article body.",
             created=timezone.now(),
-            slug="test-article"
+            slug="test-article",
         )
 
     def test_article_creation(self):
@@ -23,7 +32,7 @@ class ArticleModelTest(TestCase):
         article = Article.objects.create(
             title="Another Test Article",
             body="This is another test article body.",
-            created=timezone.now()
+            created=timezone.now(),
         )
         self.assertEqual(article.slug, "another-test-article")
 
@@ -37,14 +46,14 @@ class ArticleModelTest(TestCase):
             Article.objects.create(
                 title="Test Article",
                 body="This should fail due to duplicate slug.",
-                created=timezone.now()
+                created=timezone.now(),
             )
 
     def test_prev_property(self):
         earlier_article = Article.objects.create(
             title="Earlier Article",
             body="This is an earlier article.",
-            created=timezone.now() - timedelta(days=1)
+            created=timezone.now() - timedelta(days=1),
         )
         self.assertNotEqual(self.article.prev, earlier_article)
 
@@ -52,12 +61,16 @@ class ArticleModelTest(TestCase):
         later_article = Article.objects.create(
             title="Later Article",
             body="This is a later article.",
-            created=timezone.now() + timedelta(days=1)
+            created=timezone.now() + timedelta(days=1),
         )
         self.assertEqual(self.article.next, later_article)
 
     def test_ordering(self):
-        Article.objects.create(title="New Article", body="New content", created=timezone.now() + timedelta(hours=1))
+        Article.objects.create(
+            title="New Article",
+            body="New content",
+            created=timezone.now() + timedelta(hours=1),
+        )
         articles = Article.objects.all()
         self.assertEqual(articles[0].title, "New Article")
         self.assertEqual(articles[1].title, "Test Article")
@@ -93,11 +106,13 @@ class ConnectionModelTest(TestCase):
         self.connection = Connection.objects.create(
             first_name="John",
             last_name="Doe",
-            picture=SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg"),
+            picture=SimpleUploadedFile(
+                "test_image.jpg", b"file_content", content_type="image/jpeg"
+            ),
             birth_date=date(1990, 1, 1),
             job_title="Developer",
             met_address="123 Test St",
-            met_at=timezone.now()
+            met_at=timezone.now(),
         )
         self.connection.who_for_me.add(self.match)
 
@@ -113,10 +128,12 @@ class ConnectionModelTest(TestCase):
         connection = Connection.objects.create(
             first_name="Jane",
             last_name="Doe",
-            picture=SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg"),
+            picture=SimpleUploadedFile(
+                "test_image.jpg", b"file_content", content_type="image/jpeg"
+            ),
             birth_date=date(1995, 1, 1),
             met_address="456 Test Ave",
-            met_at=timezone.now()
+            met_at=timezone.now(),
         )
         self.assertIsNone(connection.job_title)
         self.assertIsNone(connection.home_address)
@@ -125,10 +142,12 @@ class ConnectionModelTest(TestCase):
         Connection.objects.create(
             first_name="Younger",
             last_name="Person",
-            picture=SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg"),
+            picture=SimpleUploadedFile(
+                "test_image.jpg", b"file_content", content_type="image/jpeg"
+            ),
             birth_date=date(2000, 1, 1),
             met_address="789 Test Blvd",
-            met_at=timezone.now()
+            met_at=timezone.now(),
         )
         connections = Connection.objects.all()
         self.assertEqual(connections[0].first_name, "Younger")
@@ -188,9 +207,13 @@ class BookModelTest(TestCase):
         self.book = Book.objects.create(
             title="Python for Beginners",
             purpose="Learning Python",
-            picture=SimpleUploadedFile("book_cover.jpg", b"file_content", content_type="image/jpeg"),
-            book=SimpleUploadedFile("python_book.pdf", b"file_content", content_type="application/pdf"),
-            programming_language=self.language
+            picture=SimpleUploadedFile(
+                "book_cover.jpg", b"file_content", content_type="image/jpeg"
+            ),
+            book=SimpleUploadedFile(
+                "python_book.pdf", b"file_content", content_type="application/pdf"
+            ),
+            programming_language=self.language,
         )
         self.book.author.add(self.author)
         self.book.category.add(self.category)
@@ -212,9 +235,13 @@ class BookModelTest(TestCase):
         Book.objects.create(
             title="Advanced Python",
             purpose="Advanced Python techniques",
-            picture=SimpleUploadedFile("advanced_cover.jpg", b"file_content", content_type="image/jpeg"),
-            book=SimpleUploadedFile("advanced_python.pdf", b"file_content", content_type="application/pdf"),
-            programming_language=self.language
+            picture=SimpleUploadedFile(
+                "advanced_cover.jpg", b"file_content", content_type="image/jpeg"
+            ),
+            book=SimpleUploadedFile(
+                "advanced_python.pdf", b"file_content", content_type="application/pdf"
+            ),
+            programming_language=self.language,
         )
         books = Book.objects.all()
         self.assertEqual(books[0].title, "Python for Beginners")
@@ -227,7 +254,9 @@ class VideoModelTest(TestCase):
             title="Test Video",
             url="https://example.com/video",
             created=timezone.now(),
-            thumbnail=SimpleUploadedFile("thumbnail.jpg", b"file_content", content_type="image/jpeg")
+            thumbnail=SimpleUploadedFile(
+                "thumbnail.jpg", b"file_content", content_type="image/jpeg"
+            ),
         )
 
     def test_video_creation(self):
@@ -239,7 +268,9 @@ class VideoModelTest(TestCase):
             title="New Video",
             url="https://example.com/new-video",
             created=timezone.now() + timedelta(hours=1),
-            thumbnail=SimpleUploadedFile("new_thumbnail.jpg", b"file_content", content_type="image/jpeg")
+            thumbnail=SimpleUploadedFile(
+                "new_thumbnail.jpg", b"file_content", content_type="image/jpeg"
+            ),
         )
         videos = Video.objects.all()
         self.assertEqual(videos[0].title, "New Video")

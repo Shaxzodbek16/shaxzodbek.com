@@ -1,11 +1,52 @@
-{% extends "parts/base.html" %}
-{%  block title %}{{ article.title }} {% endblock %}
+{% extends 'parts/base.html' %}
+{% load static %}
+{%  block title %}Articles{% endblock %}
+
+{%  block extra_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/article.css' %}">
+{% endblock %}
+
 {% block content %}
-    <div class="single-article">
-        <h1 class="article-title">{{ article.title }}</h1>
-        <img class="article-image" src = "{{ article.picture.url }}" alt="{{ article.title }}">
-        <div class="article-body">{{ article.body }}</div>
-        <p class="article-date">Published on: {{ article.created }}</p>
+<main class="blog-detail">
+  <div class="breadcrumb">
+    <a href="{% url 'articles' %}">Blog</a>
+    <span>›</span>
+    <span>Card name</span>
+  </div>
+  <article>
+    <header class="blog-header">
+      <h1 class="blog-title">Avtomatlashtiring</h1>
+      <div class="blog-date">10 June, 2024</div>
+    </header>
+
+    <img src="assets/sign_up.png" alt="Blog image" class="blog-image">
+
+    <div class="blog-content">
+      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+      <p>Lorem Ipsum is simply dummy text of the printing.</p>
+
+      <div class="quote-box">
+        <h3>Obuna bo'ling</h3>
+        <p>Lorem Ipsum is simply dummy text of the <a href="#" style="color: #007bff; text-decoration: none;">printing and</a> typesetting industry</p>
+      </div>
     </div>
+
+    <nav class="navigation">
+      <a href="#" class="nav-button">
+        <i class="fas fa-arrow-left"></i>
+        Previous
+      </a>
+      <button class="see-more">See More ⋯</button>
+      <a href="#" class="nav-button">
+        Next
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </nav>
+  </article>
+</main>
+
+{% endblock %}
+{% block extra_js %}
+    <script href="{% static 'blog/js/article.js' %}"></script>
 {% endblock %}
 

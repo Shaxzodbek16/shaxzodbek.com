@@ -1,0 +1,54 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block title %}Articles{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/cvs.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Cv</h1>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search">
+            <button class="search-button">🔍</button>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="card" style="animation-delay: 0.1s">
+            <img src="/api/placeholder/400/320" alt="Profile" class="card-image">
+            <div class="card-content">
+                <h2 class="card-title">Title goes here</h2>
+                <p class="card-role">Frontend Developer</p>
+                <p class="card-description">It if sometimes furnished unwilling as additions so. Blessing resolved
+                    peculiar fat graceful ham. Sussex on at really ladies in as elinor. Sir sex opinions age properly
+                    extended.</p>
+                <div class="card-actions">
+                    <button class="button button-primary">
+                        <span>⬇️</span>
+                        Download File
+                    </button>
+                    <button class="button button-secondary">
+                        <span>👁️</span>
+                        View CV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <button>←</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>...</button>
+        <button>9</button>
+        <button>10</button>
+        <button>→</button>
+    </div>
+
+{% endblock %}
+{% block extra_js %}
+    <script href="{% static 'blog/js/cvs.js' %}"></script>
+{% endblock %}

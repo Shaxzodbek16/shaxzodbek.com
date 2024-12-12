@@ -7,23 +7,27 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Quiz API",
-      default_version='v1',
-      description="API documentation for the Quiz app",
-   ),
-   public=True,
-   permission_classes=[permissions.AllowAny],
+    openapi.Info(
+        title="Quiz API",
+        default_version="v1",
+        description="API documentation for the Quiz app",
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
 )
 
 urlpatterns = [
-    path(f'{settings.ADMIN_URL}/', admin.site.urls),
-    path('', include('blog.urls')),
-    path('accaunts/', include('authentication.urls')),
-    path('api/', include('api.urls')),
-    path('problems/', include('problems.urls')),
-    path('bot/', include('telegrambot.urls')),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path(f"{settings.ADMIN_URL}/", admin.site.urls),
+    path("", include("blog.urls")),
+    path("accaunts/", include("authentication.urls")),
+    path("api/", include("api.urls")),
+    path("problems/", include("problems.urls")),
+    # path('bot/', include('telegrambot.urls')),
+    path(
+        "swagger/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
 ]
 
 if settings.DEBUG:

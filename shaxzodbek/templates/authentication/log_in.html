@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'authentication/css/log_in.css' %}">
+</head>
+<body>
+<div class="background-circle circle-bottom-1"></div>
+<div class="background-circle circle-bottom-1-2"></div>
+<main class="sign-up-main">
+    <div class="sign-up-main__form">
+        <h1>Welcome Back!</h1>
+        <form id="loginForm" method="post" action="s{% url 'login' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <i class='bx bx-envelope input-icon'></i>
+                <input name="email" type="email" placeholder="Emailingizni kiriting..." required>
+            </div>
+
+            <div class="input-group">
+                <i class='bx bx-lock-alt input-icon'></i>
+                <input name="password" type="password" placeholder="Parol o'ylan toping..." required>
+                <button class="password-toggle">
+                    <i style="font-size: 20px" class='bx bx-show'></i>
+                </button>
+            </div>
+
+            <button type="submit" class="sign-up-btn">Log In</button>
+            
+            <div class="login-link">
+                Don't have an account? <a href="{% url 'signup' %}">Sign Up</a><br><br>
+                <a href="{% url 'password_reset_request' %}">Forgot Password?</a>
+            </div>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <div class="social-buttons">
+                <button type="button" class="social-btn">
+                    <img src="{% static 'authentication/img/google.png' %}" alt="Google">
+                    Continue with Google
+                </button>
+                <button type="button" class="social-btn">
+                    <img src="{% static 'authentication/img/github.png' %}" alt="GitHub">
+                    Continue with GitHub
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="sign-up-main__logo">
+        <img src="{% static 'authentication/img/log_in.png' %}" alt="Sign Up Illustration">
+    </div>
+</main>
+
+<script>
+    const toggleButtons = document.querySelectorAll('.password-toggle');
+    const loginForm = document.getElementById('loginForm');
+
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const input = button.previousElementSibling;
+            const icon = button.querySelector('i');
+
+            input.type = input.type === 'password' ? 'text' : 'password';
+            icon.classList.toggle('bx-show');
+            icon.classList.toggle('bx-hide');
+        });
+    });
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log('Form submitted');
+    });
+</script>
+</body>
+</html>

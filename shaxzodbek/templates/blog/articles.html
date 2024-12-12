@@ -1,35 +1,41 @@
-{% extends "parts/base.html" %}
-{% block title %}Articles{% endblock %}
+{% extends 'parts/base.html' %}
 {% load static %}
-{%  block extra_meta %} 
-    <link rel="stylesheet" href="{% static 'parts/search.css' %}">
-{% endblock %}
-{% block header %}
-    {% include 'parts/search.html' %}
-{% endblock %}
-{% block content %}
+{%  block title %}Articles{% endblock %}
 
-    <div class="articles-list">
-        {% for year, data in grouped_articles.items %}
-            <div class="year">
-                <span class="year-span">{{ year }}</span>
-                {% for month, articles in data.items %}
-                    <div class="month">
-                        <h2>{{ month }}</h2>
-                        {% for article in articles %}
-                            <a href="{{ article.slug }}">
-                                <div class="article">
-                                    <div class="article-header">
-                                        <span class="date">{{ article.created }}</span>
-                                    </div>
-                                    <p>{{ article.title }}</p>
-                                </div>
-                                <span class="arrow">→</span>
-                            </a>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    </div>
+{%  block extra_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/articles.css' %}">
 {% endblock %}
+
+{% block content %}
+    <main class="blog_page">
+  <div class="header">
+    <h1>Blog</h1>
+    <div class="search-container">
+      <input type="text" placeholder="Search">
+      <i class="fas fa-search search-icon"></i>
+    </div>
+  </div>
+
+  <div class="blog-grid">
+    <a style="text-decoration: none" href="" ><div class="blog-item">
+      <div class="blog-content">
+        <div class="blog-date">10 June, 2024</div>
+        <h2 class="blog-title">Avtomatlashtiring</h2>
+      </div>
+      <i class="fas fa-arrow-right arrow-icon"></i>
+    </div></a>
+
+  </div>
+
+  <div class="pagination">
+    <button><i class="fas fa-chevron-left"></i></button>
+    <button class="active">1</button>
+    <button>2</button>
+    <span class="dots">...</span>
+    <button>9</button>
+    <button>10</button>
+    <button><i class="fas fa-chevron-right"></i></button>
+  </div>
+</main>
+{% endblock %}
+
