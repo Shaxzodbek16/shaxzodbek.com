@@ -1,0 +1,100 @@
+
+
+
+{% extends 'parts/base.html' %}
+{% load static %}
+{% block title %}Articles{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'problems/css/problems.css' %}">
+{% endblock %}
+<div class="description-panel">
+    <div class="top-menu">
+        <i class="fas fa-arrow-left"></i>
+        Problem List
+    </div>
+
+    <div class="tabs">
+        <div class="tab active">
+            <i class="fas fa-file-alt"></i>
+            Description
+        </div>
+    </div>
+
+    <div class="problem-content">
+        <div class="title-section">
+            <div class="problem-title">
+                1. Two Sum
+                <span class="difficulty-badge">Easy</span>
+            </div>
+
+            <div class="topic-tags">
+                <span class="topic-tag">Array</span>
+                <span class="topic-tag">Hash Table</span>
+                <span class="topic-tag">Two Pointers</span>
+            </div>
+        </div>
+
+        <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two
+            numbers such that they add up to <code>target</code>.</p>
+        <p>You may assume that each input would have exactly one solution, and you may not use the same element
+            twice.</p>
+        <p>You can return the answer in any order.</p>
+
+        <div class="example">
+            <strong>Example 1:</strong>
+            <img src="/api/placeholder/400/200" alt="Example visualization" class="example-img">
+            <pre>
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</pre>
+        </div>
+
+        <div class="example">
+            <strong>Example 2:</strong>
+            <pre>
+Input: nums = [3,2,4], target = 6
+Output: [1,2]</pre>
+        </div>
+
+        <div class="constraints">
+            <h3>Constraints:</h3>
+            <ul>
+                <li>2 ≤ nums.length ≤ 104</li>
+                <li>-109 ≤ nums[i] ≤ 109</li>
+                <li>-109 ≤ target ≤ 109</li>
+                <li>Only one valid answer exists.</li>
+            </ul>
+        </div>
+
+        <div class="hint-section">
+            <h3>Hints:</h3>
+            <div class="hint">
+                <div class="hint-header">
+                    <span>Hint 1</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="hint-content">
+                    A really brute force way would be to search for all possible pairs of numbers but that would be too
+                    slow.
+                </div>
+            </div>
+            <div class="hint">
+                <div class="hint-header">
+                    <span>Hint 2</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="hint-content">
+                    Try to use a HashMap to store the values you've seen. What would be the key and value?
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block content %}
+
+{% endblock %}
+{% block extra_js %}
+    <script href="{% static 'problems/js/problems.js' %}"></script>
+{% endblock %}
+

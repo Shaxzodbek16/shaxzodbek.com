@@ -99,36 +99,8 @@
             document.querySelector('.social-buttons').classList.add('active');
         }, 300);
 
-        const toggleButtons = document.querySelectorAll('.password-toggle');
 
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const input = button.previousElementSibling;
-                const icon = button.querySelector('i');
 
-                button.classList.add('toggling');
-
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    icon.classList.remove('bx-show');
-                    icon.classList.add('bx-hide');
-                } else {
-                    input.type = 'password';
-                    icon.classList.remove('bx-hide');
-                    icon.classList.add('bx-show');
-                }
-
-                setTimeout(() => {
-                    button.classList.remove('toggling');
-                }, 300);
-            });
-        });
-
-        const form = document.getElementById('signupForm');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            console.log('Form submitted');
-        });
     });
 </script>
 </body>

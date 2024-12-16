@@ -1,17 +1,5 @@
 from django.contrib import admin
-from .models import (
-    Img,
-    Example,
-    Topic,
-    Hint,
-    Files,
-    Theme,
-    Problem,
-    TestCase,
-    Submission,
-    TestResult,
-    UserProblemStatus,
-)
+from .models import Img, Example, Topic, Hint, Files, Theme, Problem
 
 
 @admin.register(Img)
@@ -65,31 +53,3 @@ class ProblemAdmin(admin.ModelAdmin):
         "theme",
     )
     readonly_fields = ("slug", "created", "updated")
-
-
-@admin.register(TestCase)
-class TestCaseAdmin(admin.ModelAdmin):
-    list_display = ("problem", "order", "is_sample")
-    list_filter = ("is_sample",)
-    search_fields = ("problem__title",)
-
-
-@admin.register(Submission)
-class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ("user", "problem", "language", "status", "submitted_at")
-    list_filter = ("status", "language")
-    search_fields = ("user__username", "problem__title")
-
-
-@admin.register(TestResult)
-class TestResultAdmin(admin.ModelAdmin):
-    list_display = ("submission", "test_case", "passed")
-    list_filter = ("passed",)
-    search_fields = ("submission__user__username",)
-
-
-@admin.register(UserProblemStatus)
-class UserProblemStatusAdmin(admin.ModelAdmin):
-    list_display = ("user", "problem", "is_solved", "attempts_count")
-    list_filter = ("is_solved",)
-    search_fields = ("user__username", "problem__title")

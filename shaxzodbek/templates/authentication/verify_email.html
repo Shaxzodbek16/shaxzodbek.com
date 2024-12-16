@@ -7,35 +7,25 @@
     <title>Verify Your Code</title>
     <link rel="stylesheet" href="{% static 'authentication/css/verify_email.css' %}">
 </head>
+<style>
+    body {
+        background: url('{% static "authentication/img/sign_up_page.png" %}') no-repeat center center/cover;
+    }
+</style>
 <body>
-<div class="verify-code-card">
+<div class="verify-code-card fade-in">
     <h2 class="verify-code-title">Verify Your Code</h2>
     <p class="verify-code-description">
-        Enter the passcode you just received on your email address ending with ******@gmail.com
+        Enter the 6-digit passcode you received on your email address ending with ******@gmail.com
     </p>
-    <div class="verify-code-input-container">
-        <input name="code1" type="text" class="verify-code-input" maxlength="1" autofocus required/>
-        <input name="code2" type="text" class="verify-code-input" maxlength="1" required/>
-        <input name="code3" type="text" class="verify-code-input" maxlength="1" required/>
-        <input name="code4" type="text" class="verify-code-input" maxlength="1" required/>
-        <input name="code5" type="text" class="verify-code-input" maxlength="1" required/>
-        <input name="code6" type="text" class="verify-code-input" maxlength="1" required/>
-    </div>
-    <button class="verify-code-button">Verify</button>
+    <form method="post">
+        {% csrf_token %}
+        <label>
+            <input name="code" type="text" class="verify-code-input" maxlength="6" pattern="\d{6}" autofocus required
+                   placeholder="Enter code here">
+        </label>
+        <button type="submit" class="verify-code-button">Verify</button>
+    </form>
 </div>
-
-<script>
-    document.querySelectorAll('.verify-code-input').forEach((input, index) => {
-        input.addEventListener('input', () => {
-            if (input.value.length === 1) {
-                if (index < 6) {
-                    document.querySelectorAll('.verify-code-input')[index + 1].focus();
-                }
-            } else if (input.value.length === 0 && index > 0) {
-                document.querySelectorAll('.verify-code-input')[index - 1].focus();
-            }
-        });
-    });
-</script>
 </body>
 </html>

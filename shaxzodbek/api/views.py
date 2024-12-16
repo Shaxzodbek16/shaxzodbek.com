@@ -115,5 +115,5 @@ def statistics(request):
 
 def docs(request, api_name=None):
     if not api_name:
-        return render(request, template_name="api/docs.html")
-    return render(request, template_name=f"api/docs_{api_name}.html")
+        return render(request, template_name="api/questions.html")
+    return render(request, template_name=f"api/questions.html")

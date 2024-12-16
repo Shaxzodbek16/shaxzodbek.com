@@ -316,7 +316,7 @@ header .content {
 
 
 header .content .content-image img {
-    width: 600px;
+    width: 100px;
 }
 
 header .content .content-text {
@@ -506,8 +506,6 @@ header .content .content-text .content-buttons a {
     }
 }
 
-
-/* Main book section styles */
 .book {
     padding: 2rem;
     max-width: 1200px;

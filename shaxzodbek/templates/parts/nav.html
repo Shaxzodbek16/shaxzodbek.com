@@ -14,7 +14,7 @@
             <li><a href="{% url 'root' %}">Home</a></li>
             <li><a href="{% url 'connections' %}">Connection</a></li>
             <li><a href="{% url 'cvs' %}">CV</a></li>
-            <li><a href="#">Problems</a></li>
+            <li><a href="{% url 'problems' %}">Problems</a></li>
             {% if request.user.is_staff %}
             <li><a href="{% url 'admin:index' %}">Admin</a></li>
             {% endif %}

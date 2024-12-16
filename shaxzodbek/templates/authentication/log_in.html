@@ -14,7 +14,7 @@
 <main class="sign-up-main">
     <div class="sign-up-main__form">
         <h1>Welcome Back!</h1>
-        <form id="loginForm" method="post" action="s{% url 'login' %}">
+        <form id="loginForm" method="post">
             {% csrf_token %}
             <div class="input-group">
                 <i class='bx bx-envelope input-icon'></i>
@@ -23,7 +23,7 @@
 
             <div class="input-group">
                 <i class='bx bx-lock-alt input-icon'></i>
-                <input name="password" type="password" placeholder="Parol o'ylan toping..." required>
+                <input name="password" type="password" placeholder="Parolingizni kiriting..." required>
                 <button class="password-toggle">
                     <i style="font-size: 20px" class='bx bx-show'></i>
                 </button>
@@ -57,25 +57,5 @@
     </div>
 </main>
 
-<script>
-    const toggleButtons = document.querySelectorAll('.password-toggle');
-    const loginForm = document.getElementById('loginForm');
-
-    toggleButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const input = button.previousElementSibling;
-            const icon = button.querySelector('i');
-
-            input.type = input.type === 'password' ? 'text' : 'password';
-            icon.classList.toggle('bx-show');
-            icon.classList.toggle('bx-hide');
-        });
-    });
-
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        console.log('Form submitted');
-    });
-</script>
 </body>
 </html>

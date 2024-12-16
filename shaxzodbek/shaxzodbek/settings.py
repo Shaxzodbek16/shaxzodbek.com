@@ -9,9 +9,9 @@ load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG", False)
+DEBUG = True
 host = os.getenv("ALLOWED_HOSTS")
-ALLOWED_HOSTS = [host, "localhost"]
+ALLOWED_HOSTS = ["*"]
 ADMIN_URL = os.getenv("ADMIN_URL")
 
 INSTALLED_APPS = [
@@ -44,10 +44,19 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = [
+    "https://shaxzodbek-muxtorov.jprq.site",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
 ]
 
 ROOT_URLCONF = "shaxzodbek.urls"

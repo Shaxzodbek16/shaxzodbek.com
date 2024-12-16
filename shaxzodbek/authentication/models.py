@@ -91,12 +91,14 @@ class OneTimePassword(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="otp")
     passcode = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
-    expiry = models.DateTimeField(
-        default=timezone.now() + timedelta(minutes=5)
-    )  # OTP expires after 5 minutes
+    expiry = models.DateTimeField(default=timezone.now() + timedelta(minutes=5))
 
     def __str__(self):
         return f"OTP for {self.user.email}: {self.passcode}"
+
+    def save(self, *args, **kwargs):
+        self.expiry = timezone.now() + timedelta(minutes=5)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "One Time Password"

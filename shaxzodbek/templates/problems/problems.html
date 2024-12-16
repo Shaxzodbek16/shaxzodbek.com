@@ -1,0 +1,67 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+{%  block title %}Articles{% endblock %}
+
+{%  block extra_css %}
+    <link rel="stylesheet" href="{% static 'problems/css/problems.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="problems-page">
+  <div class="header">
+    <h1>Problems</h1>
+    <div class="filters">
+      <select class="filter-select">
+        <option value="">Theme</option>
+        <option>Arrays</option>
+        <option>Strings</option>
+        <option>Dynamic Programming</option>
+      </select>
+      <select class="filter-select">
+        <option value="">Difficulty</option>
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+      <div class="search-container">
+        <input type="text" placeholder="Search">
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+  </div>
+
+  <table class="problems-table">
+    <thead>
+    <tr>
+      <th>Number</th>
+      <th>Title</th>
+      <th>Difficulty</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td>Two Sum</td>
+      <td>Easy</td>
+      <td>Accepted</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button><i class="fas fa-chevron-left"></i></button>
+    <button class="active">1</button>
+    <button>2</button>
+    <span class="dots">...</span>
+    <button>9</button>
+    <button>10</button>
+    <button><i class="fas fa-chevron-right"></i></button>
+  </div>
+</main>
+
+{% endblock %}
+{% block extra_js %}
+    <script href="{% static 'problems/js/problems.js' %}"></script>
+{% endblock %}
+

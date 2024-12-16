@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password, make_password
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.utils import timezone
 from django.urls import reverse
@@ -14,7 +15,7 @@ from .helpers import send_email
 def signup_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
-        name = request.POST.get("name")
+        first_name = request.POST.get("name")
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
 
@@ -27,15 +28,18 @@ def signup_view(request):
             return render(request, "authentication/sign_up.html")
 
         user = User.objects.create(
-            email=email, name=name, password=password1, is_active=False
+            email=email,
+            first_name=first_name,
+            password=make_password(password1),
+            is_active=False,
         )
-
+        user.save()
         passcode = user.generate_otp()
         OneTimePassword.objects.create(user=user, passcode=passcode)
 
         send_email(
             user.email,
-            {"name": user.name, "content": passcode, "sign_up": True},
+            {"name": user.first_name, "content": passcode, "sign_up": True},
         )
 
         messages.info(request, "A verification code has been sent to your email.")
@@ -47,16 +51,24 @@ def signup_view(request):
 
 def verify_email(request, slug):
     if request.method == "POST":
-        passcode_input = request.POST.get("passcode")
+        code1 = request.POST.get("code1")
+        code2 = request.POST.get("code2")
+        code3 = request.POST.get("code3")
+        code4 = request.POST.get("code4")
+        code5 = request.POST.get("code5")
+        code6 = request.POST.get("code6")
+        passcode = (code1 + code2 + code3 + code4 + code5 + code6).replace(" ", "")
+        passcode_input = int(passcode)
         try:
             user = User.objects.get(slug=slug)
             otp = user.otp
-            if otp.passcode == passcode_input:
+            if int(otp.passcode) == passcode_input:
                 user.is_active = True
                 user.save()
                 otp.delete()
+                login(request, user)
                 messages.success(request, "Email verified. You can now log in.")
-                return redirect("login")
+                return redirect("root")
             else:
                 messages.error(request, "Invalid verification code.")
         except User.DoesNotExist:
@@ -72,18 +84,16 @@ def login_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-
-        user = authenticate(request, email=email, password=password)
-
+        user = User.objects.get(email=email)
+        if not user.is_active:
+            pass
         if user:
-            if user.is_active:
+            if check_password(password, user.password):
                 login(request, user)
                 return redirect("root")
-            else:
-                messages.error(
-                    request, "Account is inactive. Please verify your email."
-                )
-                return redirect("activate_account")
+            messages.error(request, "Invalid email or password.")
+            return redirect("login")
+
         else:
             messages.error(request, "Invalid email or password.")
             return redirect("login")
@@ -128,7 +138,11 @@ def password_reset_request(request):
 
             send_email(
                 user.email,
-                {"name": user.name, "reset_url": reset_url, "password_reset": True},
+                {
+                    "name": user.first_name,
+                    "reset_url": reset_url,
+                    "password_reset": True,
+                },
             )
 
             messages.info(request, "A password reset link has been sent to your email.")
@@ -195,7 +209,11 @@ def activate_account(request):
 
             send_email(
                 user.email,
-                {"name": user.name, "content": passcode, "activate_account": True},
+                {
+                    "name": user.first_name,
+                    "content": passcode,
+                    "activate_account": True,
+                },
             )
             messages.info(request, "A verification code has been sent to your email.")
             return redirect("verify_email", slug=user.slug)

@@ -1,151 +1,94 @@
+
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background-image: url('../assets/sign_up_page.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    z-index: 1;
 }
 
 .verify-code-card {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 15px;
+    position: relative;
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-in-out;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
     max-width: 400px;
-    width: 100%;
+    width: 90%;
+    z-index: 2;
 }
 
 .verify-code-title {
-    font-family: Helvetica, 'serif';
-    font-size: 40px;
-    font-weight: 700;
-    line-height: 46px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
-    color: #515151;
-    margin: 0;
-    animation: slideInLeft 0.5s ease-in-out;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
 .verify-code-description {
-    color: #666;
-    font-family: Helvetica, 'serif';
     font-size: 16px;
-    font-weight: 400;
-    line-height: 26px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
-    animation: slideInRight 0.5s ease-in-out;
-}
-
-.verify-code-input-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
-    animation: fadeIn 0.5s ease-in-out 0.2s;
-    animation-fill-mode: backwards;
+    color: #666;
+    margin-bottom: 20px;
 }
 
 .verify-code-input {
-    width: 40px;
-    height: 40px;
     font-size: 24px;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
     text-align: center;
-    border: 2px solid transparent;
-    border-image: linear-gradient(to right, #E9B3FB, #5277DE) 1;
-    margin: 0 4px;
-    animation: inputFocus 0.3s ease-in-out;
-    animation-fill-mode: backwards;
-    transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
 .verify-code-input:focus {
+    border-color: #fda085;
     outline: none;
-    border-color: #4d90fe;
-    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(253, 160, 133, 0.5);
 }
 
 .verify-code-button {
-    background: linear-gradient(90.67deg, #F6B8FD -7.12%, #0B7077 114.37%);
-    width: 100%;
+    margin-top: 20px;
+    background: #fda085;
     color: white;
+    padding: 10px 15px;
     border: none;
     border-radius: 4px;
-    padding: 12px 0;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-    animation: fadeIn 0.5s ease-in-out 0.4s;
-    animation-fill-mode: backwards;
+    transition: background 0.3s ease;
 }
 
 .verify-code-button:hover {
-    background-color: #3c7ae6;
-    transform: translateY(-2px);
+    background: #f6d365;
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out;
 }
 
 @keyframes fadeIn {
-    0% {
+    from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(20px);
     }
-    100% {
+    to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes inputFocus {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes slideInLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInRight {
-    0% {
-        opacity: 0;
-        transform: translateX(50px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@media (max-width: 600px) {
-    .verify-code-card {
-        padding: 24px;
-    }
-
-    .verify-code-input {
-        width: 36px;
-        height: 36px;
-        font-size: 20px;
     }
 }
