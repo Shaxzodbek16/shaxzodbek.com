@@ -10,7 +10,6 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 from django.utils import timezone
-from django.utils.text import slugify
 from django.urls import reverse
 import random
 
@@ -44,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_picture = models.ImageField(
         upload_to="profile_pictures/%Y/%M/%d", blank=True, null=True
     )
-    slug = models.SlugField(max_length=160, unique=True, blank=True)
+    slug = models.SlugField(max_length=160, unique=True, default=uuid.uuid4())
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -56,20 +55,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["first_name"]
 
     objects = CustomUserManager()
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self.generate_unique_slug()
-        super().save(*args, **kwargs)
-
-    def generate_unique_slug(self):
-        slug = slugify(self.first_name)
-        unique_slug = slug
-        num = 1
-        while User.objects.filter(slug=unique_slug).exclude(pk=self.pk).exists():
-            unique_slug = f"{slug}-{num}"
-            num += 1
-        return unique_slug
 
     @staticmethod
     def generate_otp():
@@ -86,18 +71,28 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse("user_detail", kwargs={"slug": self.slug})
 
+    @property
+    def hash_email(self):
+        return self.email[:2] + "*" * len(self.email[2:-11]) + self.email[-11:]
+
 
 class OneTimePassword(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="otp")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="otps"
+    )  # Changed from OneToOneField to ForeignKey
     passcode = models.CharField(max_length=6)
+    purpose = models.CharField(
+        max_length=20, default="verification"
+    )  # Added purpose field
     created_at = models.DateTimeField(auto_now_add=True)
-    expiry = models.DateTimeField(default=timezone.now() + timedelta(minutes=5))
+    expiry = models.DateTimeField(blank=True)  # Remove default value from model
 
     def __str__(self):
         return f"OTP for {self.user.email}: {self.passcode}"
 
     def save(self, *args, **kwargs):
-        self.expiry = timezone.now() + timedelta(minutes=5)
+        if not self.expiry:
+            self.expiry = timezone.now() + timedelta(minutes=5)
         super().save(*args, **kwargs)
 
     class Meta:

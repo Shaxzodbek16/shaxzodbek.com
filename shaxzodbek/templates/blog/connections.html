@@ -1,51 +1,89 @@
 {% extends 'parts/base.html' %}
 {% load static %}
-{%  block title %}Articles{% endblock %}
+{% block title %}Articles{% endblock %}
 
-{%  block extra_css %}
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'blog/css/connections.css' %}">
 {% endblock %}
 
 {% block content %}
-<main class="connections_page">
-  <div class="connections_header">
-    <h1>My Connections</h1>
-    <div class="connections_search-container">
-      <input type="text" placeholder="Search connections">
-      <i class="fas fa-search search-icon"></i>
-    </div>
-  </div>
 
-  <div class="connections_grid">
-    <div class="connections_item">
-      <div class="connections_avatar">
-        <img src="/api/placeholder/80/80" alt="John Doe">
-      </div>
-      <div class="connections_content">
-        <h2 class="connections_name">John Doe</h2>
-        <div class="connections_job">Software Engineer</div>
-        <div class="connections_met-date">
-          <i class="far fa-calendar"></i>
-          Met on June 10, 2024
-        </div>
-        <div class="connections_location">
-          <i class="fas fa-map-marker-alt"></i>
-          San Francisco, CA
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="connections_pagination">
-    <button><i class="fas fa-chevron-left"></i></button>
-    <button class="active">1</button>
-    <button>2</button>
-    <span class="dots">...</span>
-    <button>9</button>
-    <button>10</button>
-    <button><i class="fas fa-chevron-right"></i></button>
-  </div>
-</main>
+    <main class="connections_page">
+        <div class="connections_header">
+            <h1>My Connections</h1>
+            <div class="connections_search-container">
+                <form method="post" class="connections_search-form">
+                    {% csrf_token %}
+                    <input name="search" type="text" class="connections_search-input" placeholder="Search connections"
+                            {% if current_value %} value="{{ current_value }}"{% endif %}>
+                    <button type="submit" class="connections_search-button">
+                        <i class="fa fa-search"></i> search
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% if page_obj %}
+            <div class="connections_grid">
+                {% for connection in page_obj %}
+                    <div class="connections_item">
+                        <div class="connections_avatar">
+                            <img src="{{ connection.picture.url }}"
+                                 alt="{{ connection.first_name }} {{ connection.last_name }}">
+                        </div>
+                        <div class="connections_content">
+                            <h2 class="connections_name">{{ connection.first_name }} {{ connection.last_name }}</h2>
+                            <div class="connections_job"><i class="bx bx-shopping-bag"></i> {{ connection.job_title }}
+                            </div>
+                            <div class="connections_met-date">
+                                <i class="bx bx-calendar"></i>
+                                Met on {{ connection.met_at.date }}
+                            </div>
+                            <div class="connections_location">
+                                <i class='bx bx-current-location'></i>
+                                {{ connection.met_address }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-connections">
+                <h1>No People found</h1>
+            </div>
+        {% endif %}
+        {% if page_obj.paginator.count < 8 %}
+            <style>
+                footer {
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                }
+            </style>
+        {% endif %}
+        {% if page_obj.paginator.count > 9 %}
+            <div class="connections_pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1"><i class="fas fa-angle-double-left"></i></a>
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <span class="active">{{ num }}</span>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fas fa-angle-double-right"></i></a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </main>
+
 {% endblock %}
 
 {% block extra_js %}

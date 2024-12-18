@@ -19,13 +19,42 @@ def signup_view(request):
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
 
+        if User.objects.filter(email=email).exists():
+            if not User.objects.get(email=email).is_active:
+                user = User.objects.get(email=email)
+                # Delete any existing OTPs for this user
+                OneTimePassword.objects.filter(user=user).delete()
+                passcode = user.generate_otp()
+                OneTimePassword.objects.create(user=user, passcode=passcode)
+                send_email(
+                    user.email,
+                    {"name": user.first_name, "content": passcode, "sign_up": True},
+                )
+                return redirect("verify_email", slug=user.slug)
+            messages.error(request, "Email already exists with another account.")
+            return render(
+                request,
+                "authentication/sign_up.html",
+                context={
+                    "email": email,
+                    "name": first_name,
+                    "password1": password1,
+                    "password2": password2,
+                },
+            )
+
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
-            return render(request, "authentication/sign_up.html")
-
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already registered.")
-            return render(request, "authentication/sign_up.html")
+            return render(
+                request,
+                "authentication/sign_up.html",
+                context={
+                    "email": email,
+                    "name": first_name,
+                    "password1": password1,
+                    "password2": password2,
+                },
+            )
 
         user = User.objects.create(
             email=email,
@@ -33,50 +62,72 @@ def signup_view(request):
             password=make_password(password1),
             is_active=False,
         )
-        user.save()
+
         passcode = user.generate_otp()
         OneTimePassword.objects.create(user=user, passcode=passcode)
 
-        send_email(
+        if not send_email(
             user.email,
             {"name": user.first_name, "content": passcode, "sign_up": True},
-        )
+        ):
+            messages.error(request, "Failed to send verification email.")
+            return render(
+                request,
+                "authentication/sign_up.html",
+                context={
+                    "email": email,
+                    "name": first_name,
+                    "password1": password1,
+                    "password2": password2,
+                },
+            )
 
         messages.info(request, "A verification code has been sent to your email.")
-
         return redirect("verify_email", slug=user.slug)
-    else:
-        return render(request, "authentication/sign_up.html")
+
+    return render(request, "authentication/sign_up.html")
 
 
+# todo: should fix this view
 def verify_email(request, slug):
     if request.method == "POST":
-        code1 = request.POST.get("code1")
-        code2 = request.POST.get("code2")
-        code3 = request.POST.get("code3")
-        code4 = request.POST.get("code4")
-        code5 = request.POST.get("code5")
-        code6 = request.POST.get("code6")
-        passcode = (code1 + code2 + code3 + code4 + code5 + code6).replace(" ", "")
-        passcode_input = int(passcode)
+        code = request.POST.get("code")
+        passcode = code.replace(" ", "").strip()
+
         try:
             user = User.objects.get(slug=slug)
-            otp = user.otp
-            if int(otp.passcode) == passcode_input:
+            otp = OneTimePassword.objects.filter(
+                user=user, purpose="verification"
+            ).latest("created_at")
+
+            if otp.expiry < timezone.now():
+                otp.delete()
+                messages.error(
+                    request, "Verification code has expired. Please request a new one."
+                )
+                return render(
+                    request, "authentication/verify_email.html", {"slug": slug}
+                )
+
+            if int(otp.passcode) == int(passcode):
                 user.is_active = True
                 user.save()
                 otp.delete()
                 login(request, user)
-                messages.success(request, "Email verified. You can now log in.")
                 return redirect("root")
             else:
                 messages.error(request, "Invalid verification code.")
+                return render(
+                    request, "authentication/verify_email.html", {"slug": slug}
+                )
+
         except User.DoesNotExist:
             messages.error(request, "User does not exist.")
         except OneTimePassword.DoesNotExist:
             messages.error(request, "Verification code expired or invalid.")
-    else:
-        return render(request, "authentication/verify_email.html", {"slug": slug})
+        except ValueError:
+            messages.error(request, "Invalid verification code format.")
+
     return render(request, "authentication/verify_email.html", {"slug": slug})
 
 
@@ -84,42 +135,77 @@ def login_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = User.objects.get(email=email)
-        if not user.is_active:
-            pass
-        if user:
+
+        try:
+            user = User.objects.get(email=email)
+            if not user.is_active:
+                OneTimePassword.objects.filter(user=user).delete()
+                passcode = user.generate_otp()
+                OneTimePassword.objects.create(
+                    user=user, passcode=passcode, purpose="verification"
+                )
+                send_email(
+                    user.email,
+                    {"name": user.first_name, "content": passcode, "sign_up": True},
+                )
+                messages.info(
+                    request,
+                    "Account is not activated. A verification code has been sent to your email.",
+                )
+                return render(request, "authentication/verify_email.html", {"email": user.hash_email})
+
             if check_password(password, user.password):
                 login(request, user)
-                return redirect("root")
-            messages.error(request, "Invalid email or password.")
-            return redirect("login")
+                return render(request, "blog/home.html", {"slug": user.slug})
 
-        else:
             messages.error(request, "Invalid email or password.")
-            return redirect("login")
-    else:
-        return render(request, "authentication/log_in.html")
+
+        except User.DoesNotExist:
+            messages.error(request, "Invalid email or password.")
+
+        return render(
+            request,
+            "authentication/log_in.html",
+            context={"email": email, "password": password},
+        )
+
+    return render(request, "authentication/log_in.html")
 
 
 @login_required
 def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out.")
-    return redirect("login")
+    return redirect("root")
 
 
 @login_required
 def user_profile(request, slug):
     profile = get_object_or_404(User, slug=slug)
-    return render(
-        request, "authentication/user_profile.html", {"user_profile": profile}
-    )
+
+    if request.method == "POST":
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        date_of_birth = request.POST.get("date_of_birth")
+        profile_picture = request.FILES.get("profile_picture")
+
+        profile.first_name = first_name
+        profile.last_name = last_name
+        profile.date_of_birth = date_of_birth
+
+        if profile_picture:
+            profile.profile_picture = profile_picture
+
+        profile.save()
+        messages.success(request, "Profile updated successfully.")
+        return redirect("profile", slug=profile.slug)
+
+    return render(request, "authentication/profile.html", {"user_profile": profile})
 
 
 def password_reset_request(request):
     if request.method == "POST":
         email = request.POST.get("email")
-
         try:
             user = User.objects.get(email=email)
             reset_token = str(uuid.uuid4())
@@ -140,7 +226,7 @@ def password_reset_request(request):
                 user.email,
                 {
                     "name": user.first_name,
-                    "reset_url": reset_url,
+                    "content": reset_url,
                     "password_reset": True,
                 },
             )
@@ -196,29 +282,3 @@ def password_reset_confirm(request, token):
     return render(
         request, "authentication/password_reset_confirm.html", {"token": token}
     )
-
-
-def activate_account(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-
-        try:
-            user = User.objects.get(email=email)
-            passcode = user.generate_otp()
-            OneTimePassword.objects.create(user=user, passcode=passcode)
-
-            send_email(
-                user.email,
-                {
-                    "name": user.first_name,
-                    "content": passcode,
-                    "activate_account": True,
-                },
-            )
-            messages.info(request, "A verification code has been sent to your email.")
-            return redirect("verify_email", slug=user.slug)
-
-        except User.DoesNotExist:
-            messages.error(request, "No account found with that email.")
-            return render(request, "authentication/verify_email.html")
-    return render(request, "authentication/verify_email.html")

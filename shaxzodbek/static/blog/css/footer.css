@@ -2,8 +2,10 @@
 footer {
     background-color: #e5eeed;
     padding: 3rem 2rem;
-    position: relative;
     overflow: hidden;
+    position: relative;
+    width: 100%;
+    bottom: 0;
 }
 
 footer::before {
@@ -21,7 +23,7 @@ footer::before {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
 }
 

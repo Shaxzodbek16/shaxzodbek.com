@@ -1,4 +1,5 @@
 import uuid
+from email.policy import default
 
 from django.db import models
 
@@ -120,14 +121,16 @@ class ProgrammingLanguage(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
-    author = models.ManyToManyField(Author, related_name="books_author")
+    authors = models.ManyToManyField(Author, related_name="books_author")
     purpose = models.CharField(max_length=255)
     picture = models.ImageField(upload_to="blog/book/%Y/%m/%d")
-    book = models.FileField(upload_to="blog/files/book/%Y/%m/%d")
+    book_file = models.FileField(upload_to="blog/files/book/%Y/%m/%d")
     programming_language = models.ForeignKey(
         ProgrammingLanguage, on_delete=models.DO_NOTHING
     )
-    category = models.ManyToManyField(Category, related_name="books_categories")
+    categories = models.ManyToManyField(Category, related_name="books_categories")
+    download_count = models.IntegerField(default=0)
+    slug = models.SlugField(default=str(uuid.uuid4()), unique=True)
 
     def __str__(self):
         return self.title
@@ -141,22 +144,19 @@ class Book(models.Model):
 
 class Video(models.Model):
     title = models.CharField(max_length=255)
+    description = models.TextField()
     url = models.URLField()
-    created = models.DateTimeField()
+    created_at = models.DateTimeField()
     thumbnail = models.ImageField(upload_to="blog/video/%Y/%m/%d")
 
     def __str__(self):
-        return f"{self.title} at {self.created}"
+        return f"{self.title} at {self.created_at}"
 
     class Meta:
-        ordering = ["-created"]
+        ordering = ["-created_at"]
         verbose_name = "Video"
         verbose_name_plural = "Videos"
         db_table = "video"
-
-
-from django.db import models
-from slugify import slugify
 
 
 class Technology(models.Model):

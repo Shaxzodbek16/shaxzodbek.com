@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+{% include 'parts/notifications.html' %}
 <div class="background-circle circle-top-1"></div>
 <div class="background-circle circle-top-2"></div>
 <div class="background-circle circle-top-1-2"></div>
@@ -27,17 +28,20 @@
                 {% csrf_token %}
                 <div class="input-group">
                     <i class='bx bx-user input-icon'></i>
-                    <input name="name" type="text" placeholder="Ismingizni kiriting..." required>
+                    <input name="name" type="text" placeholder="Ismingizni kiriting..." required
+                           {% if name %}value="{{ name }}"{% endif %}>
                 </div>
 
                 <div class="input-group">
                     <i class='bx bx-envelope input-icon'></i>
-                    <input name="email" type="email" placeholder="Emailingizni kiriting..." required>
+                    <input name="email" type="email" placeholder="Emailingizni kiriting..." required
+                            {% if email %} value="{{ email }}"{% endif %}>
                 </div>
 
                 <div class="input-group">
                     <i class='bx bx-lock-alt input-icon'></i>
-                    <input type="password" name="password1" placeholder="Parol o'ylan toping..." required>
+                    <input type="password" name="password1" placeholder="Parol o'ylan toping..." required
+                    {% if password1 %} value="{{ password1 }}"{% endif %}>
                     <button type="button" class="password-toggle">
                         <i class='bx bx-show' style="font-size: 20px"></i>
                     </button>
@@ -45,7 +49,8 @@
 
                 <div class="input-group">
                     <i class='bx bx-lock-alt input-icon'></i>
-                    <input name="password2" type="password" placeholder="Parolni qaytadan kiriting..." required>
+                    <input name="password2" type="password" placeholder="Parolni qaytadan kiriting..." required
+                    {% if password2 %} value="{{ password2 }}"{% endif %}>
                     <button type="button" class="password-toggle">
                         <i class='bx bx-show' style="font-size: 20px"></i>
                     </button>
@@ -98,9 +103,25 @@
             document.querySelector('.divider').classList.add('active');
             document.querySelector('.social-buttons').classList.add('active');
         }, 300);
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+        // Handle close button clicks
+        document.querySelectorAll('.notification-close').forEach(button => {
+            button.addEventListener('click', () => {
+                const notification = button.closest('.notification');
+                notification.style.animation = 'fadeOut 0.5s forwards';
+                setTimeout(() => {
+                    notification.remove();
+                }, 1500);
+            });
+        });
 
-
-
+        // Auto-remove notifications after they fade out
+        document.querySelectorAll('.notification').forEach(notification => {
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        });
     });
 </script>
 </body>

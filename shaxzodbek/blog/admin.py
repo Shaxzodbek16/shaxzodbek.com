@@ -374,10 +374,10 @@ class ProgrammingLanguageAdmin(admin.ModelAdmin):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "programming_language", "picture_tag")
-    list_filter = ("programming_language", "category")
-    search_fields = ("title", "purpose", "author__first_name", "author__last_name")
+    list_filter = ("programming_language", "categories")
+    search_fields = ("title", "purpose", "authors__first_name", "authors__last_name")
     ordering = ("title",)
-    filter_horizontal = ("author", "category")
+    filter_horizontal = ("authors", "categories")
     readonly_fields = ("picture_preview",)
     fieldsets = (
         (
@@ -387,8 +387,8 @@ class BookAdmin(admin.ModelAdmin):
                     "title",
                     "purpose",
                     "programming_language",
-                    "author",
-                    "category",
+                    "authors",
+                    "categories",
                 )
             },
         ),
@@ -432,13 +432,13 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ("title", "created", "thumbnail_tag")
-    list_filter = ("created",)
+    list_display = ("title", "created_at", "thumbnail_tag", "description")
+    list_filter = ("created_at",)
     search_fields = ("title", "url")
-    ordering = ("-created",)
+    ordering = ("-created_at",)
     readonly_fields = ("thumbnail_preview",)
     fieldsets = (
-        (None, {"fields": ("title", "url", "created")}),
+        (None, {"fields": ("title", "url", "created_at", "description")}),
         (
             "Image",
             {
@@ -446,7 +446,7 @@ class VideoAdmin(admin.ModelAdmin):
             },
         ),
     )
-    date_hierarchy = "created"
+    date_hierarchy = "created_at"
     list_per_page = 25
 
     def thumbnail_tag(self, obj):

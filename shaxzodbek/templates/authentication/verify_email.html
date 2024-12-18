@@ -16,13 +16,13 @@
 <div class="verify-code-card fade-in">
     <h2 class="verify-code-title">Verify Your Code</h2>
     <p class="verify-code-description">
-        Enter the 6-digit passcode you received on your email address ending with ******@gmail.com
+        Enter the 6-digit passcode you received on your email address ending with {{ email }}
     </p>
     <form method="post">
         {% csrf_token %}
         <label>
             <input name="code" type="text" class="verify-code-input" maxlength="6" pattern="\d{6}" autofocus required
-                   placeholder="Enter code here">
+                   placeholder="Enter code here" {% if passcode %}value="{{ passcode }}" {% endif %}>
         </label>
         <button type="submit" class="verify-code-button">Verify</button>
     </form>

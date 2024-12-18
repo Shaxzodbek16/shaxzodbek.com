@@ -1,0 +1,73 @@
+{% extends 'parts/base.html' %}
+{% load static %}
+
+{% block title %}Profile - {{ user_profile.first_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'authentication/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-cover"></div>
+        <div class="profile-avatar">
+            {% if user_profile.profile_picture %}
+                <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+                <div class="avatar-placeholder">
+                    {{ user_profile.first_name|make_list|first|upper }}
+                </div>
+            {% endif %}
+        </div>
+        <h1 class="profile-name">{{ user_profile.first_name }} {{ user_profile.last_name|default:"" }}</h1>
+        <p class="profile-email">{{ user_profile.email }}</p>
+    </div>
+
+    <div class="profile-content">
+        <form method="POST" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <h2>Personal Information</h2>
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ user_profile.first_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ user_profile.last_name|default:'' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth</label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" value="{{ user_profile.data_of_birth|date:'Y-m-d'|default:'' }}">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Profile Picture</h2>
+                <div class="form-group file-upload">
+                    <label for="profile_picture" class="file-label">
+                        <i class='bx bx-upload'></i>
+                        <span>Choose a file</span>
+                    </label>
+                    <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                    <p class="file-name">No file chosen</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-btn">
+                    <i class='bx bx-save'></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'authentication/js/profile.js' %}"></script>
+{% endblock %}

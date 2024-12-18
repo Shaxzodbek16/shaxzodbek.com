@@ -1,6 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 import datetime
+from django.core.paginator import Paginator
 
 from .models import (
     Article,
@@ -28,10 +31,14 @@ def calculate_age(birth_date):
 
 
 def root(request):
+    videos_4 = Video.objects.all()[:4]
+    books_4 = Book.objects.all()[:4]
+    age = calculate_age(datetime.date(2005, 8, 16))
+
     return render(
         request,
         "blog/home.html",
-        context={"age": calculate_age(datetime.date(1990, 1, 1))},
+        context={"age": age, "videos": videos_4, "books": books_4},
     )
 
 
@@ -85,6 +92,15 @@ def books(request):
     )
 
 
+def download_book(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    book.download_count += 1
+    book.save()
+    response = HttpResponse(book.book_file, content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="{book.title}.pdf"'
+    return response
+
+
 def connections(request):
     query = request.POST.get("search", "") if request.method == "POST" else ""
     filter_conditions = (
@@ -109,10 +125,14 @@ def connections(request):
             else Connection.objects.filter(listed=True)
         )
 
+    paginator = Paginator(result, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         "blog/connections.html",
-        context={"people": list(set(result)), "current_value": query},
+        context={"page_obj": page_obj, "current_value": query},
     )
 
 

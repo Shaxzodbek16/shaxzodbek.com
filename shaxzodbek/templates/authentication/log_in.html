@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'authentication/css/log_in.css' %}">
 </head>
 <body>
+{% include 'parts/notifications.html' %}
 <div class="background-circle circle-bottom-1"></div>
 <div class="background-circle circle-bottom-1-2"></div>
 <main class="sign-up-main">
@@ -18,12 +19,14 @@
             {% csrf_token %}
             <div class="input-group">
                 <i class='bx bx-envelope input-icon'></i>
-                <input name="email" type="email" placeholder="Emailingizni kiriting..." required>
+                <input name="email" type="email" placeholder="Emailingizni kiriting..." required
+                       {% if email %}value="{{ email }}"{% endif %}>
             </div>
 
             <div class="input-group">
                 <i class='bx bx-lock-alt input-icon'></i>
-                <input name="password" type="password" placeholder="Parolingizni kiriting..." required>
+                <input name="password" type="password" placeholder="Parolingizni kiriting..." required
+                {% if password %}value="{{ password }}"{% endif %}>
                 <button class="password-toggle">
                     <i style="font-size: 20px" class='bx bx-show'></i>
                 </button>
@@ -56,6 +59,23 @@
         <img src="{% static 'authentication/img/log_in.png' %}" alt="Sign Up Illustration">
     </div>
 </main>
-
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.notification-close').forEach(button => {
+            button.addEventListener('click', () => {
+                const notification = button.closest('.notification');
+                notification.style.animation = 'fadeOut 0.5s forwards';
+                setTimeout(() => {
+                    notification.remove();
+                }, 1500);
+            });
+        });
+        document.querySelectorAll('.notification').forEach(notification => {
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        });
+    });
+</script>
 </body>
 </html>

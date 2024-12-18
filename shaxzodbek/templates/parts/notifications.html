@@ -1,0 +1,276 @@
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<div class="notification-container" id="notificationContainer">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notification {{ message.tags }}">
+                <div class="notification-content">
+                    <!-- Icon container -->
+                    <div class="notification-icon">
+                        {% if message.tags == 'success' %}
+                            <i class='bx bx-check-circle'></i>
+                        {% elif message.tags == 'error' %}
+                            <i class='bx bx-x-circle'></i>
+                        {% elif message.tags == 'warning' %}
+                            <i class='bx bx-error'></i>
+                        {% elif message.tags == 'info' %}
+                            <i class='bx bx-info-circle'></i>
+                        {% endif %}
+                    </div>
+
+                    <!-- Message content -->
+                    <div class="notification-text">
+                        <h4 class="notification-title">
+                            {% if message.tags == 'success' %}
+                                Success
+                            {% elif message.tags == 'error' %}
+                                Error
+                            {% elif message.tags == 'warning' %}
+                                Warning
+                            {% elif message.tags == 'info' %}
+                                Information
+                            {% endif %}
+                        </h4>
+                        <span class="notification-message">{{ message }}</span>
+                    </div>
+                    <button class="notification-close" aria-label="Close notification">
+                        <i class='bx bx-x'></i>
+                    </button>
+                </div>
+                <div class="notification-progress"></div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<style>
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.notification {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 10px;
+    min-width: 320px;
+    max-width: 90vw;
+    transform: translateX(120%);
+    animation: slideIn 0.5s forwards;
+    pointer-events: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.notification-icon {
+    flex-shrink: 0;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-text {
+    flex-grow: 1;
+    margin-right: 8px;
+}
+
+.notification-title {
+    margin: 0 0 4px 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.notification-message {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #4a5568;
+    display: block;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    transition: opacity 0.3s;
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+/* Progress bar */
+.notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    animation: progress 5s linear forwards;
+}
+
+
+.notification.success {
+    background-color: #f0fff4;
+    border-left: 4px solid #48bb78;
+}
+
+.notification.success .notification-icon,
+.notification.success .notification-title {
+    color: #48bb78;
+}
+
+.notification.success .notification-progress {
+    background-color: #48bb78;
+}
+
+/* Error notification */
+.notification.error {
+    background-color: #fff5f5;
+    border-left: 4px solid #f56565;
+}
+
+.notification.error .notification-icon,
+.notification.error .notification-title {
+    color: #f56565;
+}
+
+.notification.error .notification-progress {
+    background-color: #f56565;
+}
+
+/* Warning notification */
+.notification.warning {
+    background-color: #fffbeb;
+    border-left: 4px solid #ed8936;
+}
+
+.notification.warning .notification-icon,
+.notification.warning .notification-title {
+    color: #ed8936;
+}
+
+.notification.warning .notification-progress {
+    background-color: #ed8936;
+}
+
+/* Info notification */
+.notification.info {
+    background-color: #f0e6ff;
+    border-left: 4px solid #7b2cbf;
+}
+
+.notification.info .notification-icon,
+.notification.info .notification-title {
+    color: #7b2cbf;
+}
+
+.notification.info .notification-progress {
+    background-color: #7b2cbf;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+}
+
+@keyframes progress {
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .notification-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+
+    .notification {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .notification-title {
+        font-size: 13px;
+    }
+
+    .notification-message {
+        font-size: 12px;
+    }
+}
+
+/* Animation for removing notifications */
+.notification.removing {
+    animation: fadeOut 0.5s forwards;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const notifications = document.querySelectorAll('.notification');
+
+    notifications.forEach(notification => {
+        // Handle close button clicks
+        const closeBtn = notification.querySelector('.notification-close');
+        closeBtn.addEventListener('click', () => {
+            notification.classList.add('removing');
+            setTimeout(() => {
+                notification.remove();
+            }, 500);
+        });
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.classList.add('removing');
+                setTimeout(() => {
+                    notification.remove();
+                }, 1000);
+            }
+        }, 5000);
+    });
+});
+</script>

@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 def send_email(recipient, context):
     i = 0
-    if i==3:
+    if i == 3:
         return False
     logging.info(f"Sending email to {recipient}")
     subject = "Subject"
@@ -41,4 +41,3 @@ if __name__ == "__main__":
         )
         logging.info(f"Email sending process finished with result: {result}")
         print(i)
-

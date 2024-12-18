@@ -8,7 +8,7 @@
     <header>
         <div class="content">
             <div class="content-text">
-                <h1>Muxtorov Shaxzodbek<br>Software Engineer<br>Python</h1>
+                <h1>I am {{ age }} years old <br>Muxtorov Shaxzodbek<br>Python <br> Software Engineer</h1>
                 <div class="content-buttons">
                     <a href="{% url 'articles' %}">Read Blog</a>
                     <a href="{% url 'about_me' %}">About Me</a>
@@ -24,117 +24,77 @@
     </header>
 {% endblock %}
 {% block extra_content %}
+    {% if videos %}
     <main class="videos">
         <div class="videos__title">
             <h1 class="videos__heading">Videos</h1>
-            <div class="videos__underline">
-                <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
-                    <path d="M0,40 Q500,0 1000,40"/>
-                </svg>
-            </div>
-        </div>
-
-        <div class="videos__container">
-            <!-- Card 1 -->
-            <div class="videos__card">
-                <div class="videos__card-image videos__card-image--analytics">
-                    <img src="/assets/sign_up.png" alt="Analytics visualization">
-                </div>
-                <div class="videos__card-content">
-                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
-                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                    <div class="videos__card-footer">
-                        <span class="videos__card-date">1 - 28 July 2024</span>
-                        <button class="videos__card-button">Read More</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="videos__card">
-                <div class="videos__card-image videos__card-image--business">
-                    <img src="/assets/sign_up.png" alt="Business graphics">
-                </div>
-                <div class="videos__card-content">
-                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
-                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                    <div class="videos__card-footer">
-                        <span class="videos__card-date">1 - 28 July 2024</span>
-                        <button class="videos__card-button">Read More</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="videos__card">
-                <div class="videos__card-image videos__card-image--smile">
-                    <img src="/assets/sign_up.png" alt="Smiley face">
-                </div>
-                <div class="videos__card-content">
-                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
-                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                    <div class="videos__card-footer">
-                        <span class="videos__card-date">1 - 28 July 2024</span>
-                        <button class="videos__card-button">Read More</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="videos__card">
-                <div class="videos__card-image videos__card-image--python">
-                    <img src="/assets/sign_up.png" alt="Python logo">
-                </div>
-                <div class="videos__card-content">
-                    <h3 class="videos__card-title">Lorem Ipsum is simply dummy text of</h3>
-                    <p class="videos__card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                    <div class="videos__card-footer">
-                        <span class="videos__card-date">1 - 28 July 2024</span>
-                        <button class="videos__card-button">Read More</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-{% endblock %}
-{% block extra_content_2 %}
-    <main class="book">
-        <div class="book__title">
-            <h1 class="book__heading">Books</h1>
             <div class="videos__underline">
                 <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
                     <path d="M0,40 Q500,0 1000,40"></path>
                 </svg>
             </div>
         </div>
-        <p class="book__description">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        </p>
 
-        <div class="book__container">
-            <div class="book__dual-card">
-                <div class="book__cover-card">
-                    <img src="assets/sign_up.png" alt="Book Cover">
+        <div class="videos__container">
+            {% for video in videos %}
+            <div class="videos__card">
+                <div class="videos__card-image videos__card-image--analytics">
+                    <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
                 </div>
-                <div class="book__detail-card">
-                    <h2 class="book__card-title">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry.</h2>
-                    <p class="book__card-description">Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                    <p class="book__card-authors">Authors: Lorem Ipsum</p>
-                    <p class="book__card-categories">Categories: Lorem Ipsum</p>
-                    <p class="book__card-programming_languages">Programming Languages: Lorem Ipsum</p>
-                    <a href="#" class="book__read-button">Now Read!</a>
+                <div class="videos__card-content">
+                    <h3 class="videos__card-title">{{ video.title }}</h3>
+                    <p class="videos__card-text">{{ video.description }}</p>
+                    <div class="videos__card-footer">
+                        <span class="videos__card-date">{{ video.created_at.date }}</span>
+                        <a class="videos__card-button" href="{{ video.url }}" target="_blank">Watch Now</a>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
+        </div>
+    </main>
+    {% endif %}
+{% endblock %}
+{% block extra_content_2 %}
+        <main class="book">
+        <div class="book__title">
+            <h1 class="book__heading">Books</h1>
+            <div class="book__underline">
+                <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
+                    <path d="M0,40 Q500,0 1000,40"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="book__container">
+            {% for book in books %}
+            <div class="book__card">
+                <div class="book__image-wrapper">
+                    <img src="{{ book.picture.url }}" alt="{{ book.title }}" class="book__image">
+                </div>
+                <div class="book__content">
+                    <h2 class="book__card-title">{{ book.title }}</h2>
+                    <p class="book__card-description">{{ book.purpose }}</p>
+
+                    <div class="book__info">
+                        <p><span>Authors:</span>
+                            {% for author in book.authors.all %}
+                                {{ author }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}.
+                        </p>
+                        <p><span>Categories:</span>
+                            {% for category in book.categories.all %}
+                                {{ category }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}.
+                        </p>
+                        <p><span>Programming Languages:</span> {{ book.programming_language }}.</p>
+                        <p>{{ book.download_count }} <span>users download this book! </span></p>
+                    </div>
+
+                    <a href="{% url 'download_book' book.slug %}" download class="book__read-button">Read Now</a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </main>
 {% endblock %}

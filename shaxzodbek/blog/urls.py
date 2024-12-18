@@ -11,6 +11,7 @@ from .views import (
     cvs,
     about_me,
     csrf_exempt_,
+    download_book,
 )
 
 from django.views.decorators.csrf import csrf_exempt
@@ -22,6 +23,7 @@ urlpatterns = [
     path("articles/<str:slug>/", article, name="article"),
     path("videos/", videos, name="videos"),
     path("books/", books, name="books"),
+    path("books/download/<slug:slug>/", download_book, name="download_book"),
     path("connections/", connections, name="connections"),
     path("cvs/", cvs, name="cvs"),
     path("cvs/<slug:slug>/", cv, name="cv"),
