@@ -1,79 +1,16 @@
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils import timezone
-from django.db import IntegrityError
 from .models import (
-    Article,
     Match,
     Connection,
     Author,
     Category,
     ProgrammingLanguage,
-    Book,
     Video,
 )
 from datetime import date, timedelta
 
-
-class ArticleModelTest(TestCase):
-    def setUp(self):
-        self.article = Article.objects.create(
-            title="Test Article",
-            body="This is a test article body.",
-            created=timezone.now(),
-            slug="test-article",
-        )
-
-    def test_article_creation(self):
-        self.assertTrue(isinstance(self.article, Article))
-        self.assertEqual(self.article.__str__(), "Test Article")
-
-    def test_slug_generation(self):
-        article = Article.objects.create(
-            title="Another Test Article",
-            body="This is another test article body.",
-            created=timezone.now(),
-        )
-        self.assertEqual(article.slug, "another-test-article")
-
-    def test_slug_update(self):
-        self.article.title = "Updated Test Article"
-        self.article.save()
-        self.assertEqual(self.article.slug, "updated-test-article")
-
-    def test_unique_slug(self):
-        with self.assertRaises(IntegrityError):
-            Article.objects.create(
-                title="Test Article",
-                body="This should fail due to duplicate slug.",
-                created=timezone.now(),
-            )
-
-    def test_prev_property(self):
-        earlier_article = Article.objects.create(
-            title="Earlier Article",
-            body="This is an earlier article.",
-            created=timezone.now() - timedelta(days=1),
-        )
-        self.assertNotEqual(self.article.prev, earlier_article)
-
-    def test_next_property(self):
-        later_article = Article.objects.create(
-            title="Later Article",
-            body="This is a later article.",
-            created=timezone.now() + timedelta(days=1),
-        )
-        self.assertEqual(self.article.next, later_article)
-
-    def test_ordering(self):
-        Article.objects.create(
-            title="New Article",
-            body="New content",
-            created=timezone.now() + timedelta(hours=1),
-        )
-        articles = Article.objects.all()
-        self.assertEqual(articles[0].title, "New Article")
-        self.assertEqual(articles[1].title, "Test Article")
 
 
 class MatchModelTest(TestCase):
@@ -199,61 +136,13 @@ class ProgrammingLanguageModelTest(TestCase):
         self.assertEqual(languages[1].name, "JavaScript")
 
 
-class BookModelTest(TestCase):
-    def setUp(self):
-        self.author = Author.objects.create(first_name="John", last_name="Doe")
-        self.category = Category.objects.create(name="Programming")
-        self.language = ProgrammingLanguage.objects.create(name="Python")
-        self.book = Book.objects.create(
-            title="Python for Beginners",
-            purpose="Learning Python",
-            picture=SimpleUploadedFile(
-                "book_cover.jpg", b"file_content", content_type="image/jpeg"
-            ),
-            book=SimpleUploadedFile(
-                "python_book.pdf", b"file_content", content_type="application/pdf"
-            ),
-            programming_language=self.language,
-        )
-        self.book.author.add(self.author)
-        self.book.category.add(self.category)
-
-    def test_book_creation(self):
-        self.assertTrue(isinstance(self.book, Book))
-        self.assertEqual(self.book.__str__(), "Python for Beginners")
-
-    def test_many_to_many_relationships(self):
-        self.assertEqual(self.book.author.count(), 1)
-        self.assertEqual(self.book.category.count(), 1)
-        self.assertEqual(self.book.author.first(), self.author)
-        self.assertEqual(self.book.category.first(), self.category)
-
-    def test_foreign_key_relationship(self):
-        self.assertEqual(self.book.programming_language, self.language)
-
-    def test_ordering(self):
-        Book.objects.create(
-            title="Advanced Python",
-            purpose="Advanced Python techniques",
-            picture=SimpleUploadedFile(
-                "advanced_cover.jpg", b"file_content", content_type="image/jpeg"
-            ),
-            book=SimpleUploadedFile(
-                "advanced_python.pdf", b"file_content", content_type="application/pdf"
-            ),
-            programming_language=self.language,
-        )
-        books = Book.objects.all()
-        self.assertEqual(books[0].title, "Python for Beginners")
-        self.assertEqual(books[1].title, "Advanced Python")
-
 
 class VideoModelTest(TestCase):
     def setUp(self):
         self.video = Video.objects.create(
             title="Test Video",
             url="https://example.com/video",
-            created=timezone.now(),
+            created_at=timezone.now(),
             thumbnail=SimpleUploadedFile(
                 "thumbnail.jpg", b"file_content", content_type="image/jpeg"
             ),
@@ -267,7 +156,7 @@ class VideoModelTest(TestCase):
         Video.objects.create(
             title="New Video",
             url="https://example.com/new-video",
-            created=timezone.now() + timedelta(hours=1),
+            created_at=timezone.now() + timedelta(hours=1),
             thumbnail=SimpleUploadedFile(
                 "new_thumbnail.jpg", b"file_content", content_type="image/jpeg"
             ),
