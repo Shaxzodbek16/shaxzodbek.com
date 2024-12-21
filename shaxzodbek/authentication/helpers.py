@@ -1,5 +1,7 @@
 import logging
 import os
+import random
+
 import django
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -33,11 +35,10 @@ def send_email(recipient, context):
 
 if __name__ == "__main__":
 
-    for i in range(101):
-        logging.info("Starting email sending process")
-        result = send_email(
-            "shermatovjasur800@gmail.com",
-            {"name": "Shaxzodbek", "content": f"{i+1}. Hello", "sign_up": True},
-        )
-        logging.info(f"Email sending process finished with result: {result}")
-        print(i)
+
+    logging.info("Starting email sending process")
+    result = send_email(
+        "m1.murodjonov@gmail.com",
+        {"name": "Shaxzodbek", "content": f"{random.randint(10000, 1000000)}", "sign_up": True},
+    )
+    logging.info(f"Email sending process finished with result: {result}")
