@@ -35,10 +35,13 @@ def send_email(recipient, context):
 
 if __name__ == "__main__":
 
-
     logging.info("Starting email sending process")
     result = send_email(
         "m1.murodjonov@gmail.com",
-        {"name": "Shaxzodbek", "content": f"{random.randint(10000, 1000000)}", "sign_up": True},
+        {
+            "name": "Shaxzodbek",
+            "content": f"{random.randint(10000, 1000000)}",
+            "sign_up": True,
+        },
     )
     logging.info(f"Email sending process finished with result: {result}")

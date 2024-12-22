@@ -12,7 +12,6 @@ from .models import (
 from datetime import date, timedelta
 
 
-
 class MatchModelTest(TestCase):
     def setUp(self):
         self.match = Match.objects.create(who_is_it="Test Match")
@@ -134,7 +133,6 @@ class ProgrammingLanguageModelTest(TestCase):
         languages = ProgrammingLanguage.objects.all()
         self.assertEqual(languages[0].name, "Python")
         self.assertEqual(languages[1].name, "JavaScript")
-
 
 
 class VideoModelTest(TestCase):

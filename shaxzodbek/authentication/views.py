@@ -152,7 +152,11 @@ def login_view(request):
                     request,
                     "Account is not activated. A verification code has been sent to your email.",
                 )
-                return render(request, "authentication/verify_email.html", {"email": user.hash_email})
+                return render(
+                    request,
+                    "authentication/verify_email.html",
+                    {"email": user.hash_email},
+                )
 
             if check_password(password, user.password):
                 login(request, user)
