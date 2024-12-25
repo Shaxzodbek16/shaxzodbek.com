@@ -13,9 +13,6 @@ logging.basicConfig(level=logging.INFO)
 
 
 def send_email(recipient, context):
-    i = 0
-    if i == 3:
-        return False
     logging.info(f"Sending email to {recipient}")
     subject = "Subject"
     message = "Message"
@@ -28,8 +25,8 @@ def send_email(recipient, context):
     try:
         email.send()
     except Exception as e:
-        i += 1
-        send_email(recipient, context)
+        logging.error(f"Error sending email to {recipient}: {e}")
+        return False
     return True
 
 
@@ -37,7 +34,7 @@ if __name__ == "__main__":
 
     logging.info("Starting email sending process")
     result = send_email(
-        "m1.murodjonov@gmail.com",
+        "muxtorovshaxzodbek16@gmail.com",
         {
             "name": "Shaxzodbek",
             "content": f"{random.randint(10000, 1000000)}",

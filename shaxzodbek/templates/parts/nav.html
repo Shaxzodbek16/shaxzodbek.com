@@ -21,7 +21,8 @@
     </div>
     <div class="login">
         {% if request.user.is_authenticated %}
-            <a href="{% url 'profile' slug=request.user.slug %}">Profile</a>
+            <p>Hello, {{ request.user.first_name }}</p>
+            <a href="{% url 'logout' %}">Log Out</a>
         {% else %}
             <a href="{% url 'login' %}">Log In</a>
             <a href="{% url 'signup' %}">Sign Up</a>

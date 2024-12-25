@@ -1,3 +1,5 @@
+from time import sleep
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import check_password, make_password
 from django.shortcuts import render, redirect, get_object_or_404
@@ -6,7 +8,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.urls import reverse
 import uuid
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from .models import OneTimePassword, User
 from .helpers import send_email
@@ -22,7 +24,6 @@ def signup_view(request):
         if User.objects.filter(email=email).exists():
             if not User.objects.get(email=email).is_active:
                 user = User.objects.get(email=email)
-                # Delete any existing OTPs for this user
                 OneTimePassword.objects.filter(user=user).delete()
                 passcode = user.generate_otp()
                 OneTimePassword.objects.create(user=user, passcode=passcode)
@@ -183,28 +184,29 @@ def logout_view(request):
     return redirect("root")
 
 
-@login_required
-def user_profile(request, slug):
-    profile = get_object_or_404(User, slug=slug)
-
-    if request.method == "POST":
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        date_of_birth = request.POST.get("date_of_birth")
-        profile_picture = request.FILES.get("profile_picture")
-
-        profile.first_name = first_name
-        profile.last_name = last_name
-        profile.date_of_birth = date_of_birth
-
-        if profile_picture:
-            profile.profile_picture = profile_picture
-
-        profile.save()
-        messages.success(request, "Profile updated successfully.")
-        return redirect("profile", slug=profile.slug)
-
-    return render(request, "authentication/profile.html", {"user_profile": profile})
+# @login_required
+# def user_profile(request, slug):
+#     profile = get_object_or_404(User, slug=slug)
+#
+#     if request.method == "POST":
+#         first_name = request.POST.get("first_name")
+#         last_name = request.POST.get("last_name")
+#         date_of_birth = request.POST.get("date_of_birth")
+#         if date_of_birth:
+#             profile.date_of_birth = datetime.strptime(date_of_birth, "%Y-%m-%d").date()
+#         profile_picture = request.FILES.get("profile_picture")
+#
+#         profile.first_name = first_name
+#         profile.last_name = last_name
+#
+#         if profile_picture:
+#             profile.profile_picture = profile_picture
+#
+#         profile.save()
+#         messages.success(request, "Profile updated successfully.")
+#         return redirect("profile", slug=profile.slug)
+#
+#     return render(request, "authentication/profile.html", {"user_profile": profile})
 
 
 def password_reset_request(request):
@@ -262,12 +264,6 @@ def password_reset_confirm(request, token):
 
         if password1 != password2:
             messages.error(request, "Passwords do not match.")
-            return render(
-                request, "authentication/password_reset_confirm.html", {"token": token}
-            )
-
-        if len(password1) < 8:
-            messages.error(request, "Password must be at least 8 characters long.")
             return render(
                 request, "authentication/password_reset_confirm.html", {"token": token}
             )
