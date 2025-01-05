@@ -8,9 +8,6 @@ from django.core.paginator import Paginator
 from .models import (
     Article,
     Connection,
-    Category,
-    ProgrammingLanguage,
-    Book,
     Video,
     AboutShe,
     CV,
@@ -32,13 +29,12 @@ def calculate_age(birth_date):
 
 def root(request):
     videos_4 = Video.objects.all()[:4]
-    books_4 = Book.objects.all()[:4]
     age = calculate_age(datetime.date(2005, 8, 16))
 
     return render(
         request,
         "blog/home.html",
-        context={"age": age, "videos": videos_4, "books": books_4},
+        context={"age": age, "videos": videos_4},
     )
 
 
@@ -60,45 +56,6 @@ def article(request, slug):
 def videos(request):
     return render(request, "blog/videos.html", context={"videos": Video.objects.all()})
 
-
-def books(request):
-    categories = Category.objects.values_list("name", flat=True)
-    languages = ProgrammingLanguage.objects.values_list("name", flat=True)
-
-    if request.method == "POST":
-        query = request.POST.get("search", "")
-        if query:
-            result = Book.objects.filter(
-                Q(title__icontains=query)
-                | Q(author__last_name__icontains=query)
-                | Q(author__first_name__icontains=query)
-                | Q(programming_language__name__icontains=query)
-            ).distinct()
-            return render(
-                request,
-                "blog/books.html",
-                {
-                    "books": result,
-                    "pg_lang": languages,
-                    "categories": categories,
-                    "current_value": query,
-                },
-            )
-
-    return render(
-        request,
-        "blog/books.html",
-        {"books": Book.objects.all(), "pg_lang": languages, "categories": categories},
-    )
-
-
-def download_book(request, slug):
-    book = get_object_or_404(Book, slug=slug)
-    book.download_count += 1
-    book.save()
-    response = HttpResponse(book.book_file, content_type="application/pdf")
-    response["Content-Disposition"] = f'attachment; filename="{book.title}.pdf"'
-    return response
 
 
 def connections(request):

@@ -1,19 +1,4 @@
-from aiogram.types.input_file import FSInputFile
-from .models import (
-    Article,
-    Match,
-    Connection,
-    Author,
-    Category,
-    ProgrammingLanguage,
-    Book,
-    Video,
-)
-from aiogram import Bot
-from django.contrib import messages
-from django.conf import settings
-import asyncio
-
+from .models import Article,Match,Connection, Video
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Technology, CVImages, CV, AboutMe, AboutShe
@@ -219,56 +204,6 @@ class ArticleAdmin(admin.ModelAdmin):
             return "No Image"
 
     picture_preview.short_description = "Picture Preview"
-    actions = ["send_to_telegram_channel"]
-
-    async def send_to_telegram(self, bot, channel_id, article):
-        caption = f"<b>{article.title}</b>\n\n{article.body[:150]}..."
-        caption += """<a href="https://shaxzodbek.com">Ko'proq o'qish</a>  """
-        if article.picture:
-            with open(article.picture.path, "rb") as photo:
-                await bot.send_photo(
-                    chat_id=channel_id,
-                    photo=FSInputFile(path=article.picture.url),
-                    caption=caption,
-                    parse_mode="HTML",
-                )
-        else:
-            await bot.send_message(chat_id=channel_id, text=caption, parse_mode="HTML")
-
-    def send_to_telegram_channel(self, request, queryset):
-        bot = Bot(token=settings.TELEGRAM_BOT_TOKEN)
-        channel_id = settings.TELEGRAM_CHANNEL_ID
-
-        for article in queryset:
-            if not article.telegram:
-                try:
-                    asyncio.run(self.send_to_telegram(bot, channel_id, article))
-
-                    article.telegram = True
-                    article.save()
-                    self.message_user(
-                        request,
-                        f"Successfully sent '{article.title}' to Telegram channel",
-                        messages.SUCCESS,
-                    )
-                except Exception as e:
-                    self.message_user(
-                        request,
-                        f"Failed to send '{article.title}' to Telegram channel: {str(e)}",
-                        messages.ERROR,
-                    )
-            else:
-                self.message_user(
-                    request,
-                    f"'{article.title}' has already been sent to Telegram",
-                    messages.WARNING,
-                )
-
-        asyncio.run(bot.session.close())
-
-    send_to_telegram_channel.short_description = (
-        "Send selected articles to Telegram channel"
-    )
 
 
 @admin.register(Match)
@@ -347,88 +282,6 @@ class ConnectionAdmin(admin.ModelAdmin):
     picture_preview.short_description = "Picture Preview"
 
 
-@admin.register(Author)
-class AuthorAdmin(admin.ModelAdmin):
-    list_display = ("first_name", "last_name")
-    search_fields = ("first_name", "last_name")
-    ordering = ("first_name",)
-    list_per_page = 25
-
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
-    ordering = ("name",)
-    list_per_page = 25
-
-
-@admin.register(ProgrammingLanguage)
-class ProgrammingLanguageAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
-    ordering = ("name",)
-    list_per_page = 25
-
-
-@admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "programming_language", "picture_tag")
-    list_filter = ("programming_language", "categories")
-    search_fields = ("title", "purpose", "authors__first_name", "authors__last_name")
-    ordering = ("title",)
-    filter_horizontal = ("authors", "categories")
-    readonly_fields = ("picture_preview",)
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "title",
-                    "purpose",
-                    "programming_language",
-                    "authors",
-                    "categories",
-                )
-            },
-        ),
-        (
-            "Files",
-            {
-                "fields": ("book",),
-            },
-        ),
-        (
-            "Image",
-            {
-                "fields": ("picture", "picture_preview"),
-            },
-        ),
-    )
-    list_per_page = 25
-
-    def picture_tag(self, obj):
-        if obj.picture:
-            return format_html(
-                '<img src="{}" width="60" height="60" style="object-fit: cover;"/>',
-                obj.picture.url,
-            )
-        else:
-            return "No Image"
-
-    picture_tag.short_description = "Picture"
-
-    def picture_preview(self, obj):
-        if obj.picture:
-            return format_html(
-                '<img src="{}" width="300" height="300" style="object-fit: contain;"/>',
-                obj.picture.url,
-            )
-        else:
-            return "No Image"
-
-    picture_preview.short_description = "Picture Preview"
-
 
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
@@ -472,6 +325,4 @@ class VideoAdmin(admin.ModelAdmin):
     thumbnail_preview.short_description = "Thumbnail Preview"
 
 
-@admin.register(AboutShe)
-class CsrfExemptAdmin(AboutMeAdmin):
-    pass
+admin.site.register(AboutShe)

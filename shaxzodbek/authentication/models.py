@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_picture = models.ImageField(
         upload_to="profile_pictures/%Y/%M/%d", blank=True, null=True
     )
-    slug = models.SlugField(max_length=160, unique=True, default=uuid.uuid4())
+    slug = models.SlugField(max_length=160, unique=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)

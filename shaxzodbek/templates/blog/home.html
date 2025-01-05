@@ -55,49 +55,6 @@
     </main>
     {% endif %}
 {% endblock %}
-{% block extra_content_2 %}
-        <main class="book">
-        <div class="book__title">
-            <h1 class="book__heading">Books</h1>
-            <div class="book__underline">
-                <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
-                    <path d="M0,40 Q500,0 1000,40"></path>
-                </svg>
-            </div>
-        </div>
-
-        <div class="book__container">
-            {% for book in books %}
-            <div class="book__card">
-                <div class="book__image-wrapper">
-                    <img src="{{ book.picture.url }}" alt="{{ book.title }}" class="book__image">
-                </div>
-                <div class="book__content">
-                    <h2 class="book__card-title">{{ book.title }}</h2>
-                    <p class="book__card-description">{{ book.purpose }}</p>
-
-                    <div class="book__info">
-                        <p><span>Authors:</span>
-                            {% for author in book.authors.all %}
-                                {{ author }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}.
-                        </p>
-                        <p><span>Categories:</span>
-                            {% for category in book.categories.all %}
-                                {{ category }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}.
-                        </p>
-                        <p><span>Programming Languages:</span> {{ book.programming_language }}.</p>
-                        <p>{{ book.download_count }} <span>users download this book! </span></p>
-                    </div>
-
-                    <a href="{% url 'download_book' book.slug %}" download class="book__read-button">Read Now</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </main>
-{% endblock %}
 
 {% block footer %}
     {% include 'parts/footer.html' %}
