@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+test.sqlite3
 .idea
 .idea/
 .vscode
@@ -134,7 +134,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+core/.env
 .venv
 env/
 venv/
