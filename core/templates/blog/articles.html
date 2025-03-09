@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Articles | Developer Portfolio{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <div class="container">
+            <h1>Articles</h1>
+            <p>Sharing knowledge and experiences through writing</p>
+        </div>
+    </section>
+    <section class="articles">
+        <div class="container">
+            <div class="article-grid">
+                {% for article in page_obj %}
+                    {% if article.visible or request.user.is_superuser %}
+                        <article class="article-card">
+                            {% if article.image %}
+                                <div class="article-image">
+                                    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                                </div>
+                            {% endif %}
+                            <div class="article-content">
+                                <h4><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title }}</a></h4>
+                                <div class="article-date">{{ article.created|date:"F j, Y" }}</div>
+                                <p>{{ article.content1|truncatewords:30 }}</p>
+                                <a href="{% url 'blog:article_detail' article.slug %}" class="read-more">Read More</a>
+                            </div>
+                        </article>
+                    {% endif %}
+                {% empty %}
+                    <p>No articles to display.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% if page_obj %}
+            {% include 'parts/pagination.html' %}
+        {% endif %}
+    </section>
+{% endblock %}

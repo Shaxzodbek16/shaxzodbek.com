@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} | Developer Portfolio{% endblock %}
+
+{% block content %}
+    <section class="project-detail">
+        <div class="container">
+            <header class="project-header">
+                <h1>{{ project.name }}</h1>
+                <div class="project-meta">
+                    <span class="project-date">{{ project.started_from|date:"F Y" }} - {% if project.ended_at %}
+                        {{ project.ended_at|date:"F Y" }}{% else %}Present{% endif %}</span>
+                    <div class="project-types">
+                        {% for type in project.type.all %}
+                            <span class="type-badge">{{ type.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </header>
+
+            {% if project.image %}
+                <div class="project-featured-image">
+                    <img src="{{ project.image.url }}" alt="{{ project.name }}">
+                </div>
+            {% endif %}
+
+            <div class="project-body">
+                <h2>Project Description</h2>
+                <div class="project-description">
+                    {{ project.description|safe }}
+                </div>
+
+                <h2>Technologies Used</h2>
+                <div class="project-technologies">
+                    {% for language in project.programming_languages.all %}
+                        <div class="technology-item">
+                            {% if language.image %}
+                                <img src="{{ language.image.url }}" alt="{{ language.name }}">
+                            {% endif %}
+                            <span>{{ language.name }}</span>
+                        </div>
+                    {% empty %}
+                        <p>No technologies are listed.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="project-links">
+                    {% if project.github_link %}
+                        <a href="{{ project.github_link }}" target="_blank" class="button github-button"><i
+                                class="fab fa-github"></i> View on GitHub</a>
+                    {% endif %}
+                    {% if project.link_to_project %}
+                        <a href="{{ project.link_to_project }}" target="_blank" class="button live-button"><i
+                                class="fas fa-external-link-alt"></i> Live Demo</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="project-navigation">
+                {% if previous_project and next_project %}
+                    <a href="{% url 'blog:project_detail' previous_project.slug %}" class="prev-project">
+                        <span class="nav-label"> ← Previous Project</span>
+                        <span class="nav-title">{{ previous_project.name }}</span>
+                    </a>
+
+                    <a href="{% url 'blog:project_detail' next_project.slug %}" class="next-project">
+                        <span class="nav-label">Next Project  → </span>
+                        <span class="nav-title">{{ next_project.name }}</span>
+                    </a>
+                {% elif previous_project %}
+                    <a href="{% url 'blog:project_detail' previous_project.slug %}" class="prev-project" style="margin-right: auto;">
+                        <span class="nav-label"> ← Previous Project</span>
+                        <span class="nav-title">{{ previous_project.name }}</span>
+                    </a>
+                {% elif next_project %}
+                    <a href="{% url 'blog:project_detail' next_project.slug %}" class="next-project" style="margin-left: auto;">
+                        <span class="nav-label">Next Project  → </span>
+                        <span class="nav-title">{{ next_project.name }}</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

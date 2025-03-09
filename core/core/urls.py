@@ -3,9 +3,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from core.settings import Config
+
+config: Config = Config()
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("blog/", include("blog.urls")),
+    path(f"{config.ADMIN_URL}/", admin.site.urls),
+    path("", include("blog.urls")),
 ]
 
 if settings.DEBUG:

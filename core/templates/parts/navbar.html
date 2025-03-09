@@ -1,0 +1,30 @@
+<header class="navbar">
+    <div class="container">
+        <div class="logo">
+            <a href="/">DevPortfolio</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+                <li><a href="/articles/" class="{% if '/articles/' in request.path %}active{% endif %}">Articles</a>
+                </li>
+                <li><a href="/projects/" class="{% if '/projects/' in request.path %}active{% endif %}">Projects</a>
+                </li>
+                <li><a href="/certifications/" class="{% if '/certifications/' in request.path %}active{% endif %}">Certifications</a>
+                </li>
+                <li><a href="/aboutme/" class="{% if '/aboutme/' in request.path %}active{% endif %}">About Me</a></li>
+
+                {% if request.user.is_superuser %}
+                    {% url 'admin:index' as admin_url %}
+                    <li><a href="{{ admin_url }}" class="{% if admin_url in request.path %}active{% endif %}">Admin</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</header>

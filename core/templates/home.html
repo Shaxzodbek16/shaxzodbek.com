@@ -1,10 +1,173 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Developer Portfolio{% endblock %}
 
-</body>
-</html>
+{% block content %}
+    <section class="hero">
+        <div class="container">
+            <div class="profile-image">
+                <img src="{% static 'blog/img/shaxzodbek.png' %}" alt="Profile Picture" onerror="this.src='/static/img/placeholder.svg'">
+            </div>
+
+            <h1 class="name">John Doe</h1>
+            <p class="job-title">Full Stack Developer</p>
+            <p class="quote">"Crafting elegant solutions for complex problems through code and creativity."</p>
+
+            <div class="social-links">
+                <a href="https://github.com/" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2 class="section-title">Programming Skills</h2>
+
+            <div class="language-grid">
+                {% for language in programming_languages %}
+                    <div class="language-card">
+                        <div class="language-content">
+                            <div class="language-header">
+                                {% if language.image %}
+                                    <img src="{{ language.image.url }}" alt="{{ language.name }}" class="language-icon">
+                                {% else %}
+                                    <div class="language-icon-placeholder">{{ language.name|slice:":1" }}</div>
+                                {% endif %}
+                                <h3>{{ language.name }}</h3>
+                            </div>
+
+                            {% if language.knowing_percentage %}
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: {{ language.knowing_percentage }}%"></div>
+                                    </div>
+                                    <span class="progress-percentage">{{ language.knowing_percentage }}%</span>
+                                </div>
+                            {% endif %}
+
+                            <p class="language-date">Experience since {{ language.started_from|date:"F Y" }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No programming languages to display.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Recent Projects</h2>
+
+            <div class="project-grid">
+                {% for project in projects %}
+                    <div class="project-card">
+                        {% if project.image %}
+                            <div class="project-image">
+                                <img src="{{ project.image.url }}" alt="{{ project.name }}">
+                            </div>
+                        {% endif %}
+                        <div class="project-content">
+                            <h3><a href="{% url 'blog:project_detail' project.slug %}">{{ project.name }}</a></h3>
+
+                            <div class="project-meta">
+                                <span class="project-date">{{ project.started_from|date:"M Y" }} - {{ project.ended_at|date:"M Y" }}</span>
+
+                                <div class="project-types">
+                                    {% for type in project.type.all %}
+                                        <span class="type-badge">{{ type.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <p>{{ project.description|truncatewords:20 }}</p>
+
+                            <div class="project-links">
+                                {% if project.github_link %}
+                                    <a href="{{ project.github_link }}" class="github-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                                {% endif %}
+
+                                {% if project.link_to_project %}
+                                    <a href="{{ project.link_to_project }}" class="live-link" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                                {% endif %}
+
+                                <a href="{% url 'blog:project_detail' project.slug %}" class="details-link"><i class="fas fa-info-circle"></i> Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No projects to display.</p>
+                {% endfor %}
+            </div>
+
+            <div class="view-all">
+                <a href="{% url 'blog:projects' %}" class="button">View All Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles Section -->
+    <section>
+        <div class="container">
+            <h2 class="section-title">Latest Articles</h2>
+
+            <div class="article-grid">
+                {% for article in articles|slice:":3" %}
+                    <article class="article-card">
+                        {% if article.image %}
+                            <div class="article-image">
+                                <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                            </div>
+                        {% endif %}
+                        <div class="article-content">
+                            <h3><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title }}</a></h3>
+                            <div class="article-date">{{ article.created|date:"F j, Y" }}</div>
+                            <p>{{ article.content1|truncatewords:20 }}</p>
+                            <a href="{% url 'blog:article_detail' article.slug %}" class="read-more">Read More</a>
+                        </div>
+                    </article>
+                {% empty %}
+                    <p>No articles to display.</p>
+                {% endfor %}
+            </div>
+
+            <div class="view-all">
+                <a href="{% url 'blog:articles' %}" class="button">View All Articles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="bg-light">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+
+            <div class="education-timeline">
+                {% for education in educations %}
+                    <div class="timeline-item fadeInUp">
+                        <div class="timeline-content">
+                            <h3>{{ education.name }}</h3>
+                            <p class="timeline-period">
+                                {{ education.started_from|date:"Y" }} -
+                                {% if education.ended_at %}
+                                    {{ education.ended_at|date:"Y" }}
+                                {% else %}
+                                    Present
+                                {% endif %}
+                                {% if education.field %}
+                                    • {{ education.field }}
+                                {% endif %}
+                            </p>
+                            <p>{{ education.description|truncatewords:30 }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No education history to display.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

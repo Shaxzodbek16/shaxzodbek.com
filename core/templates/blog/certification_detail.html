@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{{ certification.name }} | Developer Portfolio{% endblock %}
+
+{% block content %}
+    <section class="certification-detail">
+        <div class="container">
+            <header class="certification-header">
+                <h1>{{ certification.name }}</h1>
+                {% if certification.took_at %}
+                    <div class="certification-meta">
+                        <div class="certification-date">Obtained: {{ certification.took_at|date:"F Y" }}</div>
+                    </div>
+                {% endif %}
+            </header>
+
+            <div class="certification-content">
+                {% if certification.image %}
+                    <div class="certification-image">
+                        <img src="{{ certification.image.url }}" alt="{{ certification.name }}">
+                    </div>
+                {% endif %}
+
+                <div class="certification-description">
+                    {{ certification.description|safe }}
+                </div>
+            </div>
+
+            <div class="certification-navigation">
+                {% if previous_certification and next_certification %}
+                    <a href="{% url 'blog:certification_detail' previous_certification.slug %}"
+                       class="prev-certification">
+                        <span class="nav-label"> ← Previous</span>
+                        <span class="nav-title">{{ previous_certification.name }}</span>
+                    </a>
+
+                    <a href="{% url 'blog:certification_detail' next_certification.slug %}" class="next-certification">
+                        <span class="nav-label">Next → </span>
+                        <span class="nav-title">{{ next_certification.name }}</span>
+                    </a>
+                {% elif previous_certification %}
+                    <a href="{% url 'blog:certification_detail' previous_certification.slug %}"
+                       class="prev-certification" style="margin-right: auto;">
+                        <span class="nav-label"> ← Previous</span>
+                        <span class="nav-title">{{ previous_certification.name }}</span>
+                    </a>
+                {% elif next_certification %}
+                    <a href="{% url 'blog:certification_detail' next_certification.slug %}" class="next-certification"
+                       style="margin-left: auto;">
+                        <span class="nav-label">Next → </span>
+                        <span class="nav-title">{{ next_certification.name }}</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

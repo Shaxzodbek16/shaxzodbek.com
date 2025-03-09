@@ -5,17 +5,17 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(os.path.join(Path(__file__).resolve().parent.parent, '.env'))
+load_dotenv(os.path.join(Path(__file__).resolve().parent.parent, ".env"))
 
 
 class Config(BaseSettings):
-    ADMIN_URL: str
-    DEBUG: str
-    DATABASE: str
-    ALLOWED_HOSTS: str
-    SECRET_KEY: str
+    ADMIN_URL: str = 'admin'
+    DEBUG: bool = True
+    DATABASE: str = 'db'
+    ALLOWED_HOSTS: str = '*'
+    SECRET_KEY: str = 'example'
 
-    model_config = SettingsConfigDict(env_file='.env', env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     @property
     def get_allowed_hosts(self) -> list[str]:
@@ -27,7 +27,7 @@ config: Config = Config()
 
 SECRET_KEY = config.SECRET_KEY
 
-DEBUG = config.DEBUG
+DEBUG = bool(config.DEBUG)
 
 ALLOWED_HOSTS = config.get_allowed_hosts
 

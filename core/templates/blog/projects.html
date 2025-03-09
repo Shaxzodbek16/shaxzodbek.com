@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Projects | Developer Portfolio{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <div class="container">
+            <h1>Projects</h1>
+            <p>A showcase of my development work and contributions</p>
+        </div>
+    </section>
+
+    <section class="projects">
+        <div class="container">
+            <div class="project-grid">
+                {% for project in page_obj %}
+                    <div class="project-card">
+                        {% if project.image %}
+                            <div class="project-image">
+                                <img src="{{ project.image.url }}" alt="{{ project.name }}">
+                            </div>
+                        {% endif %}
+                        <div class="project-content">
+                            <h3><a href="{% url 'blog:project_detail' project.slug %}">{{ project.name }}</a></h3>
+
+                            <div class="project-meta">
+                                <span class="project-date">{{ project.started_from|date:"M Y" }} - {{ project.ended_at|date:"M Y" }}</span>
+
+                                <div class="project-types">
+                                    {% for type in project.type.all %}
+                                        <span class="type-badge">{{ type.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <p>{{ project.description|truncatewords:20 }}</p>
+
+                            <div class="project-links">
+                                {% if project.github_link %}
+                                    <a href="{{ project.github_link }}" class="github-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                                {% endif %}
+
+                                {% if project.link_to_project %}
+                                    <a href="{{ project.link_to_project }}" class="live-link" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                                {% endif %}
+
+                                <a href="{% url 'blog:project_detail' project.slug %}" class="details-link"><i class="fas fa-info-circle"></i> Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No projects to display.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% if page_obj %}
+            {% include 'parts/pagination.html' %}
+        {% endif %}
+    </section>
+{% endblock %}
