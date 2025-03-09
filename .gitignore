@@ -8,7 +8,7 @@ test.sqlite3
 .vscode
 .vscode/
 .DS_Store
-mediafiles/
+staticfiles/
 
 # C extensions
 *.so
