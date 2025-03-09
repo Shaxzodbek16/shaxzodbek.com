@@ -9,8 +9,8 @@ test.sqlite3
 .vscode/
 .DS_Store
 core/staticfiles/
-staticfiles
-staticfiles/*
+core/staticfiles
+core/staticfiles/*
 # C extensions
 *.so
 
