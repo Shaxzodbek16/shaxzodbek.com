@@ -6,7 +6,8 @@
     <section class="hero">
         <div class="container">
             <div class="profile-image">
-                <img src="{% static 'blog/img/shaxzodbek.png' %}" alt="Profile Picture" onerror="this.src='/static/img/placeholder.svg'">
+                <img src="{% static 'blog/img/shaxzodbek.png' %}" alt="Profile Picture"
+                     onerror="this.src='/static/img/placeholder.svg'">
             </div>
 
             <h1 class="name">John Doe</h1>
@@ -17,6 +18,9 @@
                 <a href="https://github.com/" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                 <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 <a href="https://twitter.com/" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                {% if cv.file %}
+                    <a href="{{ cv.file.url }}" download aria-label="CV">CV</a>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -41,7 +45,8 @@
                             {% if language.knowing_percentage %}
                                 <div class="progress-container">
                                     <div class="progress-bar">
-                                        <div class="progress-fill" style="width: {{ language.knowing_percentage }}%"></div>
+                                        <div class="progress-fill"
+                                             style="width: {{ language.knowing_percentage }}%"></div>
                                     </div>
                                     <span class="progress-percentage">{{ language.knowing_percentage }}%</span>
                                 </div>
@@ -87,14 +92,17 @@
 
                             <div class="project-links">
                                 {% if project.github_link %}
-                                    <a href="{{ project.github_link }}" class="github-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                                    <a href="{{ project.github_link }}" class="github-link" target="_blank"><i
+                                            class="fab fa-github"></i> GitHub</a>
                                 {% endif %}
 
                                 {% if project.link_to_project %}
-                                    <a href="{{ project.link_to_project }}" class="live-link" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                                    <a href="{{ project.link_to_project }}" class="live-link" target="_blank"><i
+                                            class="fas fa-external-link-alt"></i> Live Demo</a>
                                 {% endif %}
 
-                                <a href="{% url 'blog:project_detail' project.slug %}" class="details-link"><i class="fas fa-info-circle"></i> Details</a>
+                                <a href="{% url 'blog:project_detail' project.slug %}" class="details-link"><i
+                                        class="fas fa-info-circle"></i> Details</a>
                             </div>
                         </div>
                     </div>
