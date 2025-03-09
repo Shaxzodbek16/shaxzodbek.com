@@ -29,6 +29,5 @@ jobs:
 
       - name: Run Tests
         run: |
-          pytest
           cd core
           python manage.py test blog
