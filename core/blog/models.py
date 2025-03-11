@@ -6,7 +6,7 @@ import os
 class Post(models.Model):
     title = models.CharField(max_length=100)
     content1 = models.TextField()
-    image = models.ImageField(upload_to="blog/articles/%Y/%m/%d", null=True, blank=True)
+    image = models.ImageField(upload_to="blog/posts/%Y/%m/%d", null=True, blank=True)
     content2 = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     visible = models.BooleanField(default=True)
