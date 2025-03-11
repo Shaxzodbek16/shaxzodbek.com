@@ -18,7 +18,7 @@ def aboutme(request):
     return render(request, "aboutme.html")
 
 
-def paginated_view(request, model, template, order_by="-id", per_page=5):
+def paginated_view(request, model, template, order_by="-id", per_page=6):
     object_list = model.objects.all().order_by(order_by)
     paginator = Paginator(object_list, per_page)
     page_obj = paginator.get_page(request.GET.get("page", 1))
