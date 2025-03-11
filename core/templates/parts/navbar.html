@@ -6,7 +6,7 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
-                <li><a href="/articles/" class="{% if '/articles/' in request.path %}active{% endif %}">Blog</a>
+                <li><a href="/post/" class="{% if '/post/' in request.path %}active{% endif %}">Post</a>
                 </li>
                 <li><a href="/projects/" class="{% if '/projects/' in request.path %}active{% endif %}">Projects</a>
                 </li>
