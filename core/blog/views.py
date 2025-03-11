@@ -27,7 +27,7 @@ def paginated_view(request, model, template, order_by="-id", per_page=6):
 
 
 def post(request):
-    return paginated_view(request, Post, "blog/articles.html", order_by="-created")
+    return paginated_view(request, Post, "blog/post.html", order_by="-created")
 
 
 def certifications(request):
@@ -51,7 +51,7 @@ def detail_view(request, model, slug, template):
 
 
 def post_detail(request, slug):
-    return detail_view(request, Post, slug, "blog/article_detail.html")
+    return detail_view(request, Post, slug, "blog/post_detail.html")
 
 
 def certification_detail(request, slug):
