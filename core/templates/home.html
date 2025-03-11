@@ -124,22 +124,22 @@
             <h2 class="section-title">Latest Articles</h2>
 
             <div class="article-grid">
-                {% for article in articles|slice:":3" %}
+                {% for post in posts|slice:":3" %}
                     <article class="article-card">
-                        {% if article.image %}
+                        {% if post.image %}
                             <div class="article-image">
-                                <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}">
                             </div>
                         {% endif %}
                         <div class="article-content">
-                            <h3><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title }}</a></h3>
-                            <div class="article-date">{{ article.created|date:"F j, Y" }}</div>
-                            <p>{{ article.content1|truncatewords:20 }}</p>
-                            <a href="{% url 'blog:article_detail' article.slug %}" class="read-more">Read More</a>
+                            <h3><a href="{% url 'blog:article_detail' post.slug %}">{{ post.title }}</a></h3>
+                            <div class="article-date">{{ post.created|date:"F j, Y" }}</div>
+                            <p>{{ post.content1|truncatewords:20 }}</p>
+                            <a href="{% url 'blog:article_detail' post.slug %}" class="read-more">Read More</a>
                         </div>
                     </article>
                 {% empty %}
-                    <p>No articles to display.</p>
+                    <p>No posts to display.</p>
                 {% endfor %}
             </div>
 
