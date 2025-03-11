@@ -19,6 +19,17 @@
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 6px;
+    background-color: #417cd1;
+    z-index: 1000;
+    transition: width 0.2s ease-out;
+}
+
 * {
     margin: 0;
     padding: 0;

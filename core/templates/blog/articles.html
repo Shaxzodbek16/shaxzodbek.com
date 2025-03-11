@@ -21,9 +21,9 @@
                                 </div>
                             {% endif %}
                             <div class="article-content">
-                                <h4><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title }}</a></h4>
+                                <h4><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title|safe }}</a></h4>
                                 <div class="article-date">{{ article.created|date:"F j, Y" }}</div>
-                                <p>{{ article.content1|truncatewords:30 }}</p>
+                                <p>{{ article.content1|truncatewords:30|safe }}</p>
                                 <a href="{% url 'blog:article_detail' article.slug %}" class="read-more">Read More</a>
                             </div>
                         </article>

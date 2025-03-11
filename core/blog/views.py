@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from .models import Article, ProgrammingLanguage, Education, Certification, Project
+from .models import Article, ProgrammingLanguage, Education, Certification, Project, CV
 
 
 def home(request):
@@ -9,6 +9,7 @@ def home(request):
         "educations": Education.objects.all(),
         "articles": Article.objects.filter(visible=True),
         "projects": Project.objects.all()[:4],
+        "cv": CV.objects.all().first(),
     }
     return render(request, "home.html", context)
 
