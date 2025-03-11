@@ -41,10 +41,20 @@ class ProgrammingLanguageAdmin(admin.ModelAdmin):
 
 @admin.register(Education)
 class EducationAdmin(admin.ModelAdmin):
-    list_display = ("name", image_preview, "started_from", "ended_at", "field")
+    list_display = ("name", "image_preview", "started_from", "ended_at", "field")  # Corrected
     search_fields = ("name", "description")
     list_filter = ("started_from", "ended_at")
     prepopulated_fields = {"slug": ("name",)}
+
+    fields = ("name", "slug", "description", "image", "image_preview", "started_from", "ended_at", "field")
+    readonly_fields = ("image_preview",)
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 100px;"/>', obj.image.url)
+        return "(No image)"
+
+    image_preview.short_description = "Preview"
 
 
 @admin.register(Certification)
