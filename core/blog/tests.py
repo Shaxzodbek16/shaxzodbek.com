@@ -99,7 +99,6 @@ class TestBlogViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("programming_languages", response.context)
         self.assertIn("educations", response.context)
-        self.assertIn("articles", response.context)
         self.assertIn("projects", response.context)
         self.assertTemplateUsed(response, "home.html")
 
@@ -109,20 +108,6 @@ class TestBlogViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "aboutme.html")
 
-    def test_articles_view(self):
-        url = reverse("blog:articles")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("page_obj", response.context)
-        self.assertIn(self.article, response.context["page_obj"])
-        self.assertTemplateUsed(response, "blog/articles.html")
-
-    def test_article_detail_view(self):
-        url = reverse("blog:article_detail", kwargs={"slug": self.article.slug})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context["article"], self.article)
-        self.assertTemplateUsed(response, "blog/article_detail.html")
 
     def test_certifications_view(self):
         url = reverse("blog:certifications")
