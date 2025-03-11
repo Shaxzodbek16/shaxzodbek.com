@@ -7,7 +7,7 @@ def home(request):
     context = {
         "programming_languages": ProgrammingLanguage.objects.all(),
         "educations": Education.objects.all(),
-        "articles": Post.objects.filter(visible=True),
+        "posts": Post.objects.filter(visible=True),
         "projects": Project.objects.all()[:4],
         "cv": CV.objects.all().first(),
     }
