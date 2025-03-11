@@ -8,7 +8,7 @@ class Post(models.Model):
     content1 = models.TextField()
     image = models.ImageField(upload_to="blog/posts/%Y/%m/%d", null=True, blank=True)
     content2 = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField()
     visible = models.BooleanField(default=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
 
@@ -50,7 +50,7 @@ class ProgrammingLanguage(models.Model):
         upload_to="blog/programming_languages/%Y/%m/%d", null=True, blank=True
     )
     knowing_percentage = models.FloatField(default=0)
-    started_from = models.DateTimeField(auto_now_add=True)
+    started_from = models.DateTimeField()
 
     def __str__(self):
         return self.name
@@ -68,12 +68,12 @@ class ProgrammingLanguage(models.Model):
 class Education(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     image = models.ImageField(
         upload_to="blog/education/%Y/%m/%d", null=True, blank=True
     )
-    started_from = models.DateTimeField(auto_now_add=True)
-    ended_at = models.DateTimeField(auto_now=True)
+    started_from = models.DateTimeField()
+    ended_at = models.DateTimeField()
     field = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
@@ -92,7 +92,7 @@ class Education(models.Model):
 class Certification(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     image = models.ImageField(
         upload_to="blog/certificate/%Y/%m/%d", null=True, blank=True
     )
@@ -141,7 +141,7 @@ class Type(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     image = models.ImageField(upload_to="blog/projects/%Y/%m/%d", null=True, blank=True)
     programming_languages = models.ManyToManyField(ProgrammingLanguage)
     link_to_project = models.URLField(null=True, blank=True)
