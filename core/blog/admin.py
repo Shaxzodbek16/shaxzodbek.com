@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import (
-    Article,
+    Post,
     ProgrammingLanguage,
     Education,
     Certification,
@@ -24,7 +24,7 @@ image_preview.allow_tags = True
 image_preview.short_description = "Preview"
 
 
-@admin.register(Article)
+@admin.register(Post)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ("title", image_preview, "created", "visible")
     search_fields = ("title", "content1", "content2")

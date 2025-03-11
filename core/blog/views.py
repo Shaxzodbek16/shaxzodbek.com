@@ -1,13 +1,13 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from .models import Article, ProgrammingLanguage, Education, Certification, Project, CV
+from .models import Post, ProgrammingLanguage, Education, Certification, Project, CV
 
 
 def home(request):
     context = {
         "programming_languages": ProgrammingLanguage.objects.all(),
         "educations": Education.objects.all(),
-        "articles": Article.objects.filter(visible=True),
+        "articles": Post.objects.filter(visible=True),
         "projects": Project.objects.all()[:4],
         "cv": CV.objects.all().first(),
     }
@@ -26,8 +26,8 @@ def paginated_view(request, model, template, order_by="-id", per_page=6):
     return render(request, template, {"page_obj": page_obj})
 
 
-def articles(request):
-    return paginated_view(request, Article, "blog/articles.html", order_by="-created")
+def post(request):
+    return paginated_view(request, Post, "blog/articles.html", order_by="-created")
 
 
 def certifications(request):
@@ -50,8 +50,8 @@ def detail_view(request, model, slug, template):
     return render(request, template, context)
 
 
-def article_detail(request, slug):
-    return detail_view(request, Article, slug, "blog/article_detail.html")
+def post_detail(request, slug):
+    return detail_view(request, Post, slug, "blog/article_detail.html")
 
 
 def certification_detail(request, slug):

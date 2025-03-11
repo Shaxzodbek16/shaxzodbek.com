@@ -3,7 +3,7 @@ from django.utils.text import slugify
 import os
 
 
-class Article(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=100)
     content1 = models.TextField()
     image = models.ImageField(upload_to="blog/articles/%Y/%m/%d", null=True, blank=True)
@@ -15,7 +15,7 @@ class Article(models.Model):
     @property
     def next(self):
         next_article = (
-            Article.objects.filter(created__lt=self.created, visible=True)
+            Post.objects.filter(created__lt=self.created, visible=True)
             .order_by("-created")
             .first()
         )
@@ -24,7 +24,7 @@ class Article(models.Model):
     @property
     def previous(self):
         prev_article = (
-            Article.objects.filter(created__gt=self.created, visible=True)
+            Post.objects.filter(created__gt=self.created, visible=True)
             .order_by("created")
             .first()
         )
@@ -35,7 +35,7 @@ class Article(models.Model):
 
     class Meta:
         ordering = ["-created"]
-        db_table = "articles"
+        db_table = "posts"
 
     def save(self, *args, **kwargs):
         if not self.slug or self.slug != slugify(self.title):

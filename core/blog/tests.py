@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from datetime import datetime
 from .models import (
-    Article,
+    Post,
     ProgrammingLanguage,
     Education,
     Certification,
@@ -14,8 +14,8 @@ from .models import (
 
 class TestBlogModels(TestCase):
     def setUp(self):
-        self.article = Article.objects.create(
-            title="Test Article",
+        self.article = Post.objects.create(
+            title="Test Post",
             content1="Content 1",
             content2="Content 2",
             visible=True,
@@ -38,8 +38,8 @@ class TestBlogModels(TestCase):
         )
 
     def test_article_model(self):
-        self.assertEqual(str(self.article), "Test Article")
-        self.assertEqual(self.article.slug, slugify("Test Article"))
+        self.assertEqual(str(self.article), "Test Post")
+        self.assertEqual(self.article.slug, slugify("Test Post"))
         self.assertTrue(self.article.visible)
         self.assertIsInstance(self.article.created, datetime)
 
@@ -77,8 +77,8 @@ class TestBlogModels(TestCase):
 class TestBlogViews(TestCase):
     def setUp(self):
         self.client = Client()
-        self.article = Article.objects.create(
-            title="Test Article",
+        self.article = Post.objects.create(
+            title="Test Post",
             content1="Content 1",
             content2="Content 2",
             visible=True,
