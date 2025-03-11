@@ -9,11 +9,11 @@ load_dotenv(os.path.join(Path(__file__).resolve().parent.parent, ".env"))
 
 
 class Config(BaseSettings):
-    ADMIN_URL: str = 'admin'
+    ADMIN_URL: str = "admin"
     DEBUG: bool = True
-    DATABASE: str = 'db'
-    ALLOWED_HOSTS: str = '*'
-    SECRET_KEY: str = 'example'
+    DATABASE: str = "db"
+    ALLOWED_HOSTS: str = "*"
+    SECRET_KEY: str = "example"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
@@ -110,6 +110,6 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = "/media/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

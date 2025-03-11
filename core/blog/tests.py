@@ -8,8 +8,9 @@ from .models import (
     Education,
     Certification,
     Type,
-    Project
+    Project,
 )
+
 
 class TestBlogModels(TestCase):
     def setUp(self):
@@ -17,28 +18,25 @@ class TestBlogModels(TestCase):
             title="Test Article",
             content1="Content 1",
             content2="Content 2",
-            visible=True
+            visible=True,
         )
         self.pl = ProgrammingLanguage.objects.create(
-            name="Python",
-            knowing_percentage=85.5
+            name="Python", knowing_percentage=85.5
         )
         self.education = Education.objects.create(
             name="Test University",
             description="Test Description",
-            field="Computer Science"
+            field="Computer Science",
         )
-        self.cert = Certification.objects.create(
-            name="Test Cert",
-            description="Desc"
-        )
+        self.cert = Certification.objects.create(name="Test Cert", description="Desc")
         self.type_obj = Type.objects.create(name="Web Development")
         self.project = Project.objects.create(
             name="Test Project",
             description="Test Desc",
             started_from=datetime.now(),
-            ended_at=datetime.now()
+            ended_at=datetime.now(),
         )
+
     def test_article_model(self):
         self.assertEqual(str(self.article), "Test Article")
         self.assertEqual(self.article.slug, slugify("Test Article"))
@@ -75,6 +73,7 @@ class TestBlogModels(TestCase):
         self.assertIn(self.pl, self.project.programming_languages.all())
         self.assertIn(self.type_obj, self.project.type.all())
 
+
 class TestBlogViews(TestCase):
     def setUp(self):
         self.client = Client()
@@ -82,7 +81,7 @@ class TestBlogViews(TestCase):
             title="Test Article",
             content1="Content 1",
             content2="Content 2",
-            visible=True
+            visible=True,
         )
         self.pl = ProgrammingLanguage.objects.create(name="Python")
         self.education = Education.objects.create(name="Test Uni", description="Desc")
@@ -91,8 +90,9 @@ class TestBlogViews(TestCase):
             name="Test Project",
             description="Desc",
             started_from=datetime.now(),
-            ended_at=datetime.now()
+            ended_at=datetime.now(),
         )
+
     def test_home_view(self):
         url = reverse("blog:home")
         response = self.client.get(url)
