@@ -2,13 +2,20 @@
     <div class="container">
         <div class="footer-content">
             <div class="footer-left">
-                <h3>DevPortfolio</h3>
+                <h3>Shaxzodbek's Blog</h3>
                 <p>A showcase of my projects, articles, and professional journey.</p>
                 <div class="social-links">
-                    <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="https://medium.com" target="_blank"><i class="fab fa-medium"></i></a>
+                    <a href="https://github.com/Shaxzodbek16" target="_blank" aria-label="GitHub"><i
+                            class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/shaxzodbek-muxtorov-59144a294" target="_blank"
+                       aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/tmshaxzodbek" target="_blank" aria-label="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                    <a href="https://www.youtube.com/@Shaxzodbek16" target="_blank" aria-label="YouTube"><i
+                            class="fab fa-youtube"></i></a>
+                    {% if cv.file %}
+                        <a href="{{ cv.file.url }}" download aria-label="CV">CV</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="footer-right">
@@ -23,13 +30,13 @@
                 </div>
                 <div class="footer-contact">
                     <h4>Contact</h4>
-                    <p><i class="fas fa-envelope"></i> contact@example.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> City, Country</p>
+                    <p><i class="fas fa-envelope"></i>muxtorovshaxzodbek16@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Tashkent, Uzbekistan</p>
                 </div>
             </div>
         </div>
         <div class="copyright">
-            <p>&copy; <span id="current-year"></span> DevPortfolio. All rights reserved.</p>
+            <p>&copy; <span id="current-year"></span> shaxzodbek.com</p>
         </div>
     </div>
 </footer>

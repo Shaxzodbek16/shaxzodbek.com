@@ -2,10 +2,33 @@
 {% load static %}
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Developer Portfolio{% endblock %}</title>
-    <meta name="description" content="Personal portfolio and blog showcasing projects and articles">
+    <title>{% block title %}Shaxzodbek's Blog{% endblock %}</title>
+    <meta name="description"
+          content="{% block description %}Shaxzodbek's Blog - Personal thoughts, tutorials, and insights on technology and programming{% endblock %}">
+    <meta name="keywords"
+          content="{% block keywords %}blog, technology, programming, python, javascript, web development, AI, machine learning{% endblock %}">
+    <meta name="author" content="Shaxzodbek Muxtorov">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{% block og_title %}Shaxzodbek's Blog{% endblock %}">
+    <meta property="og:description"
+          content="{% block og_description %}Shaxzodbek's Blog - Personal thoughts, tutorials, and insights on technology and programming{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'blog/img/shaxzodbek.png' %}{% endblock %}">
+    <meta property="og:site_name" content="Shaxzodbek's Blog">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:title" content="{% block twitter_title %}Shaxzodbek's Blog{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Shaxzodbek's Blog - Personal thoughts, tutorials, and insights on technology and programming{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'blog/img/shaxzodbek.png' %}{% endblock %}">
+    <meta name="twitter:site" content="@Shaxzodbek1608">
     <link rel="stylesheet" href="{% static 'blog/css/styles.css' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

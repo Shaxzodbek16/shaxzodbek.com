@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Developer Portfolio{% endblock %}
+{% block title %}Shaxzodbek's Blog{% endblock %}
 
 {% block content %}
     <section class="hero">
@@ -11,13 +11,14 @@
             </div>
 
             <h1 class="name">Muxtorov Shaxzodbek</h1>
-            <p class="job-title">Full Stack Developer</p>
+            <p class="job-title">Software Engineer</p>
             <p class="quote">"Crafting elegant solutions for complex problems through code and creativity."</p>
 
             <div class="social-links">
-                <a href="https://github.com/" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                <a href="https://twitter.com/" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://github.com/Shaxzodbek16" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/shaxzodbek-muxtorov-59144a294" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://t.me/tmshaxzodbek" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.youtube.com/@Shaxzodbek16" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                 {% if cv.file %}
                     <a href="{{ cv.file.url }}" download aria-label="CV">CV</a>
                 {% endif %}
