@@ -37,8 +37,6 @@
                             <div class="language-header">
                                 {% if language.image %}
                                     <img src="{{ language.image.url }}" alt="{{ language.name }}" class="language-icon">
-                                {% else %}
-                                    <div class="language-icon-placeholder">{{ language.name|slice:":1" }}</div>
                                 {% endif %}
                                 <h3>{{ language.name }}</h3>
                             </div>

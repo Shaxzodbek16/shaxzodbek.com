@@ -5,7 +5,7 @@ from .models import Post, ProgrammingLanguage, Education, Certification, Project
 
 def home(request):
     context = {
-        "programming_languages": ProgrammingLanguage.objects.all(),
+        "programming_languages": ProgrammingLanguage.objects.all().order_by("-knowing_percentage"),
         "educations": Education.objects.all(),
         "posts": Post.objects.filter(visible=True),
         "projects": Project.objects.all()[:4],
