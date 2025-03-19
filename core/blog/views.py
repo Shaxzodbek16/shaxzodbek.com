@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from .models import Post, ProgrammingLanguage, Education, Certification, Project, CV
+from django.views.decorators.cache import cache_page
 
-
+@cache_page(60)
 def home(request):
     context = {
         "programming_languages": ProgrammingLanguage.objects.all().order_by("-knowing_percentage"),
@@ -13,7 +14,7 @@ def home(request):
     }
     return render(request, "home.html", context)
 
-
+@cache_page(60)
 def aboutme(request):
     return render(request, "aboutme.html")
 
@@ -25,15 +26,15 @@ def paginated_view(request, model, template, order_by="-id", per_page=6):
 
     return render(request, template, {"page_obj": page_obj})
 
-
+@cache_page(60)
 def post(request):
     return paginated_view(request, Post, "blog/post.html", order_by="-created")
 
-
+@cache_page(60)
 def certifications(request):
     return paginated_view(request, Certification, "blog/certifications.html")
 
-
+@cache_page(60)
 def projects(request):
     return paginated_view(
         request, Project, "blog/projects.html", order_by="-started_from"
@@ -48,7 +49,6 @@ def detail_view(request, model, slug, template):
         f"previous_{model.__name__.lower()}": getattr(obj, "previous", None),
     }
     return render(request, template, context)
-
 
 def post_detail(request, slug):
     return detail_view(request, Post, slug, "blog/post_detail.html")
