@@ -16,7 +16,7 @@ urlpatterns = [
     path("", home, name="home"),
     path("aboutme/", aboutme, name="aboutme"),
     path("post/", post, name="post"),
-    path("articles/<slug:slug>/", post_detail, name="article_detail"),
+    path("post/<slug:slug>/", post_detail, name="post_detail"),
     path("certifications/", certifications, name="certifications"),
     path(
         "certifications/<slug:slug>/",

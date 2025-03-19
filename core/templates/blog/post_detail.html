@@ -1,59 +1,57 @@
 {% extends "base.html" %}
 
-{% block title %}{{ article.title }} | Shaxzodbek's Blog{% endblock %}
+{% block title %}{{ post.title }} | Shaxzodbek's Blog{% endblock %}
 
 {% block content %}
     <article class="article-detail">
         <div class="container">
             <header class="article-header">
-                <h1>{{ article.title|safe }}</h1>
+                <h1>{{ post.title|safe }}</h1>
                 <div class="article-meta">
-                    <div class="article-date">{{ article.created|date:"F j, Y" }}</div>
+                    <div class="article-date">{{ post.created|date:"F j, Y" }}</div>
                 </div>
             </header>
-
-            {% if article.image %}
+            {% if post.image %}
                 <div class="article-featured-image">
-                    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
                 </div>
             {% endif %}
 
             <div class="article-body">
                 <div class="content-section">
-                    {{ article.content1|safe }}
+                    {{ post.content1|safe }}
                 </div>
 
-                {% if article.image %}
+                {% if post.image %}
                     <div class="content-section">
-                        {{ article.content2|safe }}
+                        {{ post.content2|safe }}
                     </div>
                 {% endif %}
             </div>
             <div class="article-navigation">
-                {% if previous_article and next_article %}
-                    <a href="{% url 'blog:article_detail' previous_article.slug %}" class="prev-article">
+                {% if previous_post and next_post %}
+                    <a href="{% url 'blog:post_detail' previous_post.slug %}" class="prev-article">
                         <span class="nav-label"> ← Previous</span>
-                        <span class="nav-title">{{ previous_article.title }}</span>
+                        <span class="nav-title">{{ previous_post.title }}</span>
                     </a>
-
-                    <a href="{% url 'blog:article_detail' next_article.slug %}" class="next-article">
+                    <a href="{% url 'blog:post_detail' next_post.slug %}" class="next-article">
                         <span class="nav-label">Next  → </span>
-                        <span class="nav-title">{{ next_article.title }}</span>
+                        <span class="nav-title">{{ next_post.title }}</span>
                     </a>
-                {% elif previous_article %}
-                    <a href="{% url 'blog:article_detail' previous_article.slug %}" class="prev-article" style="margin-right: auto;">
+                {% elif previous_post %}
+                    <a href="{% url 'blog:post_detail' previous_post.slug %}" class="prev-article"
+                       style="margin-right: auto;">
                         <span class="nav-label"> ← Previous</span>
-                        <span class="nav-title">{{ previous_article.title }}</span>
+                        <span class="nav-title">{{ previous_post.title }}</span>
                     </a>
-                {% elif next_article %}
-                    <a href="{% url 'blog:article_detail' next_article.slug %}" class="next-article" style="margin-left: auto;">
+                {% elif next_post %}
+                    <a href="{% url 'blog:post_detail' next_post.slug %}" class="next-article"
+                       style="margin-left: auto;">
                         <span class="nav-label">Next  → </span>
-                        <span class="nav-title">{{ next_article.title }}</span>
+                        <span class="nav-title">{{ next_post.title }}</span>
                     </a>
                 {% endif %}
             </div>
-
         </div>
     </article>
 {% endblock %}
-

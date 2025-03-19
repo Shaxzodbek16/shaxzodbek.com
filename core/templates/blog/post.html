@@ -6,19 +6,19 @@
     <section class="articles">
         <div class="container">
             <div class="article-grid">
-                {% for article in page_obj %}
-                    {% if article.visible or request.user.is_superuser %}
+                {% for post in page_obj %}
+                    {% if post.visible or request.user.is_superuser %}
                         <article class="article-card">
-                            {% if article.image %}
+                            {% if post.image %}
                                 <div class="article-image">
-                                    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
                                 </div>
                             {% endif %}
                             <div class="article-content">
-                                <h4><a href="{% url 'blog:article_detail' article.slug %}">{{ article.title|safe }}</a></h4>
-                                <div class="article-date">{{ article.created|date:"F j, Y" }}</div>
-                                <p>{{ article.content1|truncatewords:30|safe }}</p>
-                                <a href="{% url 'blog:article_detail' article.slug %}" class="read-more">Read More</a>
+                                <h4><a href="{% url 'blog:post_detail' post.slug %}">{{ post.title|safe }}</a></h4>
+                                <div class="article-date">{{ post.created|date:"F j, Y" }}</div>
+                                <p>{{ post.content1|truncatewords:30|safe }}</p>
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="read-more">Read More</a>
                             </div>
                         </article>
                     {% endif %}
