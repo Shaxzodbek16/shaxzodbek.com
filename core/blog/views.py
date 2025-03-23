@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from .models import Post, ProgrammingLanguage, Education, Certification, Project, CV
 from django.views.decorators.cache import cache_page
+from typing import Any
 
 @cache_page(60)
 def home(request):
@@ -19,7 +20,7 @@ def aboutme(request):
     return render(request, "aboutme.html")
 
 
-def paginated_view(request, model, template, order_by="-id", per_page=6):
+def paginated_view(request, model: Any, template, order_by="-id", per_page=6):
     object_list = model.objects.all().order_by(order_by)
     paginator = Paginator(object_list, per_page)
     page_obj = paginator.get_page(request.GET.get("page", 1))
