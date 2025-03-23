@@ -34,7 +34,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/shaxzodbek.com
-            git pull
+            git pull origin deploy
             cd core
             source venv/bin/activate
             pip install -r requirements.txt
