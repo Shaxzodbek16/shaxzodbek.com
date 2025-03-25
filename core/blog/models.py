@@ -198,7 +198,7 @@ class CV(models.Model):
                 if os.path.isfile(cv.file.path):
                     os.remove(cv.file.path)
             cv.delete()
-        self.file.name = "shaxzodbek_cv.pdf"
+        self.file.name = "Muxtorov_Shaxzodbek_cv." + self.file.name.split(".")[-1]
         super().save(*args, **kwargs)
 
     @property
