@@ -11,16 +11,16 @@
                     <div class="article-date">{{ post.created|date:"F j, Y" }}</div>
                 </div>
             </header>
-            {% if post.image %}
-                <div class="article-featured-image">
-                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
-                </div>
-            {% endif %}
 
             <div class="article-body">
                 <div class="content-section">
                     {{ post.content1|safe }}
                 </div>
+            {% if post.image %}
+                <div class="article-featured-image">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                </div>
+            {% endif %}
 
                 {% if post.image %}
                     <div class="content-section">

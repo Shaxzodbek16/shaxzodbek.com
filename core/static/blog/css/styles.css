@@ -532,7 +532,7 @@ section {
 
 .error-content h1 {
     font-size: 8rem;
-    color: var(--primary-color);
+    color: var(--secondary-color);
     line-height: 1;
 }
 
