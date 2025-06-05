@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}404 – Page Not Found · Shaxzodbek's Blog{% endblock %}
+
+{% block content %}
+<section class="d-flex align-items-center justify-content-center py-5" style="min-height:70vh;">
+    <div class="container text-center">
+        <h1 class="display-1 fw-bold text-primary animate__animated animate__fadeIn">404</h1>
+        <h2 class="h3 mb-3 animate__animated animate__fadeInUp">Sahifa topilmadi</h2>
+        <p class="lead mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+            Qidirayotgan sahifa o‘chirilgan, nomi o‘zgartirilgan yoki vaqtincha mavjud emas.
+        </p>
+        <a href="{% url 'home' %}" class="btn btn-lg btn-primary shadow animate__animated animate__fadeInUp animate__delay-2s">
+            <i class="fa fa-home me-2"></i>Bosh sahifaga qaytish
+        </a>
+    </div>
+</section>
+{% endblock %}
