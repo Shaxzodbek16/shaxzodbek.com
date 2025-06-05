@@ -204,3 +204,24 @@ class CV(models.Model):
     @property
     def get_file_url(self):
         return self.file.url
+
+
+class AboutMe(models.Model):
+    content = models.TextField()
+    image = models.ImageField(upload_to="blog/aboutme/%Y/%m/%d", null=True, blank=True)
+    image_description = models.CharField(
+        max_length=255, null=True, blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'About Me - {self.id} - {self.image_description or "No Description"}'
+
+    class Meta:
+        db_table = "about_me"
+        ordering = ["-created_at"]
+        verbose_name = "About Me"
+        verbose_name_plural = "About Me"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)

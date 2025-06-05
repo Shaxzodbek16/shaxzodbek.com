@@ -6,8 +6,8 @@
     <section class="hero">
         <div class="container">
             <div class="profile-image">
-                <img src="{% static 'blog/img/shaxzodbek.png' %}" alt="Profile Picture"
-                     onerror="this.src='/static/img/placeholder.svg'">
+                <img src="{% static 'blog/img/shaxzodbek.jpeg' %}" alt="Profile Picture"
+                     onerror="this.src='blog/img/shaxzodbek.jpeg'">
             </div>
 
             <h1 class="name">Muxtorov Shaxzodbek</h1>
@@ -156,8 +156,12 @@
                 {% for education in educations %}
                     <div class="timeline-item fadeInUp">
                         <div class="timeline-content">
-                            <h3>{{ education.name }}</h3>
-                            <p class="timeline-period">
+                            <h3 style="text-align: center;">{{ education.name }}</h3>
+                            <p class="timeline-period" style="text-align: center;">
+                                {% if education.image %}
+                                    <img src="{{ education.image.url }}" alt="{{ education.name }}"
+                                         class="education-icon" style="margin-bottom: 10px;">
+                                {% endif %}
                                 {{ education.started_from|date:"Y" }} -
                                 {% if education.ended_at %}
                                     {{ education.ended_at|date:"Y" }}
@@ -167,8 +171,9 @@
                                 {% if education.field %}
                                     • {{ education.field }}
                                 {% endif %}
+
                             </p>
-                            <p>{{ education.description|truncatewords:30 }}</p>
+                            <p style="text-align: justify">{{ education.description|safe }}</p>
                         </div>
                     </div>
                 {% empty %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About&nbsp;me{% endblock %}
+
+{% block content %}
+    <header class="py-5 text-center bg-light">
+        <h1 class="display-5 fw-semibold mb-0">About&nbsp;me</h1>
+    </header>
+
+    <div class="container py-5" style="padding-top:0;">
+        {% for item in items %}
+            <section class="mb-0 about-block animate__animated animate__fadeInUp" style="padding:0;"
+                     data-delay="{{ forloop.counter }}">
+                {% if item.image %}
+                    <figure class="text-center mb-4">
+                        <img src="{{ item.image.url }}"
+                             alt="{{ item.image_description|default:'About-me photo' }}"
+                             class="img-fluid rounded shadow">
+                        {% if item.image_description %}
+                            <figcaption class="mt-2 small text-muted" style="font-size: 1.15em;">
+                                <i>{{ item.image_description | safe }}</i>
+                            </figcaption>
+                        {% endif %}
+                    </figure>
+                {% endif %}
+
+                {% for paragraph in item.content.splitlines %}
+                    {% if paragraph.strip %}
+                        <p class="fs-5 mb-4" style="text-indent: 2em;">{{ paragraph | safe }}</p>
+                    {% endif %}
+                {% endfor %}
+            </section>
+        {% empty %}
+            <p class="text-muted text-center">No “About me” entries yet.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+          integrity="sha512-bO5u7rU..." crossorigin="anonymous">
+    <style>
+        /* Optional: stagger each block’s entrance */
+        .about-block {
+            opacity: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const els = document.querySelectorAll('.about-block');
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(({isIntersecting, target}) => {
+                    if (isIntersecting) {
+                        // Delay based on data-delay to create a cascade
+                        const d = target.dataset.delay * 120;
+                        target.style.animationDelay = d + 'ms';
+                        target.classList.add('animate__fadeInUp'); // already set, just ensure visible
+                        target.style.opacity = 1;
+                        io.unobserve(target);
+                    }
+                });
+            }, {threshold: 0.25});
+
+            els.forEach(el => io.observe(el));
+        });
+    </script>
+{% endblock %}

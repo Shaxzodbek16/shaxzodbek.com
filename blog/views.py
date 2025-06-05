@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from .models import Post, ProgrammingLanguage, Education, Certification, Project, CV
+from .models import Post, ProgrammingLanguage, Education, Certification, Project, CV, AboutMe
 from django.views.decorators.cache import cache_page
 from typing import Any
 
@@ -18,10 +18,10 @@ def home(request):
     }
     return render(request, "home.html", context)
 
-
 @cache_page(60)
 def aboutme(request):
-    return render(request, "aboutme.html")
+    items = AboutMe.objects.all()      # thanks to Meta.ordering newest first
+    return render(request, "aboutme.html", {"items": items})
 
 def paginated_view(request, model: Any, template, order_by="-id", per_page=6):
     object_list = model.objects.all().order_by(order_by)

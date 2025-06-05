@@ -520,3 +520,9 @@ section {
     height: 30px;
     object-fit: contain;
 }
+
+.timeline-img {
+    object-fit: cover;
+    width: 96px;
+    height: 96px;
+}

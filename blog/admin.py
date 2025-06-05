@@ -7,7 +7,7 @@ from .models import (
     Certification,
     Project,
     Type,
-    CV,
+    CV, AboutMe
 )
 
 
@@ -99,3 +99,18 @@ class TypeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(CV)
+
+
+@admin.register(AboutMe)
+class AboutMeAdmin(admin.ModelAdmin):
+    list_display = ("content",'image_description', "image_preview")
+    search_fields = ("content", "image_description")
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="max-height: 100px;"/>', obj.image.url
+            )
+        return "(No image)"
+
+    image_preview.short_description = "Preview"
