@@ -7,9 +7,9 @@ __pycache__/
 .vscode
 .vscode/
 .DS_Store
-core/staticfiles/
-core/staticfiles
-core/staticfiles/*
+staticfiles/
+staticfiles
+staticfiles/*
 # C extensions
 *.so
 
