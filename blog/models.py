@@ -209,9 +209,7 @@ class CV(models.Model):
 class AboutMe(models.Model):
     content = models.TextField()
     image = models.ImageField(upload_to="blog/aboutme/%Y/%m/%d", null=True, blank=True)
-    image_description = models.CharField(
-        max_length=255, null=True, blank=True
-    )
+    image_description = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -7,7 +7,8 @@ from .models import (
     Certification,
     Project,
     Type,
-    CV, AboutMe
+    CV,
+    AboutMe,
 )
 
 
@@ -103,7 +104,7 @@ admin.site.register(CV)
 
 @admin.register(AboutMe)
 class AboutMeAdmin(admin.ModelAdmin):
-    list_display = ("content",'image_description', "image_preview")
+    list_display = ("content", "image_description", "image_preview")
     search_fields = ("content", "image_description")
 
     def image_preview(self, obj):

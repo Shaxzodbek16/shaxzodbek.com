@@ -1,7 +1,17 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import Post, ProgrammingLanguage, Education, Certification, Project, Type, CV, AboutMe
+from .models import (
+    Post,
+    ProgrammingLanguage,
+    Education,
+    Certification,
+    Project,
+    Type,
+    CV,
+    AboutMe,
+)
 from django.urls import reverse
+
 
 class PostModelTest(TestCase):
     def setUp(self):
@@ -11,7 +21,7 @@ class PostModelTest(TestCase):
             content1="Test content 1",
             content2="Test content 2",
             created=timezone.now(),
-            visible=True
+            visible=True,
         )
 
         self.post2 = Post.objects.create(
@@ -19,7 +29,7 @@ class PostModelTest(TestCase):
             content1="Test content 1",
             content2="Test content 2",
             created=timezone.now() - timezone.timedelta(days=1),
-            visible=True
+            visible=True,
         )
 
         self.post3 = Post.objects.create(
@@ -27,7 +37,7 @@ class PostModelTest(TestCase):
             content1="Test content 1",
             content2="Test content 2",
             created=timezone.now() + timezone.timedelta(days=1),
-            visible=True
+            visible=True,
         )
 
         self.hidden_post = Post.objects.create(
@@ -35,7 +45,7 @@ class PostModelTest(TestCase):
             content1="Hidden content 1",
             content2="Hidden content 2",
             created=timezone.now(),
-            visible=False
+            visible=False,
         )
 
     def test_post_creation(self):
@@ -56,7 +66,7 @@ class PostModelTest(TestCase):
             title="This is a Test Post!",
             content1="Test content",
             content2="More test content",
-            created=timezone.now()
+            created=timezone.now(),
         )
         self.assertEqual(post.slug, "this-is-a-test-post")
 
@@ -87,7 +97,7 @@ class ProgrammingLanguageModelTest(TestCase):
         self.language = ProgrammingLanguage.objects.create(
             name="Python",
             knowing_percentage=90.0,
-            started_from=timezone.now() - timezone.timedelta(days=365)
+            started_from=timezone.now() - timezone.timedelta(days=365),
         )
 
     def test_language_creation(self):
@@ -109,13 +119,13 @@ class ViewsTest(TestCase):
             content1="Test content 1",
             content2="Test content 2",
             created=timezone.now(),
-            visible=True
+            visible=True,
         )
 
         self.language = ProgrammingLanguage.objects.create(
             name="Python",
             knowing_percentage=90.0,
-            started_from=timezone.now() - timezone.timedelta(days=365)
+            started_from=timezone.now() - timezone.timedelta(days=365),
         )
 
         self.education = Education.objects.create(
@@ -123,13 +133,13 @@ class ViewsTest(TestCase):
             description="Test description",
             started_from=timezone.now() - timezone.timedelta(days=1000),
             ended_at=timezone.now() - timezone.timedelta(days=500),
-            field="Computer Science"
+            field="Computer Science",
         )
 
         self.certification = Certification.objects.create(
             name="Test Certification",
             description="Test certification description",
-            took_at=timezone.now() - timezone.timedelta(days=100)
+            took_at=timezone.now() - timezone.timedelta(days=100),
         )
 
         self.project_type = Type.objects.create(name="Web Development")
@@ -138,75 +148,78 @@ class ViewsTest(TestCase):
             name="Test Project",
             description="Test project description",
             started_from=timezone.now() - timezone.timedelta(days=200),
-            ended_at=timezone.now() - timezone.timedelta(days=100)
+            ended_at=timezone.now() - timezone.timedelta(days=100),
         )
         self.project.programming_languages.add(self.language)
         self.project.type.add(self.project_type)
 
         self.about_me = AboutMe.objects.create(
-            content="Test about me content",
-            image_description="Test image description"
+            content="Test about me content", image_description="Test image description"
         )
 
     def test_home_view(self):
         """Test the home view"""
-        response = self.client.get(reverse('blog:home'))
+        response = self.client.get(reverse("blog:home"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'home.html')
-        self.assertIn('programming_languages', response.context)
-        self.assertIn('educations', response.context)
-        self.assertIn('posts', response.context)
-        self.assertIn('projects', response.context)
+        self.assertTemplateUsed(response, "home.html")
+        self.assertIn("programming_languages", response.context)
+        self.assertIn("educations", response.context)
+        self.assertIn("posts", response.context)
+        self.assertIn("projects", response.context)
 
     def test_aboutme_view(self):
         """Test the about me view"""
-        response = self.client.get(reverse('blog:aboutme'))
+        response = self.client.get(reverse("blog:aboutme"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'aboutme.html')
-        self.assertIn('items', response.context)
-        self.assertEqual(list(response.context['items']), [self.about_me])
+        self.assertTemplateUsed(response, "aboutme.html")
+        self.assertIn("items", response.context)
+        self.assertEqual(list(response.context["items"]), [self.about_me])
 
     def test_post_list_view(self):
         """Test the post list view"""
-        response = self.client.get(reverse('blog:post'))
+        response = self.client.get(reverse("blog:post"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'blog/post.html')
-        self.assertIn('page_obj', response.context)
-        self.assertEqual(list(response.context['page_obj']), [self.post])
+        self.assertTemplateUsed(response, "blog/post.html")
+        self.assertIn("page_obj", response.context)
+        self.assertEqual(list(response.context["page_obj"]), [self.post])
 
     def test_post_detail_view(self):
         """Test the post detail view"""
-        response = self.client.get(reverse('blog:post_detail', args=[self.post.slug]))
+        response = self.client.get(reverse("blog:post_detail", args=[self.post.slug]))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'blog/post_detail.html')
-        self.assertEqual(response.context['post'], self.post)
+        self.assertTemplateUsed(response, "blog/post_detail.html")
+        self.assertEqual(response.context["post"], self.post)
 
     def test_certifications_view(self):
         """Test the certifications view"""
-        response = self.client.get(reverse('blog:certifications'))
+        response = self.client.get(reverse("blog:certifications"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'blog/certifications.html')
-        self.assertIn('page_obj', response.context)
-        self.assertEqual(list(response.context['page_obj']), [self.certification])
+        self.assertTemplateUsed(response, "blog/certifications.html")
+        self.assertIn("page_obj", response.context)
+        self.assertEqual(list(response.context["page_obj"]), [self.certification])
 
     def test_certification_detail_view(self):
         """Test the certification detail view"""
-        response = self.client.get(reverse('blog:certification_detail', args=[self.certification.slug]))
+        response = self.client.get(
+            reverse("blog:certification_detail", args=[self.certification.slug])
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'blog/certification_detail.html')
-        self.assertEqual(response.context['certification'], self.certification)
+        self.assertTemplateUsed(response, "blog/certification_detail.html")
+        self.assertEqual(response.context["certification"], self.certification)
 
     def test_projects_view(self):
         """Test the projects view"""
-        response = self.client.get(reverse('blog:projects'))
+        response = self.client.get(reverse("blog:projects"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'blog/projects.html')
-        self.assertIn('page_obj', response.context)
-        self.assertEqual(list(response.context['page_obj']), [self.project])
+        self.assertTemplateUsed(response, "blog/projects.html")
+        self.assertIn("page_obj", response.context)
+        self.assertEqual(list(response.context["page_obj"]), [self.project])
 
     def test_project_detail_view(self):
         """Test the project detail view"""
-        response = self.client.get(reverse('blog:project_detail', args=[self.project.slug]))
+        response = self.client.get(
+            reverse("blog:project_detail", args=[self.project.slug])
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'blog/project_detail.html')
-        self.assertEqual(response.context['project'], self.project)
+        self.assertTemplateUsed(response, "blog/project_detail.html")
+        self.assertEqual(response.context["project"], self.project)
