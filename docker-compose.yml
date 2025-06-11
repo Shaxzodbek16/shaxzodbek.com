@@ -3,6 +3,8 @@ services:
     build: .
     volumes:
       - .:/app
+      - staticfiles:/app/staticfiles
+      - media:/app/media
     ports:
       - "8000:8000"
 
