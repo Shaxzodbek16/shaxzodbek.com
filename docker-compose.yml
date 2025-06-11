@@ -19,8 +19,7 @@ services:
     volumes:
       - ./staticfiles:/app/staticfiles
       - ./media:/app/media
+      - /root/shaxzodbek.com/nginx/ssl:/var/www/certbot:ro
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - /etc/letsencrypt/live/shaxzodbek.com/fullchain.pem:/etc/ssl/certs/shaxzodbek.crt:ro
-      - /etc/letsencrypt/live/shaxzodbek.com/privkey.pem:/etc/ssl/private/shaxzodbek.key:ro
     depends_on:
       - web
