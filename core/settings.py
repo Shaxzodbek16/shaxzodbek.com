@@ -16,7 +16,6 @@ class Config(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
-    @property
     def get_allowed_hosts(self) -> list[str]:
         hosts = self.ALLOWED_HOSTS.split(",")
         return [host.strip() for host in hosts]
@@ -28,7 +27,12 @@ SECRET_KEY = config.SECRET_KEY
 
 DEBUG = bool(config.DEBUG)
 
-ALLOWED_HOSTS = config.get_allowed_hosts
+ALLOWED_HOSTS = config.get_allowed_hosts()
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://shaxzodbek.com',
+    'https://www.shaxzodbek.com',
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
